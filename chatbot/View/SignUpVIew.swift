@@ -34,7 +34,6 @@ struct SignUpVIew: View {
                         Image(uiImage: (image ?? UIImage(named: "default.png"))!)
                             .resizable()
                             .scaledToFill()
-                        //                            .padding()
                             .frame(width: 200, height: 200, alignment: .center)
                             .clipShape(Circle())
                             .overlay(Circle()

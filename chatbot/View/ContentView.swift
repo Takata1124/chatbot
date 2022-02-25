@@ -9,19 +9,18 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @Environment(\.dismiss) var dismiss
+    
     @ObservedObject var dataModel = DataModel()
     @ObservedObject var movieViewModel = MovieViewModel()
     
-    @Environment(\.isPresented) var isPresented
-    
     @State private var messageText = ""
-    @State private var showingSheet = false
+    @State private var showingSettingSheet = false
     @State var menuOpen: Bool = false
     
     var body: some View {
         
         NavigationView {
-            
             ZStack {
                 VStack {
                     ScrollView {
@@ -31,16 +30,16 @@ struct ContentView: View {
                                 let newMessage = message.replacingOccurrences(of: "[USER]", with: "")
                                 
                                 SelfCellView(message: newMessage)
-
+                                
                             } else {
                                 
-                               BotCellView(message: message)
+                                BotCellView(message: message)
                             }
                             
                         }.rotationEffect(.degrees(180))
                     }
                     .rotationEffect(.degrees(180))
-                    .background(Color.gray.opacity(0.1))
+                    .background(Color.gray.opacity(0.2))
                     
                     ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel)
                     
@@ -55,19 +54,23 @@ struct ContentView: View {
                 }), trailing: HStack {
                     Button(action: {
                         
-                        self.showingSheet.toggle()
+                        self.showingSettingSheet.toggle()
                     }, label: {
                         Image(systemName: "gearshape")
                             .foregroundColor(Color.white)
                     })
                 })
                 
-                SideMenuView(width: 270,isOpen: self.menuOpen, menuClose: self.openMenu)
+                SideMenuView(width: 270, isOpen: $menuOpen, menuClose: self.openMenu, function: self.passedFunction)
             }
         }
-        .fullScreenCover(isPresented: $showingSheet) {
+        .fullScreenCover(isPresented: $showingSettingSheet) {
             SettingView()
         }
+    }
+    
+    private func passedFunction() {
+        dismiss()
     }
     
     private func openMenu() {
@@ -83,23 +86,13 @@ struct ContentView: View {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .gray
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        //           appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
 }
 
-//extension String {
-//
-//    /// 頭文字は大文字、それ以外は小文字のStringを返す
-//    func initialUppercased() -> String {
-//        let lowercasedString = self.lowercased()
-//        return lowercasedString.prefix(1).uppercased() + lowercasedString.dropFirst()
-//    }
-//}
-
-//    struct ContentView_Previews: PreviewProvider {
-//        static var previews: some View {
-//            ContentView()
-//        }
-//    }
+    struct ContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            ContentView()
+        }
+    }

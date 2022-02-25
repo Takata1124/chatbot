@@ -13,7 +13,7 @@ struct chatbotApp: App {
     var body: some Scene {
         WindowGroup {
             
-            ContentView()
+            HomeView()
         }
     }
 }

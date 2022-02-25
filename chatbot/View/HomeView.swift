@@ -9,19 +9,74 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @State var showingSheet = false
+    @State var showingSettingSheet = false
+    @State var showingPostSheet = false
+    
     var body: some View {
         
         NavigationView {
             
-            VStack {
+            ZStack {
+                
+                Color.gray.opacity(0.3).ignoresSafeArea()
+//
                 Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+                
             }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Spacer()
+                    Button(action: {
+                        self.showingSheet.toggle()
+                    }) {
+                        VStack(alignment: .center) {
+                            Label("送信", systemImage: "square.and.arrow.up")
+                                .padding(.bottom, 3)
+                            Text("映画bot").font(.caption2)
+                        }
+                    }
+                    Spacer()
+                    Button(action: {
+                        self.showingPostSheet.toggle()
+                    }) {
+                        VStack(alignment: .center) {
+                            Label("送信", systemImage: "text.bubble")
+                                .padding(.bottom, 3)
+                            Text("投稿").font(.caption2)
+                        }
+                    }
+                    Spacer()
+                    Button(action: {
+                        self.showingSettingSheet.toggle()
+                    }) {
+                        VStack(alignment: .center) {
+                            Label("送信", systemImage: "gearshape")
+                                .padding(.bottom, 3)
+                            Text("設定").font(.caption2)
+                        }
+                    }
+                    Spacer()
+                }
+            }
+            .accentColor(.black)
+//            .background(Color.gray.opacity(0.3))
             .navigationBarTitle("HOME", displayMode: .inline)
+        }
+        .fullScreenCover(isPresented: $showingSheet) {
+            ContentView()
+        }
+        .fullScreenCover(isPresented: $showingSettingSheet) {
+            SettingView()
+        }
+        .fullScreenCover(isPresented: $showingPostSheet) {
+            PostView()
         }
     }
     
     init() {
         self.setupNavigationBar()
+        
     }
     
     private func setupNavigationBar() {

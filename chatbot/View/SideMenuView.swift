@@ -10,8 +10,10 @@ import SwiftUI
 struct SideMenuView: View {
     
     let width: CGFloat
-    let isOpen: Bool
+    @Binding var isOpen: Bool
     let menuClose: () -> Void
+    
+    var function: () -> Void
     
     var body: some View {
         ZStack {
@@ -27,9 +29,8 @@ struct SideMenuView: View {
             
             HStack {
 
-                MenuContent()
+                MenuContent(isOpen: self.$isOpen, function: function)
                     .frame(width: self.width)
-                //                    .background(Color.gray)
                     .offset(x: self.isOpen ? 0 : -self.width)
                     .animation(.default)
                 
@@ -41,21 +42,32 @@ struct SideMenuView: View {
 
 struct MenuContent: View {
     
-    @State private var pokemons: [Pokemon] = [
-        Pokemon(name: "HOME"),
-        Pokemon(name: "映画bot"),
-        Pokemon(name: "レビュー投稿")]
+    @Binding var isOpen: Bool
+    var function: () -> Void
+    
+    @State private var cellnames: [CellName] = [
+        CellName(name: "HOME"),
+        CellName(name: "映画bot"),
+        CellName(name: "レビュー投稿"),
+        CellName(name: "閉じる")]
     
     
     var body: some View {
         
         VStack {
-            List(pokemons) { pokemon in
+            List(cellnames) { cellname in
                 Button(action: {
-                    print(pokemon.name)
-//                    print(pokemon.id)
+                    print(cellname.name)
+                    
+                    if cellname.name == "閉じる" {
+                        self.isOpen.toggle()
+                    } else if cellname.name == "HOME" {
+                        self.isOpen.toggle()
+                        self.function()
+                    }
+                    
                 }, label: {
-                    Text(pokemon.name)
+                    Text(cellname.name)
                 })
             }
             .listStyle(InsetListStyle())

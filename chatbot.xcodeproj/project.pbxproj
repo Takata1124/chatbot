@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		684DB84C27C906F100F9250D /* String_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684DB84B27C906F100F9250D /* String_Extension.swift */; };
+		684DB84E27C91A1500F9250D /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684DB84D27C91A1500F9250D /* PostView.swift */; };
 		68AB85C627C6F8B40061E096 /* chatbotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB85C527C6F8B40061E096 /* chatbotApp.swift */; };
 		68AB85C827C6F8B40061E096 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB85C727C6F8B40061E096 /* ContentView.swift */; };
 		68AB85CA27C6F8B60061E096 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68AB85C927C6F8B60061E096 /* Assets.xcassets */; };
@@ -58,6 +60,8 @@
 		2CD0987D2233BB616F072A1C /* Pods-chatbotTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatbotTests.release.xcconfig"; path = "Target Support Files/Pods-chatbotTests/Pods-chatbotTests.release.xcconfig"; sourceTree = "<group>"; };
 		2E28AF7D08B909EB7D20C327 /* Pods-chatbot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatbot.debug.xcconfig"; path = "Target Support Files/Pods-chatbot/Pods-chatbot.debug.xcconfig"; sourceTree = "<group>"; };
 		52E540C68ECD350C8787AC1E /* Pods_chatbotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chatbotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		684DB84B27C906F100F9250D /* String_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String_Extension.swift; sourceTree = "<group>"; };
+		684DB84D27C91A1500F9250D /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		68AB85C227C6F8B40061E096 /* chatbot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatbot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68AB85C527C6F8B40061E096 /* chatbotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chatbotApp.swift; sourceTree = "<group>"; };
 		68AB85C727C6F8B40061E096 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -143,6 +147,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		684DB84A27C906D600F9250D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				684DB84B27C906F100F9250D /* String_Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		68AB85B927C6F8B40061E096 = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +180,7 @@
 		68AB85C427C6F8B40061E096 /* chatbot */ = {
 			isa = PBXGroup;
 			children = (
+				684DB84A27C906D600F9250D /* Extensions */,
 				68B303CC27C89144007E080D /* Secret */,
 				68AB860F27C7A2A30061E096 /* ViewModel */,
 				68AB860E27C7A2640061E096 /* CellView */,
@@ -221,12 +234,13 @@
 			children = (
 				68AB85F927C71A5F0061E096 /* SignUpVIew.swift */,
 				68AB85FD27C740E60061E096 /* LoginView.swift */,
+				68B303D327C8E857007E080D /* HomeView.swift */,
 				68AB85C727C6F8B40061E096 /* ContentView.swift */,
 				68AB85F527C705090061E096 /* SideMenuView.swift */,
 				68AB85F127C6FEC80061E096 /* SettingView.swift */,
 				68AB85FF27C74B210061E096 /* TempSignUpView.swift */,
 				68AB85FB27C71EF00061E096 /* ImagePickerView.swift */,
-				68B303D327C8E857007E080D /* HomeView.swift */,
+				684DB84D27C91A1500F9250D /* PostView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -508,6 +522,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68AB85F227C6FEC80061E096 /* SettingView.swift in Sources */,
+				684DB84C27C906F100F9250D /* String_Extension.swift in Sources */,
 				68AB85FE27C740E60061E096 /* LoginView.swift in Sources */,
 				68AB85C827C6F8B40061E096 /* ContentView.swift in Sources */,
 				68AB85F627C705090061E096 /* SideMenuView.swift in Sources */,
@@ -522,6 +537,7 @@
 				68AB860927C795FC0061E096 /* ChatCellView.swift in Sources */,
 				68B303D427C8E857007E080D /* HomeView.swift in Sources */,
 				68B303D227C8D7A7007E080D /* BotCellView.swift in Sources */,
+				684DB84E27C91A1500F9250D /* PostView.swift in Sources */,
 				68AB85FA27C71A5F0061E096 /* SignUpVIew.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

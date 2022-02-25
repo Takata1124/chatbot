@@ -119,14 +119,6 @@ class MovieViewModel: NSObject, ObservableObject {
         if separetedArray != [] {
             print(separetedArray[0].initialUppercased())
         }
-        
     }
 }
 
-extension String {
-    /// 頭文字は大文字、それ以外は小文字のStringを返す
-    func initialUppercased() -> String {
-        let lowercasedString = self.lowercased()
-        return lowercasedString.prefix(1).uppercased() + lowercasedString.dropFirst()
-    }
-}

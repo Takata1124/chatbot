@@ -11,10 +11,10 @@ struct SettingView: View {
     
     @State  private var isOn = false
     @State  var pickerSelection = 0
+    
     @Environment(\.dismiss) var dismiss
     
     var movieViewModel = MovieViewModel()
-    
     let languages: [String] = [
         "English",
         "Japanease",
@@ -67,8 +67,8 @@ struct SettingView: View {
                 
                 Section(header: Text("LogOut")) {
                     HStack {
-                        Text("LogOut")
-                            .onTapGesture {print("LogOut")}
+                        Text("LOGOUT")
+                            .onTapGesture {print("LOGOUT")}
                         Spacer()
                     }
                 }
