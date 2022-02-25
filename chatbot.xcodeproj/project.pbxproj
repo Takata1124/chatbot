@@ -27,6 +27,10 @@
 		68AB860927C795FC0061E096 /* ChatCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB860827C795FC0061E096 /* ChatCellView.swift */; };
 		68AB860C27C79C950061E096 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB860B27C79C950061E096 /* DataModel.swift */; };
 		68AB861127C84A3F0061E096 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB861027C84A3F0061E096 /* AuthViewModel.swift */; };
+		68B303CE27C8946D007E080D /* Apikey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B303CD27C8946D007E080D /* Apikey.swift */; };
+		68B303D027C8D2DD007E080D /* SelfCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B303CF27C8D2DD007E080D /* SelfCellView.swift */; };
+		68B303D227C8D7A7007E080D /* BotCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B303D127C8D7A7007E080D /* BotCellView.swift */; };
+		68B303D427C8E857007E080D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B303D327C8E857007E080D /* HomeView.swift */; };
 		B8D1489AF84072EE87D6CDA3 /* Pods_chatbot_chatbotUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FBA3CEB2C1A28995D22A86 /* Pods_chatbot_chatbotUITests.framework */; };
 		D3662CD76CBFDFFDE11B259D /* Pods_chatbotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52E540C68ECD350C8787AC1E /* Pods_chatbotTests.framework */; };
 		E48CA53F7B433CE897B663A8 /* Pods_chatbot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E589C411785CA9F38E1D253 /* Pods_chatbot.framework */; };
@@ -77,6 +81,10 @@
 		68AB860827C795FC0061E096 /* ChatCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCellView.swift; sourceTree = "<group>"; };
 		68AB860B27C79C950061E096 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		68AB861027C84A3F0061E096 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		68B303CD27C8946D007E080D /* Apikey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apikey.swift; sourceTree = "<group>"; };
+		68B303CF27C8D2DD007E080D /* SelfCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfCellView.swift; sourceTree = "<group>"; };
+		68B303D127C8D7A7007E080D /* BotCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotCellView.swift; sourceTree = "<group>"; };
+		68B303D327C8E857007E080D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		6E589C411785CA9F38E1D253 /* Pods_chatbot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chatbot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		76BA40331FC738A3B63D5C20 /* Pods-chatbot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatbot.release.xcconfig"; path = "Target Support Files/Pods-chatbot/Pods-chatbot.release.xcconfig"; sourceTree = "<group>"; };
 		9BBCEA1733F6DDD27BE71ACC /* Pods-chatbot-chatbotUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatbot-chatbotUITests.release.xcconfig"; path = "Target Support Files/Pods-chatbot-chatbotUITests/Pods-chatbot-chatbotUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -211,13 +219,14 @@
 		68AB860A27C79C2E0061E096 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				68AB85F927C71A5F0061E096 /* SignUpVIew.swift */,
 				68AB85FD27C740E60061E096 /* LoginView.swift */,
 				68AB85C727C6F8B40061E096 /* ContentView.swift */,
 				68AB85F527C705090061E096 /* SideMenuView.swift */,
 				68AB85F127C6FEC80061E096 /* SettingView.swift */,
-				68AB85F927C71A5F0061E096 /* SignUpVIew.swift */,
 				68AB85FF27C74B210061E096 /* TempSignUpView.swift */,
 				68AB85FB27C71EF00061E096 /* ImagePickerView.swift */,
+				68B303D327C8E857007E080D /* HomeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -234,6 +243,8 @@
 			isa = PBXGroup;
 			children = (
 				68AB860827C795FC0061E096 /* ChatCellView.swift */,
+				68B303CF27C8D2DD007E080D /* SelfCellView.swift */,
+				68B303D127C8D7A7007E080D /* BotCellView.swift */,
 			);
 			path = CellView;
 			sourceTree = "<group>";
@@ -250,6 +261,7 @@
 		68B303CC27C89144007E080D /* Secret */ = {
 			isa = PBXGroup;
 			children = (
+				68B303CD27C8946D007E080D /* Apikey.swift */,
 			);
 			path = Secret;
 			sourceTree = "<group>";
@@ -499,13 +511,17 @@
 				68AB85FE27C740E60061E096 /* LoginView.swift in Sources */,
 				68AB85C827C6F8B40061E096 /* ContentView.swift in Sources */,
 				68AB85F627C705090061E096 /* SideMenuView.swift in Sources */,
+				68B303D027C8D2DD007E080D /* SelfCellView.swift in Sources */,
 				68AB85C627C6F8B40061E096 /* chatbotApp.swift in Sources */,
 				68AB860727C761580061E096 /* MovieViewModel.swift in Sources */,
 				68AB85FC27C71EF00061E096 /* ImagePickerView.swift in Sources */,
 				68AB860027C74B210061E096 /* TempSignUpView.swift in Sources */,
 				68AB861127C84A3F0061E096 /* AuthViewModel.swift in Sources */,
+				68B303CE27C8946D007E080D /* Apikey.swift in Sources */,
 				68AB860C27C79C950061E096 /* DataModel.swift in Sources */,
 				68AB860927C795FC0061E096 /* ChatCellView.swift in Sources */,
+				68B303D427C8E857007E080D /* HomeView.swift in Sources */,
+				68B303D227C8D7A7007E080D /* BotCellView.swift in Sources */,
 				68AB85FA27C71A5F0061E096 /* SignUpVIew.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

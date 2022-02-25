@@ -12,3 +12,9 @@ class DataModel: ObservableObject {
     @Published var messages :[String] =  ["映画のおすすめを聞きますか？"]
     @Published var flowCount: Int = 0
 }
+
+struct Pokemon: Identifiable {
+    
+    let id = UUID()
+    let name: String
+}

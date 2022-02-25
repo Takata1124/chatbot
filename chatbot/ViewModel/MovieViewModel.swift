@@ -10,8 +10,7 @@ import SwiftGoogleTranslate
 
 class MovieViewModel: NSObject, ObservableObject {
     
-    let datamodel = DataModel()
-    var apiKey: String = "apikey"
+    var apiKey: String = Apikey().apikey
     
     func loadCSV(fileName: String) -> [String] {
         
@@ -27,7 +26,6 @@ class MovieViewModel: NSObject, ObservableObject {
         } catch {
             print("エラー")
         }
-        print(csvArray.count)
         
         for csv in csvArray {
             if csv == "" {
@@ -36,72 +34,99 @@ class MovieViewModel: NSObject, ObservableObject {
                 tempcsv.append(csv)
             }
         }
-        
+        print(tempcsv)
         return tempcsv
     }
     
     func filterCSV(array: [String], year: String?, genre: String?) -> [String] {
         
         var filterArray:[String] = []
-
+        
         if year != nil {
             filterArray = array.filter {$0.contains(year!)}
         }
         if genre != nil {
             filterArray = array.filter {$0.contains(genre!)}
         }
-
+        
         return filterArray
     }
     
-    func getBotResponse(message: String) -> String {
+    func getBotResponse(message: String, nowCount: Int) -> String {
         
-        print(datamodel.flowCount)
-        
-        let nowCount = datamodel.flowCount
         let tempMessage = message.lowercased()
         
         switch nowCount {
             
-        case 0:
-            
+        case 1:
             let returnMessage = firstSession(tempMessage: tempMessage)
             return returnMessage
-        case 1:
-           
+        case 2:
             return "count1"
-            
         default:
-           
-            return "example"
+            return "またよろしくお願いします"
         }
     }
     
     func firstSession(tempMessage: String) -> String{
         
         if tempMessage.contains("はい") {
-            datamodel.flowCount += 1
-            return "見たい映画のジャンルを教えてください/rロマンス/rロマンス"
-        } else if tempMessage.contains("いいえ") {
-            datamodel.flowCount -= 1
-            return "またよろしくお願いします"
+            
+            return "見たい映画のジャンルを教えてください(アクション/冒険/アニメーション/子供たち/コメディ/ファンタジー/ロマンス/ドラマ/犯罪/スリラー/ホラー/ミステリー/SF)"
         } else {
-            datamodel.flowCount += 1
-            return "That's cool."
+            
+            return "またよろしくお願いします"
         }
     }
-    
-    
-    private func enTranslate() {
+
+    func enTranslate(translatingText: String) -> Void {
         
         SwiftGoogleTranslate.shared.start(with: apiKey)
-        
-        SwiftGoogleTranslate.shared.translate("Hello!", "es", "en") { (text, error) in
-          if let t = text {
-            print(t)
-          }
+        SwiftGoogleTranslate.shared.translate(translatingText, "en", "ja") { (text, error) in
+            if let t = text {
+                print(t)
+//                print(t.initialUppercased())
+                self.analyzeText(text: t)
+
+                return
+            }
         }
     }
     
-    
+    func analyzeText(text: String) {
+        
+        var separetedArray: [String] = []
+
+        let tagger = NSLinguisticTagger(tagSchemes: NSLinguisticTagger.availableTagSchemes(forLanguage: "en"), options: 0)
+        
+        tagger.string = text
+        tagger.enumerateTags(in: NSRange(location: 0, length: text.count), scheme: NSLinguisticTagScheme.lexicalClass, options: [.omitWhitespace]) { tag, tokenRange, sentenceRange, stop in
+            
+            let subString = (text as NSString).substring(with: tokenRange)
+            
+            guard let tag = tag else { return }
+//            guard let subString = subString else { return }
+   
+//            print(tag.rawValue)
+//            print(subString)
+            
+            if tag.rawValue == "Noun" {
+                separetedArray.append(subString)
+            }
+//            print("\(subString) : \(String(describing: tag))")
+        }
+        print(separetedArray)
+        if separetedArray != [] {
+            print(separetedArray[0].initialUppercased())
+        }
+        
+    }
+}
+
+extension String {
+    /// 頭文字は大文字、それ以外は小文字のStringを返す
+    func initialUppercased() -> String {
+        let lowercasedString = self.lowercased()
+        return lowercasedString.prefix(1).uppercased() + lowercasedString.dropFirst()
+    }
 }
