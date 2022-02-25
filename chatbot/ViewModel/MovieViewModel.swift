@@ -6,12 +6,12 @@
 //
 
 import Foundation
+import SwiftGoogleTranslate
 
 class MovieViewModel: NSObject, ObservableObject {
     
     let datamodel = DataModel()
-//
-//    SwiftGoogleTranslate.shared.start(with: "API_KEY_HERE")
+    var apiKey: String = "apikey"
     
     func loadCSV(fileName: String) -> [String] {
         
@@ -88,6 +88,18 @@ class MovieViewModel: NSObject, ObservableObject {
         } else {
             datamodel.flowCount += 1
             return "That's cool."
+        }
+    }
+    
+    
+    private func enTranslate() {
+        
+        SwiftGoogleTranslate.shared.start(with: apiKey)
+        
+        SwiftGoogleTranslate.shared.translate("Hello!", "es", "en") { (text, error) in
+          if let t = text {
+            print(t)
+          }
         }
     }
     
