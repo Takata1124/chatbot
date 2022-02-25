@@ -10,7 +10,7 @@ import Foundation
 class MovieViewModel: NSObject, ObservableObject {
     
     let datamodel = DataModel()
-//    
+//
 //    SwiftGoogleTranslate.shared.start(with: "API_KEY_HERE")
     
     func loadCSV(fileName: String) -> [String] {
