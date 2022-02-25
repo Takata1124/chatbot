@@ -14,6 +14,19 @@
 		68AB85D727C6F8B60061E096 /* chatbotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB85D627C6F8B60061E096 /* chatbotTests.swift */; };
 		68AB85E127C6F8B60061E096 /* chatbotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB85E027C6F8B60061E096 /* chatbotUITests.swift */; };
 		68AB85E327C6F8B60061E096 /* chatbotUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB85E227C6F8B60061E096 /* chatbotUITestsLaunchTests.swift */; };
+		68AB85F227C6FEC80061E096 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB85F127C6FEC80061E096 /* SettingView.swift */; };
+		68AB85F627C705090061E096 /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB85F527C705090061E096 /* SideMenuView.swift */; };
+		68AB85F827C719D50061E096 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68AB85F727C719D50061E096 /* GoogleService-Info.plist */; };
+		68AB85FA27C71A5F0061E096 /* SignUpVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB85F927C71A5F0061E096 /* SignUpVIew.swift */; };
+		68AB85FC27C71EF00061E096 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB85FB27C71EF00061E096 /* ImagePickerView.swift */; };
+		68AB85FE27C740E60061E096 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB85FD27C740E60061E096 /* LoginView.swift */; };
+		68AB860027C74B210061E096 /* TempSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB85FF27C74B210061E096 /* TempSignUpView.swift */; };
+		68AB860327C760670061E096 /* ratings.csv in Resources */ = {isa = PBXBuildFile; fileRef = 68AB860227C760670061E096 /* ratings.csv */; };
+		68AB860527C760740061E096 /* movies.csv in Resources */ = {isa = PBXBuildFile; fileRef = 68AB860427C760740061E096 /* movies.csv */; };
+		68AB860727C761580061E096 /* MovieViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB860627C761580061E096 /* MovieViewModel.swift */; };
+		68AB860927C795FC0061E096 /* ChatCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB860827C795FC0061E096 /* ChatCellView.swift */; };
+		68AB860C27C79C950061E096 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB860B27C79C950061E096 /* DataModel.swift */; };
+		68AB861127C84A3F0061E096 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB861027C84A3F0061E096 /* AuthViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +57,19 @@
 		68AB85DC27C6F8B60061E096 /* chatbotUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chatbotUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		68AB85E027C6F8B60061E096 /* chatbotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chatbotUITests.swift; sourceTree = "<group>"; };
 		68AB85E227C6F8B60061E096 /* chatbotUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chatbotUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		68AB85F127C6FEC80061E096 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		68AB85F527C705090061E096 /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
+		68AB85F727C719D50061E096 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		68AB85F927C71A5F0061E096 /* SignUpVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVIew.swift; sourceTree = "<group>"; };
+		68AB85FB27C71EF00061E096 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		68AB85FD27C740E60061E096 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		68AB85FF27C74B210061E096 /* TempSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempSignUpView.swift; sourceTree = "<group>"; };
+		68AB860227C760670061E096 /* ratings.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ratings.csv; sourceTree = "<group>"; };
+		68AB860427C760740061E096 /* movies.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = movies.csv; sourceTree = "<group>"; };
+		68AB860627C761580061E096 /* MovieViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewModel.swift; sourceTree = "<group>"; };
+		68AB860827C795FC0061E096 /* ChatCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCellView.swift; sourceTree = "<group>"; };
+		68AB860B27C79C950061E096 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		68AB861027C84A3F0061E096 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +120,13 @@
 		68AB85C427C6F8B40061E096 /* chatbot */ = {
 			isa = PBXGroup;
 			children = (
+				68AB860F27C7A2A30061E096 /* ViewModel */,
+				68AB860E27C7A2640061E096 /* CellView */,
+				68AB860D27C79CB80061E096 /* Model */,
+				68AB860A27C79C2E0061E096 /* View */,
+				68AB860127C760560061E096 /* CsvData */,
 				68AB85C527C6F8B40061E096 /* chatbotApp.swift */,
-				68AB85C727C6F8B40061E096 /* ContentView.swift */,
+				68AB85F727C719D50061E096 /* GoogleService-Info.plist */,
 				68AB85C927C6F8B60061E096 /* Assets.xcassets */,
 				68AB85CB27C6F8B60061E096 /* Preview Content */,
 			);
@@ -125,6 +156,54 @@
 				68AB85E227C6F8B60061E096 /* chatbotUITestsLaunchTests.swift */,
 			);
 			path = chatbotUITests;
+			sourceTree = "<group>";
+		};
+		68AB860127C760560061E096 /* CsvData */ = {
+			isa = PBXGroup;
+			children = (
+				68AB860427C760740061E096 /* movies.csv */,
+				68AB860227C760670061E096 /* ratings.csv */,
+			);
+			path = CsvData;
+			sourceTree = "<group>";
+		};
+		68AB860A27C79C2E0061E096 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				68AB85FD27C740E60061E096 /* LoginView.swift */,
+				68AB85C727C6F8B40061E096 /* ContentView.swift */,
+				68AB85F527C705090061E096 /* SideMenuView.swift */,
+				68AB85F127C6FEC80061E096 /* SettingView.swift */,
+				68AB85F927C71A5F0061E096 /* SignUpVIew.swift */,
+				68AB85FF27C74B210061E096 /* TempSignUpView.swift */,
+				68AB85FB27C71EF00061E096 /* ImagePickerView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		68AB860D27C79CB80061E096 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				68AB860B27C79C950061E096 /* DataModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		68AB860E27C7A2640061E096 /* CellView */ = {
+			isa = PBXGroup;
+			children = (
+				68AB860827C795FC0061E096 /* ChatCellView.swift */,
+			);
+			path = CellView;
+			sourceTree = "<group>";
+		};
+		68AB860F27C7A2A30061E096 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				68AB860627C761580061E096 /* MovieViewModel.swift */,
+				68AB861027C84A3F0061E096 /* AuthViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,6 +294,8 @@
 				Base,
 			);
 			mainGroup = 68AB85B927C6F8B40061E096;
+			packageReferences = (
+			);
 			productRefGroup = 68AB85C327C6F8B40061E096 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -232,6 +313,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				68AB85CD27C6F8B60061E096 /* Preview Assets.xcassets in Resources */,
+				68AB860527C760740061E096 /* movies.csv in Resources */,
+				68AB860327C760670061E096 /* ratings.csv in Resources */,
+				68AB85F827C719D50061E096 /* GoogleService-Info.plist in Resources */,
 				68AB85CA27C6F8B60061E096 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -257,8 +341,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68AB85F227C6FEC80061E096 /* SettingView.swift in Sources */,
+				68AB85FE27C740E60061E096 /* LoginView.swift in Sources */,
 				68AB85C827C6F8B40061E096 /* ContentView.swift in Sources */,
+				68AB85F627C705090061E096 /* SideMenuView.swift in Sources */,
 				68AB85C627C6F8B40061E096 /* chatbotApp.swift in Sources */,
+				68AB860727C761580061E096 /* MovieViewModel.swift in Sources */,
+				68AB85FC27C71EF00061E096 /* ImagePickerView.swift in Sources */,
+				68AB860027C74B210061E096 /* TempSignUpView.swift in Sources */,
+				68AB861127C84A3F0061E096 /* AuthViewModel.swift in Sources */,
+				68AB860C27C79C950061E096 /* DataModel.swift in Sources */,
+				68AB860927C795FC0061E096 /* ChatCellView.swift in Sources */,
+				68AB85FA27C71A5F0061E096 /* SignUpVIew.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
