@@ -49,7 +49,7 @@ struct ChatCellView: View {
                         .background(Color.accentColor)
                         .cornerRadius(8)
                     }
-//                    .padding()
+
                 } else {
                     
                     HStack {
