@@ -11,6 +11,8 @@ struct SideMenuView: View {
     
     let width: CGFloat
     @Binding var isOpen: Bool
+    @ObservedObject var dataModel: DataModel
+    
     let menuClose: () -> Void
     
     var function: () -> Void
@@ -29,7 +31,7 @@ struct SideMenuView: View {
             
             HStack {
 
-                MenuContent(isOpen: self.$isOpen, function: function)
+                MenuContent(isOpen: self.$isOpen, dataModel: dataModel, function: function)
                     .frame(width: self.width)
                     .offset(x: self.isOpen ? 0 : -self.width)
                     .animation(.default)
@@ -43,19 +45,15 @@ struct SideMenuView: View {
 struct MenuContent: View {
     
     @Binding var isOpen: Bool
+    @ObservedObject var dataModel: DataModel
+    
     var function: () -> Void
     
-    @State private var cellnames: [CellName] = [
-        CellName(name: "HOME"),
-        CellName(name: "映画bot"),
-        CellName(name: "レビュー投稿"),
-        CellName(name: "閉じる")]
-    
-    
+
     var body: some View {
         
         VStack {
-            List(cellnames) { cellname in
+            List(dataModel.cellnames) { cellname in
                 Button(action: {
                     print(cellname.name)
                     

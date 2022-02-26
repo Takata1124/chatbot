@@ -35,8 +35,8 @@ struct SelfCellView: View {
     }
 }
 
-//struct SelfCellView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SelfCellView()
-//    }
-//}
+struct SelfCellView_Previews: PreviewProvider {
+    static var previews: some View {
+        SelfCellView(message: "message")
+    }
+}

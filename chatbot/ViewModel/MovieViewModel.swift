@@ -11,7 +11,6 @@ import SwiftGoogleTranslate
 class MovieViewModel: NSObject, ObservableObject {
     
     var apiKey: String = Apikey().apikey
-    
     func loadCSV(fileName: String) -> [String] {
         
         var csvArray: [String] = []
@@ -54,6 +53,8 @@ class MovieViewModel: NSObject, ObservableObject {
     
     func getBotResponse(message: String, nowCount: Int) -> String {
         
+        print(nowCount)
+        
         let tempMessage = message.lowercased()
         
         switch nowCount {
@@ -61,14 +62,19 @@ class MovieViewModel: NSObject, ObservableObject {
         case 1:
             let returnMessage = firstSession(tempMessage: tempMessage)
             return returnMessage
+            
         case 2:
-            return "count1"
+            
+            let returnMessage = secondSession(tempMessage: tempMessage)
+            
+            return returnMessage
+            
         default:
             return "またよろしくお願いします"
         }
     }
     
-    func firstSession(tempMessage: String) -> String{
+    private func firstSession(tempMessage: String) -> String {
         
         if tempMessage.contains("はい") {
             
@@ -78,25 +84,46 @@ class MovieViewModel: NSObject, ObservableObject {
             return "またよろしくお願いします"
         }
     }
-
-    func enTranslate(translatingText: String) -> Void {
+    
+    private func secondSession(tempMessage: String) -> String {
+        
+        let text = englishTranslate(translatingText: tempMessage)
+        
+        return text
+    }
+    
+    
+    func englishTranslate(translatingText: String) -> String {
+        
+        let dispatchGroup = DispatchGroup()
+        // 直列キュー / attibutes指定なし
+        let dispatchQueue = DispatchQueue(label: "queue")
+        
+        var tempText: String = "nil"
         
         SwiftGoogleTranslate.shared.start(with: apiKey)
         SwiftGoogleTranslate.shared.translate(translatingText, "en", "ja") { (text, error) in
+            
+            if error != nil {
+                fatalError("error")
+            }
+            
+            
             if let t = text {
-                print(t)
-//                print(t.initialUppercased())
-                self.analyzeText(text: t)
-
-                return
+                //                print(t)
+                //                print(t.initialUppercased())
+                tempText = self.analyzeText(text: t)
             }
         }
+        //APIの処理時間
+        sleep(1)
+            
+        return tempText
     }
     
-    func analyzeText(text: String) {
+    func analyzeText(text: String) -> String {
         
         var separetedArray: [String] = []
-
         let tagger = NSLinguisticTagger(tagSchemes: NSLinguisticTagger.availableTagSchemes(forLanguage: "en"), options: 0)
         
         tagger.string = text
@@ -105,19 +132,24 @@ class MovieViewModel: NSObject, ObservableObject {
             let subString = (text as NSString).substring(with: tokenRange)
             
             guard let tag = tag else { return }
-//            guard let subString = subString else { return }
-   
-//            print(tag.rawValue)
-//            print(subString)
+            //            guard let subString = subString else { return }
+            
+            //            print(tag.rawValue)
+            //            print(subString)
             
             if tag.rawValue == "Noun" {
                 separetedArray.append(subString)
             }
-//            print("\(subString) : \(String(describing: tag))")
+            //            print("\(subString) : \(String(describing: tag))")
         }
         print(separetedArray)
+        
         if separetedArray != [] {
-            print(separetedArray[0].initialUppercased())
+            //            print(separetedArray[0].initialUppercased())
+            return separetedArray[0].initialUppercased()
+        } else {
+            let void: String = "void"
+            return void
         }
     }
 }

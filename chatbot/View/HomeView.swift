@@ -58,10 +58,25 @@ struct HomeView: View {
                     }
                     Spacer()
                 }
+                
+                
             }
             .accentColor(.black)
-//            .background(Color.gray.opacity(0.3))
             .navigationBarTitle("HOME", displayMode: .inline)
+            .navigationBarItems(leading: Button(action: {
+//                self.openMenu()
+            }, label: {
+                Image(systemName: "line.3.horizontal")
+                    .foregroundColor(Color.white)
+            }), trailing: HStack {
+                Button(action: {
+                    
+                    self.showingSettingSheet.toggle()
+                }, label: {
+                    Image(systemName: "gearshape")
+                        .foregroundColor(Color.white)
+                })
+            })
         }
         .fullScreenCover(isPresented: $showingSheet) {
             ContentView()

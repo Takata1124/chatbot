@@ -15,6 +15,7 @@ struct SettingView: View {
     @Environment(\.dismiss) var dismiss
     
     var movieViewModel = MovieViewModel()
+    
     let languages: [String] = [
         "English",
         "Japanease",
@@ -82,9 +83,9 @@ struct SettingView: View {
                     .foregroundColor(Color.white)
             }), trailing: HStack {
                 Button(action: {
-                    let array = movieViewModel.loadCSV(fileName: "movies")
-                    let filterArray = movieViewModel.filterCSV(array: array, year: "1991", genre: nil)
-                    print(filterArray[0])
+//                    let array = movieViewModel.loadCSV(fileName: "movies")
+//                    let filterArray = movieViewModel.filterCSV(array: array, year: "1991", genre: nil)
+//                    print(filterArray[0])
                     print("右のボタン１が押されました。")
                 }, label: {
                     Image(systemName: "trash")
@@ -95,8 +96,8 @@ struct SettingView: View {
     }
 }
 
-struct SettingView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingView()
-    }
-}
+//struct SettingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SettingView()
+//    }
+//}

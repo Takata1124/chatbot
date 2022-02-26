@@ -21,7 +21,6 @@ struct PostCellView: View {
                         
                         HStack {
                             VStack {
-                                
                                 HStack {
                                     Text(cellText)
                                         .foregroundColor(.black)
@@ -33,7 +32,7 @@ struct PostCellView: View {
                                         .font(.system(size: 26))
                                         .padding(.trailing)
                                 }
-  
+                                
                                 Text("hellohellohellohellohellohellohello")
                                     .foregroundColor(.black)
                                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -47,24 +46,24 @@ struct PostCellView: View {
                                         .frame(width: 40, height: 40)
                                         .clipShape(Circle())
                                     
-                                    Text("hello")
-          
+                                    Text("Takata")
+                                        .padding(.top, 20)
+                                    
                                     Spacer()
                                     
-                                    Image(systemName: "star.fill")
-                                        .font(.system(size: 26))
-                                    Image(systemName: "star.fill")
-                                        .font(.system(size: 26))
-                                    Image(systemName: "star.fill")
-                                        .font(.system(size: 26))
-                                        .padding(.trailing)
+                                    HStack {
+                                        ForEach(0..<4) { i in
+                                            Image(systemName: "star.fill")
+                                                .font(.system(size: 26))
+                                        }
+                                    }
+                                    .padding(.trailing)
+                                    
                                 }
                                 .padding(.top, 15)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             }
                             .padding()
-                            
-//                            Spacer()
                         }
                     )
             }

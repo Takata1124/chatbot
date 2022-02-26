@@ -58,6 +58,7 @@ struct ChatCellView: View {
                             .background(Color.gray.opacity(0.1))
                             .cornerRadius(10)
                             .onSubmit {
+                                dataModel.flowCount += 1
                                 sendMessage(message: messageText)
                             }
                         
@@ -82,12 +83,19 @@ struct ChatCellView: View {
         withAnimation {
             
             dataModel.messages.append("[USER]" + message)
-            movieViewModel.enTranslate(translatingText: message)
             self.messageText = ""
+            
+            print(message)
+            
+            let data: String = movieViewModel.getBotResponse(message: message, nowCount: dataModel.flowCount)
+            print(data)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                 withAnimation {
-                    dataModel.messages.append(movieViewModel.getBotResponse(message: message, nowCount: dataModel.flowCount))
+                    
+                    print(data)
+                    dataModel.messages.append(data)
+                    
                 }
             }
         }

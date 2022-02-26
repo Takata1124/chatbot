@@ -45,7 +45,6 @@ struct ContentView: View {
                 }
                 .navigationBarTitle("タイトル", displayMode: .inline)
                 .navigationBarItems(leading: Button(action: {
-                    
                     self.openMenu()
                 }, label: {
                     Image(systemName: "line.3.horizontal")
@@ -60,7 +59,7 @@ struct ContentView: View {
                     })
                 })
                 
-                SideMenuView(width: 270, isOpen: $menuOpen, menuClose: self.openMenu, function: self.passedFunction)
+                SideMenuView(width: 270, isOpen: $menuOpen, dataModel: dataModel, menuClose: self.openMenu, function: self.passedFunction)
             }
         }
         .fullScreenCover(isPresented: $showingSettingSheet) {

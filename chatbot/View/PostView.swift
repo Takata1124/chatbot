@@ -10,19 +10,21 @@ import SwiftUI
 struct PostView: View {
     
     @State var text: String = ""
+    @State private var showingAddPostSheet = false
+    
     let pokemons: [String] = ["Snorlax", "Slowpoke", "Pikachu", "Eevee"]
     
     var body: some View {
         
         NavigationView {
+            
             VStack {
                 
                 TextField("", text: $text)
                     .padding(15)
                     .background(Color.init(uiColor: .gray))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                
+
                 ScrollView(.vertical, showsIndicators: false, content: {
                     LazyVStack {
                         
@@ -43,12 +45,16 @@ struct PostView: View {
                 }), trailing: HStack {
                     Button(action: {
                         print("右のボタン１が押されました。")
+                        self.showingAddPostSheet.toggle()
                     }, label: {
                         Image(systemName: "plus")
                             .foregroundColor(Color.white)
                     })
                 })
             }
+        }
+        .fullScreenCover(isPresented: $showingAddPostSheet) {
+            AddPostView()
         }
     }
     

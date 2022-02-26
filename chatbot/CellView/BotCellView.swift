@@ -33,8 +33,8 @@ struct BotCellView: View {
     }
 }
 
-//struct BotCellView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        BotCellView()
-//    }
-//}
+struct BotCellView_Previews: PreviewProvider {
+    static var previews: some View {
+        BotCellView(message: "message")
+    }
+}
