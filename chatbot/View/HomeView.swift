@@ -31,7 +31,7 @@ struct HomeView: View {
                         self.showingSheet.toggle()
                     }) {
                         VStack(alignment: .center) {
-                            Label("送信", systemImage: "square.and.arrow.up")
+                            Label("送信", systemImage: "video")
                                 .padding(.bottom, 3)
                             Text("映画bot").font(.caption2)
                         }

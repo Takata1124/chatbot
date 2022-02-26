@@ -26,7 +26,6 @@ struct BotCellView: View {
                 .padding()
                 .background(Color.gray.opacity(0.15))
                 .cornerRadius(10)
-//                .padding(.horizontal, 16)
                 .padding(.bottom, 10)
  
             Spacer()

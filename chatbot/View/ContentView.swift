@@ -35,7 +35,6 @@ struct ContentView: View {
                                 
                                 BotCellView(message: message)
                             }
-                            
                         }.rotationEffect(.degrees(180))
                     }
                     .rotationEffect(.degrees(180))
@@ -91,8 +90,8 @@ struct ContentView: View {
     }
 }
 
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            ContentView()
-        }
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
     }
+}

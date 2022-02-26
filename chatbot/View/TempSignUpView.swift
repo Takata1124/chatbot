@@ -67,7 +67,6 @@ struct TempSignUpView: View {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .gray
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 30)]
-//        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }

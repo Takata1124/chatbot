@@ -114,8 +114,8 @@ struct SignUpVIew: View {
     }
 }
 
-//struct SignUpVIew_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SignUpVIew()
-//    }
-//}
+struct SignUpVIew_Previews: PreviewProvider {
+    static var previews: some View {
+        SignUpVIew()
+    }
+}
