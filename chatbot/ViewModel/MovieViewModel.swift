@@ -11,6 +11,15 @@ import SwiftGoogleTranslate
 class MovieViewModel: NSObject, ObservableObject {
     
     var apiKey: String = Apikey().apikey
+    var moviewArray: [String] = []
+    
+    override init() {
+        super.init()
+        
+        let array = loadCSV(fileName: "movies")
+        self.moviewArray = array
+    }
+
     func loadCSV(fileName: String) -> [String] {
         
         var csvArray: [String] = []
@@ -67,8 +76,16 @@ class MovieViewModel: NSObject, ObservableObject {
             
             let returnMessage = secondSession(tempMessage: tempMessage)
             
-            return returnMessage
+            let filterArray = filterCSV(array: moviewArray, year: returnMessage, genre: nil)
             
+            if filterArray == [] {
+                return "他の言葉で言いかえてください"
+            }
+            
+            print(filterArray[0])
+            print(filterArray.count)
+            return filterArray[0]
+
         default:
             return "またよろしくお願いします"
         }
@@ -95,10 +112,6 @@ class MovieViewModel: NSObject, ObservableObject {
     
     func englishTranslate(translatingText: String) -> String {
         
-        let dispatchGroup = DispatchGroup()
-        // 直列キュー / attibutes指定なし
-        let dispatchQueue = DispatchQueue(label: "queue")
-        
         var tempText: String = "nil"
         
         SwiftGoogleTranslate.shared.start(with: apiKey)
@@ -110,6 +123,7 @@ class MovieViewModel: NSObject, ObservableObject {
             
             
             if let t = text {
+                print(t)
                 //                print(t)
                 //                print(t.initialUppercased())
                 tempText = self.analyzeText(text: t)
@@ -117,7 +131,7 @@ class MovieViewModel: NSObject, ObservableObject {
         }
         //APIの処理時間
         sleep(1)
-            
+        
         return tempText
     }
     
@@ -132,20 +146,16 @@ class MovieViewModel: NSObject, ObservableObject {
             let subString = (text as NSString).substring(with: tokenRange)
             
             guard let tag = tag else { return }
-            //            guard let subString = subString else { return }
-            
-            //            print(tag.rawValue)
-            //            print(subString)
             
             if tag.rawValue == "Noun" {
                 separetedArray.append(subString)
             }
-            //            print("\(subString) : \(String(describing: tag))")
+            
         }
         print(separetedArray)
         
         if separetedArray != [] {
-            //            print(separetedArray[0].initialUppercased())
+           print(separetedArray[0].initialUppercased())
             return separetedArray[0].initialUppercased()
         } else {
             let void: String = "void"

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChatCellView: View {
     
-    @State private var messageText = ""
+    @State var messageText: String = ""
     @ObservedObject var dataModel: DataModel
     @ObservedObject var movieViewModel: MovieViewModel
     
@@ -21,58 +21,18 @@ struct ChatCellView: View {
                 
                 if dataModel.flowCount == 0 {
                     
-                    HStack (spacing: 30) {
-                        
-                        Button {
-                            dataModel.flowCount += 1
-                            print(dataModel.flowCount)
-                            sendMessage(message: "はい")
-                        } label: {
-                            Text("はい")
-                        }
-                        .frame(width: 75)
-                        .font(.system(size: 18))
-                        .foregroundColor(.white)
-                        .padding(12)
-                        .background(Color.accentColor)
-                        .cornerRadius(8)
-                        
-                        Button {
-                            sendMessage(message: "いいえ")
-                        } label: {
-                            Text("いいえ")
-                        }
-                        .frame(width: 75)
-                        .font(.system(size: 18))
-                        .foregroundColor(.white)
-                        .padding(12)
-                        .background(Color.accentColor)
-                        .cornerRadius(8)
-                    }
+                    ChildAnswerCellView(
+                        dataModel: dataModel, movieViewModel: movieViewModel)
 
+                } else if dataModel.flowCount == 1 {
+                    
+                    ChildChatCellView(
+                        messageText: $messageText, dataModel: dataModel, movieViewModel: movieViewModel)
+                    
                 } else {
                     
-                    HStack {
-                        TextField("Type something", text: $messageText)
-                            .padding()
-                            .background(Color.gray.opacity(0.1))
-                            .cornerRadius(10)
-                            .onSubmit {
-                                dataModel.flowCount += 1
-                                sendMessage(message: messageText)
-                            }
-                        
-                        Button {
-                            dataModel.flowCount += 1
-                            print(dataModel.flowCount)
-                            sendMessage(message: messageText)
-                        } label: {
-                            Image(systemName: "paperplane.fill")
-                        }
-                        .font(.system(size: 26))
-                        .padding(.horizontal, 10)
-                    }
-                    .padding()
+                    ChildAnswerCellView(
+                        dataModel: dataModel, movieViewModel: movieViewModel)
                 }
             }
         }
@@ -88,12 +48,9 @@ struct ChatCellView: View {
             print(message)
             
             let data: String = movieViewModel.getBotResponse(message: message, nowCount: dataModel.flowCount)
-            print(data)
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 withAnimation {
-                    
-                    print(data)
                     dataModel.messages.append(data)
                     
                 }

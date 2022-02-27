@@ -20,8 +20,52 @@ struct HomeView: View {
             ZStack {
                 
                 Color.gray.opacity(0.3).ignoresSafeArea()
-//
-                Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+                
+                VStack(alignment: .center, spacing: 40){
+                    
+                    Image(uiImage: UIImage(named: "default.png")!)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 200, height: 200, alignment: .center)
+                        .clipShape(Circle())
+                        .overlay(Circle()
+                                    .stroke(Color.black, lineWidth: 2))
+                        .padding()
+                    
+                     VStack(alignment: .center, spacing: 20) {
+                    Image(systemName: "text.bubble")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 50, height: 50, alignment: .center)
+                        .padding(.bottom, 3)
+                    Text("投稿数").font(.caption2)
+                }
+                    
+                    HStack(alignment: .center, spacing: 100) {
+                        
+                        VStack(alignment: .center, spacing: 20) {
+                            Image(systemName: "heart")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 50, height: 50, alignment: .center)
+                                .padding(.bottom, 3)
+                            Text("いいねされた数").font(.caption2)
+                        }
+
+                        VStack(alignment: .center, spacing: 20) {
+                            Image(systemName: "hand.thumbsup")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 50, height: 50, alignment: .center)
+                                .padding(.bottom, 3)
+                            Text("いいねした数").font(.caption2)
+                        }
+                    }
+                    .padding()
+                    
+                }
+                
+                
                 
             }
             .toolbar {
@@ -33,7 +77,7 @@ struct HomeView: View {
                         VStack(alignment: .center) {
                             Label("送信", systemImage: "video")
                                 .padding(.bottom, 3)
-                            Text("映画bot").font(.caption2)
+                            Text("映画ボット").font(.caption2)
                         }
                     }
                     Spacer()
@@ -48,12 +92,13 @@ struct HomeView: View {
                     }
                     Spacer()
                     Button(action: {
-                        self.showingSettingSheet.toggle()
+                        //                        self.showingSettingSheet.toggle()
                     }) {
                         VStack(alignment: .center) {
-                            Label("送信", systemImage: "gearshape")
+                            
+                            Label("送信", systemImage: "crown")
                                 .padding(.bottom, 3)
-                            Text("設定").font(.caption2)
+                            Text("ランキング").font(.caption2)
                         }
                     }
                     Spacer()
@@ -64,13 +109,12 @@ struct HomeView: View {
             .accentColor(.black)
             .navigationBarTitle("HOME", displayMode: .inline)
             .navigationBarItems(leading: Button(action: {
-//                self.openMenu()
+                //                self.openMenu()
             }, label: {
                 Image(systemName: "line.3.horizontal")
                     .foregroundColor(Color.white)
             }), trailing: HStack {
                 Button(action: {
-                    
                     self.showingSettingSheet.toggle()
                 }, label: {
                     Image(systemName: "gearshape")
@@ -99,7 +143,6 @@ struct HomeView: View {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .gray
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        //           appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
