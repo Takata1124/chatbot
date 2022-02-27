@@ -17,6 +17,8 @@ struct SignUpVIew: View {
     @State var showingLoginsheet = false
     @State var image: UIImage?
     
+    @EnvironmentObject var authViewModel: AuthViewModel
+    
     var body: some View {
         
         NavigationView {
@@ -47,21 +49,24 @@ struct SignUpVIew: View {
                             .frame(width: 300, height: 40)
                             .background(Color.white)
                             .cornerRadius(10)
+                            .textInputAutocapitalization(.none)
                         
                         TextField("Mail address", text: $inputEmail)
                             .padding()
                             .frame(width: 300, height: 40)
                             .background(Color.white)
                             .cornerRadius(10)
+                            .textInputAutocapitalization(.none)
                         
                         SecureField("Password", text: $inputPassword)
                             .padding()
                             .frame(width: 300, height: 40)
                             .background(Color.white)
                             .cornerRadius(10)
+                            .textInputAutocapitalization(.none)
                         
                         Button(action: {
-                            
+                            authViewModel.register(username: username, mail: inputEmail, passward: inputPassword, uiImage: image!)
                         },
                                label: {
                             Text("SignUp")
@@ -114,8 +119,8 @@ struct SignUpVIew: View {
     }
 }
 
-struct SignUpVIew_Previews: PreviewProvider {
-    static var previews: some View {
-        SignUpVIew()
-    }
-}
+//struct SignUpVIew_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SignUpVIew()
+//    }
+//}

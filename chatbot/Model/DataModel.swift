@@ -31,7 +31,6 @@ class DataModel: ObservableObject {
         CellName(name: "ミステリー"),
         CellName(name: "SF"),
     ]
-    
 }
 
 struct CellName: Identifiable {

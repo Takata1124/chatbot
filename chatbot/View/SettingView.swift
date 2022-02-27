@@ -13,6 +13,7 @@ struct SettingView: View {
     @State  var pickerSelection = 0
     
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var movieViewModel = MovieViewModel()
     
@@ -69,7 +70,10 @@ struct SettingView: View {
                 Section(header: Text("LogOut")) {
                     HStack {
                         Text("LOGOUT")
-                            .onTapGesture {print("LOGOUT")}
+                            .onTapGesture {
+                                print("Logout")
+                                authViewModel.signout()
+                            }
                         Spacer()
                     }
                 }
@@ -84,6 +88,7 @@ struct SettingView: View {
             }), trailing: HStack {
                 Button(action: {
                     print("右のボタン１が押されました。")
+                    self.authViewModel.signout()
                 }, label: {
                     Image(systemName: "trash")
                         .foregroundColor(Color.white)

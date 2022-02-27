@@ -47,7 +47,7 @@ struct PostCellView: View {
                                         .clipShape(Circle())
                                     
                                     Text("Takata")
-                                        .padding(.top, 20)
+//                                        .padding(.top, 20)
                                     
                                     Spacer()
                                     
@@ -63,7 +63,7 @@ struct PostCellView: View {
                                 .padding(.top, 15)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                            .padding()
+                            .padding(30)
                         }
                     )
             }

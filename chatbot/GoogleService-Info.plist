@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>828633576169-afoisi6i3lo6r6f2ofu4c0a5m51ti8j4.apps.googleusercontent.com</string>
+	<string>929582155739-ocdnmk6qqg3gc98sneg5tfkohh0iuim9.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.828633576169-afoisi6i3lo6r6f2ofu4c0a5m51ti8j4</string>
+	<string>com.googleusercontent.apps.929582155739-ocdnmk6qqg3gc98sneg5tfkohh0iuim9</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAt2vGkOyZzfDSas8D2bZL82T10XC1qDNQ</string>
+	<string>AIzaSyD_j9tnw7hRa_Ea_DHQDGMENNkkNdE-27Y</string>
 	<key>GCM_SENDER_ID</key>
-	<string>828633576169</string>
+	<string>929582155739</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>takata1124.chatbotApp</string>
+	<string>com.icloud.tktaaa1124.chatbot</string>
 	<key>PROJECT_ID</key>
-	<string>chatbotfirebase-a3217</string>
+	<string>chatbotfirebase-6a5a6</string>
 	<key>STORAGE_BUCKET</key>
-	<string>chatbotfirebase-a3217.appspot.com</string>
+	<string>chatbotfirebase-6a5a6.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:828633576169:ios:e843c53ba2775a3fe6f678</string>
+	<string>1:929582155739:ios:81b356d3f189826ea609fe</string>
 </dict>
 </plist>

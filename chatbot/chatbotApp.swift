@@ -6,14 +6,24 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct chatbotApp: App {
     
+    init() {
+        FirebaseApp.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
             
-            HomeView()
+            if Auth.auth().currentUser == nil {
+                
+                SignUpVIew().environmentObject(AuthViewModel())
+            } else {
+                HomeView().environmentObject(AuthViewModel())
+            }
         }
     }
 }
