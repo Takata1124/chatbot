@@ -10,7 +10,6 @@ import SwiftUI
 struct PostCellView: View {
     
     var cellText: String
-    
     var body: some View {
         
         VStack {

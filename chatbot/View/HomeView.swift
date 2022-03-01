@@ -12,6 +12,7 @@ struct HomeView: View {
     @State var showingSheet = false
     @State var showingSettingSheet = false
     @State var showingPostSheet = false
+    @State var showingReviewSheet = false
     
     var body: some View {
         
@@ -19,7 +20,6 @@ struct HomeView: View {
             ZStack {
                 
                 Color.gray.opacity(0.3).ignoresSafeArea()
-                
                 VStack(alignment: .center, spacing: 40){
                     
                     VStack {
@@ -43,6 +43,7 @@ struct HomeView: View {
                             .frame(width: 50, height: 50, alignment: .center)
                             .padding(.bottom, 3)
                         Text("投稿数").font(.caption2)
+                        Text("投稿数").font(.caption2)
                     }
                     
                     HStack(alignment: .center, spacing: 100) {
@@ -55,6 +56,7 @@ struct HomeView: View {
                                 .frame(width: 50, height: 50, alignment: .center)
                                 .padding(.bottom, 3)
                             Text("いいねされた数").font(.caption2)
+                            Text("いいねされた数").font(.caption2)
                             
                         }
                         
@@ -66,10 +68,10 @@ struct HomeView: View {
                                 .frame(width: 50, height: 50, alignment: .center)
                                 .padding(.bottom, 3)
                             Text("いいねした数").font(.caption2)
+                            Text("いいねした数").font(.caption2)
                         }
                     }
                     .padding()
-                    
                 }
             }
             .toolbar {
@@ -81,7 +83,7 @@ struct HomeView: View {
                         VStack(alignment: .center) {
                             Label("送信", systemImage: "video")
                                 .padding(.bottom, 3)
-                            Text("映画ボット").font(.caption2)
+                            Text("ボット").font(.caption2)
                         }
                     }
                     Spacer()
@@ -96,11 +98,12 @@ struct HomeView: View {
                     }
                     Spacer()
                     Button(action: {
+                        self.showingReviewSheet.toggle()
                     }) {
                         VStack(alignment: .center) {
-                            Label("送信", systemImage: "crown")
+                            Label("送信", systemImage: "star")
                                 .padding(.bottom, 3)
-                            Text("ランキング").font(.caption2)
+                            Text("履歴").font(.caption2)
                         }
                     }
                     Spacer()
@@ -130,6 +133,9 @@ struct HomeView: View {
         }
         .fullScreenCover(isPresented: $showingPostSheet) {
             PostView()
+        }
+        .fullScreenCover(isPresented: $showingReviewSheet) {
+            ReviewView()
         }
     }
     

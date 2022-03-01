@@ -7,17 +7,63 @@
 
 import Foundation
 import SwiftGoogleTranslate
+import SwiftUI
+
+struct MovieArray: Hashable {
+    
+    var number: String
+    var title: String
+    var category: String
+    var year: String
+}
 
 class MovieViewModel: NSObject, ObservableObject {
     
     var apiKey: String = Apikey().apikey
-    var moviewArray: [String] = []
-    
+    var movieArray: [String] = []
+    var movieCateArray: [MovieArray] = []
+//    var splitedYearArray: [String] = ["???,(???),???"]
+
     override init() {
         super.init()
         
         let array = loadCSV(fileName: "movies")
-        self.moviewArray = array
+        self.movieArray = array
+        
+        var number: String = "0"
+        var title: String = "???"
+        var category: String = "???"
+        var year: String = "???"
+        
+        for i in  1..<self.movieArray.count {
+            let splitedArray: [String] = array[i].components(separatedBy: ",")
+            
+            number = splitedArray.first ?? "???"
+            title = splitedArray[1]
+            category = splitedArray.last ?? "???"
+            
+            if array[i].contains(")") {
+                var splitedYearArray: [String] = array[i].components(separatedBy: ",")
+                splitedYearArray.removeLast()
+                let tempYear = splitedYearArray.last?.components(separatedBy: "(")
+                let newYear = tempYear?.last?.components(separatedBy: ")")
+                year = (newYear?[0])!
+                
+                let tempTitle = title.components(separatedBy: "(")
+                title = tempTitle[0]
+                
+                if  array[i].components(separatedBy: "(").count > 2 {
+                    var splitedArray = array[i].components(separatedBy: ")")
+                    splitedArray = splitedArray[0].components(separatedBy: ",")
+                    title = splitedArray[1]
+                }
+                
+                
+            }
+
+            movieCateArray.append(
+                MovieArray(number: number, title: title, category: category, year: year))
+        }
     }
 
     func loadCSV(fileName: String) -> [String] {
@@ -61,11 +107,8 @@ class MovieViewModel: NSObject, ObservableObject {
     }
     
     func getBotResponse(message: String, nowCount: Int) -> String {
-        
-        print(nowCount)
-        
+
         let tempMessage = message.lowercased()
-        
         switch nowCount {
             
         case 1:
@@ -75,16 +118,18 @@ class MovieViewModel: NSObject, ObservableObject {
         case 2:
             
             let returnMessage = secondSession(tempMessage: tempMessage)
-            
-            let filterArray = filterCSV(array: moviewArray, year: returnMessage, genre: nil)
+            let filterArray = filterCSV(array: movieArray, year: returnMessage, genre: nil)
             
             if filterArray == [] {
                 return "他の言葉で言いかえてください"
             }
-            
+
             print(filterArray[0])
-            print(filterArray.count)
-            return filterArray[0]
+//            print(filterArray.count)
+            let splitedArray: [String] = filterArray[0].components(separatedBy: ",")
+            let translatedText: String = japaneseTranselate(translatingText: splitedArray[1])
+
+            return translatedText
 
         default:
             return "またよろしくお願いします"
@@ -101,7 +146,6 @@ class MovieViewModel: NSObject, ObservableObject {
             return "またよろしくお願いします"
         }
     }
-    
     private func secondSession(tempMessage: String) -> String {
         
         let text = englishTranslate(translatingText: tempMessage)
@@ -109,7 +153,29 @@ class MovieViewModel: NSObject, ObservableObject {
         return text
     }
     
-    
+    func japaneseTranselate(translatingText: String) -> String {
+        
+        var tempText: String = "nil"
+        
+        SwiftGoogleTranslate.shared.start(with: apiKey)
+        SwiftGoogleTranslate.shared.translate(translatingText, "ja", "en") { (text, error) in
+            
+            if error != nil {
+                fatalError("error")
+            }
+            if let t = text {
+                print(t)
+                //                print(t)
+                //                print(t.initialUppercased())
+                tempText = t
+            }
+        }
+        //APIの処理時間
+        sleep(1)
+        return tempText
+        
+    }
+
     func englishTranslate(translatingText: String) -> String {
         
         var tempText: String = "nil"
@@ -120,8 +186,6 @@ class MovieViewModel: NSObject, ObservableObject {
             if error != nil {
                 fatalError("error")
             }
-            
-            
             if let t = text {
                 print(t)
                 //                print(t)
@@ -131,7 +195,6 @@ class MovieViewModel: NSObject, ObservableObject {
         }
         //APIの処理時間
         sleep(1)
-        
         return tempText
     }
     

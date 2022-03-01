@@ -18,7 +18,6 @@ struct ChatCellView: View {
         ZStack {
             
             Group {
-                
                 if dataModel.flowCount == 0 {
                     
                     ChildAnswerCellView(
@@ -29,7 +28,10 @@ struct ChatCellView: View {
                     ChildChatCellView(
                         messageText: $messageText, dataModel: dataModel, movieViewModel: movieViewModel)
                     
-                } else {
+                } else if dataModel.flowCount == 2 {
+                    
+                    ChildEvalCellView()
+                }else {
                     
                     ChildAnswerCellView(
                         dataModel: dataModel, movieViewModel: movieViewModel)

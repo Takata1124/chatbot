@@ -16,12 +16,21 @@ class AuthViewModel: NSObject, ObservableObject {
     override init() {
         if Auth.auth().currentUser != nil {
             
-            tempCurrentUser = Auth.auth().currentUser
+            self.tempCurrentUser = Auth.auth().currentUser
         }
     }
     
-    func login() {
+    func login(mail: String, passward: String) {
         
+        Auth.auth().signIn(withEmail: mail, password: passward) { res, err in
+            if let err = err {
+                print("signInError")
+                return
+            }
+            
+            guard let user = res?.user else { return }
+            self.tempCurrentUser = user
+        }
     }
     
     func register(username: String, mail: String, passward: String, uiImage: UIImage) {
@@ -32,7 +41,6 @@ class AuthViewModel: NSObject, ObservableObject {
                 print("error")
                 return
             }
-
             guard let user = res?.user else { return }
             self.tempCurrentUser = user
             
@@ -54,8 +62,6 @@ class AuthViewModel: NSObject, ObservableObject {
                     return
                 }
                 
-                print("success to update Image")
-                
                 ref.downloadURL { url, _ in
                     
                     guard let imageUrl = url?.absoluteString else { return }
@@ -65,7 +71,6 @@ class AuthViewModel: NSObject, ObservableObject {
                     }
                 }
             }
-            
             print("success to register")
         }
     }

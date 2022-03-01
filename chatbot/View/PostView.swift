@@ -28,7 +28,6 @@ struct PostView: View {
         NavigationView {
             
             VStack {
-                
                 HStack {
                     TextField("Search Text here", text: $text)
                         .padding(20)
@@ -93,8 +92,8 @@ struct PostView: View {
     }
 }
 
-struct PostView_Previews: PreviewProvider {
-    static var previews: some View {
-        PostView()
-    }
-}
+//struct PostView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PostView()
+//    }
+//}

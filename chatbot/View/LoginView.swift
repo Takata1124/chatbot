@@ -13,6 +13,7 @@ struct LoginView: View {
     @State var inputPassword: String = ""
     
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
         
@@ -42,6 +43,7 @@ struct LoginView: View {
                         
                         Button(action: {
                             print("Login処理")
+                            authViewModel.login(mail: inputEmail, passward: inputPassword)
                         },
                                label: {
                             Text("Login")
@@ -54,6 +56,18 @@ struct LoginView: View {
                         })
                         
                         Button(action: {
+                           
+                        },
+                               label: {
+                            Text("パスワードを忘れた方はこちら")
+                                .fontWeight(.medium)
+                                .frame(width: 300, height: 40)
+                                .foregroundColor(.blue)
+//                                .padding(12)
+                                .cornerRadius(8)
+                        })
+                        
+                        Button(action: {
                             dismiss()
                         },
                                label: {
@@ -61,10 +75,10 @@ struct LoginView: View {
                                 .fontWeight(.medium)
                                 .frame(width: 300, height: 40)
                                 .foregroundColor(.blue)
-                                .padding(12)
+//                                .padding(12)
                                 .cornerRadius(8)
                         })
-                        
+
                         Spacer()
                     }
                 }
