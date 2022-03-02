@@ -46,6 +46,7 @@
 		68DCA03827CB32F400B69D85 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 68DCA03727CB32F400B69D85 /* FirebaseStorage */; };
 		68DCA03A27CB6E5100B69D85 /* ChildEvalCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DCA03927CB6E5100B69D85 /* ChildEvalCellView.swift */; };
 		68DCA03C27CB85D900B69D85 /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DCA03B27CB85D900B69D85 /* ReviewView.swift */; };
+		68DE548E27CF0DB8004D7EB9 /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 68DE548D27CF0DB8004D7EB9 /* MultiSlider */; };
 		B8D1489AF84072EE87D6CDA3 /* Pods_chatbot_chatbotUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FBA3CEB2C1A28995D22A86 /* Pods_chatbot_chatbotUITests.framework */; };
 		D3662CD76CBFDFFDE11B259D /* Pods_chatbotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52E540C68ECD350C8787AC1E /* Pods_chatbotTests.framework */; };
 		E48CA53F7B433CE897B663A8 /* Pods_chatbot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E589C411785CA9F38E1D253 /* Pods_chatbot.framework */; };
@@ -121,6 +122,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68DCA02C27CB32F400B69D85 /* FirebaseAnalytics in Frameworks */,
+				68DE548E27CF0DB8004D7EB9 /* MultiSlider in Frameworks */,
 				68DCA02E27CB32F400B69D85 /* FirebaseAuth in Frameworks */,
 				68DCA03627CB32F400B69D85 /* FirebaseMessaging in Frameworks */,
 				68DCA03027CB32F400B69D85 /* FirebaseDatabase in Frameworks */,
@@ -338,6 +340,7 @@
 				68DCA03327CB32F400B69D85 /* FirebaseFunctions */,
 				68DCA03527CB32F400B69D85 /* FirebaseMessaging */,
 				68DCA03727CB32F400B69D85 /* FirebaseStorage */,
+				68DE548D27CF0DB8004D7EB9 /* MultiSlider */,
 			);
 			productName = chatbot;
 			productReference = 68AB85C227C6F8B40061E096 /* chatbot.app */;
@@ -416,6 +419,7 @@
 			mainGroup = 68AB85B927C6F8B40061E096;
 			packageReferences = (
 				68DCA02A27CB32F400B69D85 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				68DE548C27CF0DB8004D7EB9 /* XCRemoteSwiftPackageReference "MultiSlider" */,
 			);
 			productRefGroup = 68AB85C327C6F8B40061E096 /* Products */;
 			projectDirPath = "";
@@ -931,6 +935,14 @@
 				version = 8.9.1;
 			};
 		};
+		68DE548C27CF0DB8004D7EB9 /* XCRemoteSwiftPackageReference "MultiSlider" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yonat/MultiSlider";
+			requirement = {
+				kind = exactVersion;
+				version = 1.9.9;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -968,6 +980,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 68DCA02A27CB32F400B69D85 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		68DE548D27CF0DB8004D7EB9 /* MultiSlider */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 68DE548C27CF0DB8004D7EB9 /* XCRemoteSwiftPackageReference "MultiSlider" */;
+			productName = MultiSlider;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

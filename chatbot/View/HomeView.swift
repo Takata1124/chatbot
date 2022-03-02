@@ -14,8 +14,10 @@ struct HomeView: View {
     @State var showingPostSheet = false
     @State var showingReviewSheet = false
     
+    @StateObject var dataModel = DataModel()
+
     var body: some View {
-        
+   
         NavigationView {
             ZStack {
                 
@@ -42,8 +44,7 @@ struct HomeView: View {
                             .scaledToFit()
                             .frame(width: 50, height: 50, alignment: .center)
                             .padding(.bottom, 3)
-                        Text("投稿数").font(.caption2)
-                        Text("投稿数").font(.caption2)
+                        Text("投稿数 100").font(.caption2)
                     }
                     
                     HStack(alignment: .center, spacing: 100) {
@@ -55,9 +56,7 @@ struct HomeView: View {
                                 .scaledToFit()
                                 .frame(width: 50, height: 50, alignment: .center)
                                 .padding(.bottom, 3)
-                            Text("いいねされた数").font(.caption2)
-                            Text("いいねされた数").font(.caption2)
-                            
+                            Text("いいねされた数 100").font(.caption2)
                         }
                         
                         VStack(alignment: .center, spacing: 20) {
@@ -67,8 +66,7 @@ struct HomeView: View {
                                 .scaledToFit()
                                 .frame(width: 50, height: 50, alignment: .center)
                                 .padding(.bottom, 3)
-                            Text("いいねした数").font(.caption2)
-                            Text("いいねした数").font(.caption2)
+                            Text("いいねした数 100").font(.caption2)
                         }
                     }
                     .padding()
@@ -137,6 +135,7 @@ struct HomeView: View {
         .fullScreenCover(isPresented: $showingReviewSheet) {
             ReviewView()
         }
+        .environmentObject(dataModel)
     }
     
     init() {
@@ -154,8 +153,8 @@ struct HomeView: View {
     }
 }
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-    }
-}
+//struct HomeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HomeView()
+//    }
+//}

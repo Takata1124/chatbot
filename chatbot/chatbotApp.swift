@@ -20,9 +20,11 @@ struct chatbotApp: App {
             
             if Auth.auth().currentUser == nil {
                 
-                SignUpVIew().environmentObject(AuthViewModel())
+                SignUpVIew()
+                    .environmentObject(AuthViewModel())
             } else {
-                HomeView().environmentObject(AuthViewModel())
+                HomeView()
+                    .environmentObject(AuthViewModel())
             }
         }
     }

@@ -15,6 +15,7 @@ struct MovieArray: Hashable {
     var title: String
     var category: String
     var year: String
+    var star: Int
 }
 
 class MovieViewModel: NSObject, ObservableObject {
@@ -22,7 +23,6 @@ class MovieViewModel: NSObject, ObservableObject {
     var apiKey: String = Apikey().apikey
     var movieArray: [String] = []
     var movieCateArray: [MovieArray] = []
-//    var splitedYearArray: [String] = ["???,(???),???"]
 
     override init() {
         super.init()
@@ -57,12 +57,10 @@ class MovieViewModel: NSObject, ObservableObject {
                     splitedArray = splitedArray[0].components(separatedBy: ",")
                     title = splitedArray[1]
                 }
-                
-                
             }
 
             movieCateArray.append(
-                MovieArray(number: number, title: title, category: category, year: year))
+                MovieArray(number: number, title: title, category: category, year: year, star: 0))
         }
     }
 
@@ -165,7 +163,6 @@ class MovieViewModel: NSObject, ObservableObject {
             }
             if let t = text {
                 print(t)
-                //                print(t)
                 //                print(t.initialUppercased())
                 tempText = t
             }

@@ -45,18 +45,19 @@ struct ContentView: View {
                 }
                 .navigationBarTitle("タイトル", displayMode: .inline)
                 .navigationBarItems(leading: Button(action: {
-                    self.openMenu()
+//                    self.openMenu()
+                    dismiss()
                 }, label: {
-                    Image(systemName: "line.3.horizontal")
+                    Image(systemName: "arrowshape.turn.up.backward")
                         .foregroundColor(Color.white)
                 }), trailing: HStack {
-                    Button(action: {
-                        
-                        self.showingSettingSheet.toggle()
-                    }, label: {
-                        Image(systemName: "gearshape")
-                            .foregroundColor(Color.white)
-                    })
+//                    Button(action: {
+//                        
+//                        self.showingSettingSheet.toggle()
+//                    }, label: {
+//                        Image(systemName: "gearshape")
+//                            .foregroundColor(Color.white)
+//                    })
                 })
                 
                 SideMenuView(width: 270, isOpen: $menuOpen, dataModel: dataModel, menuClose: self.openMenu, function: self.passedFunction)
@@ -89,8 +90,8 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}

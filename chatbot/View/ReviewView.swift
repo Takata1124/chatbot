@@ -9,13 +9,16 @@ import SwiftUI
 
 struct ReviewView: View {
     
-    let pokemons: [String] = ["Snorlax", "Slowpoke", "Pikachu", "Eevee"]
     @State var text: String = ""
+    @State var categoryText: String = ""
+    @State var yearText: String = ""
     @Environment(\.dismiss) var dismiss
     @ObservedObject var movieViewModel = MovieViewModel()
-    @State private var currentValue: Double = 5
+    
+    @EnvironmentObject var dataModel: DataModel
     
     var filterdMovieArray: [MovieArray] {
+        
         if text.isEmpty {
             return movieViewModel.movieCateArray
         } else {
@@ -27,30 +30,38 @@ struct ReviewView: View {
         NavigationView {
             VStack {
                 HStack {
-                    TextField("Search Text here", text: $text)
-                        .padding(20)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    
+                    VStack {
+                        TextField("Search Title", text: $text)
+                            .padding(.top, 20)
+                            .padding(.horizontal, 20)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        TextField("Search Category", text: $categoryText)
+                            .padding(.horizontal, 20)
+                            .padding(.top, 10)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        TextField("Search Year", text: $yearText)
+                            .padding(.horizontal, 20)
+                            .padding(.top, 10)
+                            .padding(.bottom, 20)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                    }
                     Button {
-                        print("cancel")
+                        self.text = ""
+                        self.categoryText = ""
+                        self.yearText = ""
                     } label: {
-                        Text("cancel")
+                        Text("CLEAR")
+                            .font(.system(size: 16))
                             .foregroundColor(.white)
                     }
-                    .padding(.trailing)
+                    .padding(.trailing, 30)
                 }
                 .background(Color.init(uiColor: .gray))
-                
-                HStack {
-                    Text("値：\(currentValue)")
-                    Slider(value: $currentValue, in: 0...10)      // 0から10の範囲を指定
-                }
-                .padding()
-//                .background(Color.init(uiColor: .gray))
                 
                 ScrollView(.vertical, showsIndicators: false, content: {
                     LazyVStack {
                         ForEach(filterdMovieArray, id: \.self) { movie in
+                            
                             VStack(alignment: .leading, spacing: 10){
                                 HStack {
                                     Text("\(movie.title)")
@@ -60,16 +71,31 @@ struct ReviewView: View {
                                         .padding(.trailing)
                                 }
                                 Text("\(movie.category)")
+                                
                                 HStack {
                                     ForEach(1..<6) { i in
                                         VStack(alignment: .center){
                                             Text("\(i)")
-                                            Image(systemName: "star")
-                                                .font(.system(size: 30))
-                                                .onTapGesture {
-                                                    print(i)
-                                                    print(movie.title)
-                                                }
+                                            let tempInt: Int = configureElement(movieArray: movie)
+                                            if tempInt == i {
+                                                Image(systemName: "star.fill")
+                                                    .font(.system(size: 30))
+                                                    .onTapGesture {
+                                                        print(i)
+                                                        print(movie.star)
+                                                        print(movie.title)
+                                                    }
+                                            } else {
+                                                Image(systemName: "star")
+                                                    .font(.system(size: 30))
+                                                    .onTapGesture {
+                                                        print(i)
+                                                        print(movie.star)
+                                                        print(movie.title)
+                                                        //
+                                                        configureTitle(movieArray: movie, star: i)
+                                                    }
+                                            }
                                         }
                                     }
                                 }
@@ -95,11 +121,8 @@ struct ReviewView: View {
                             print("右のボタン１が押されました。")
                             print(movieViewModel.movieCateArray.count)
                             print(movieViewModel.movieCateArray[1])
-                            //                            self.showingAddPostSheet.toggle()
                         }, label: {
-                            //                            Image(systemName: "person")
-                            //                                .foregroundColor(Color.white)
-                            Text("SAVE")
+                            Image(systemName: "star.fill")
                                 .foregroundColor(Color.white)
                         })
                     })
@@ -122,10 +145,39 @@ struct ReviewView: View {
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
-}
-
-struct ReviewView_Previews: PreviewProvider {
-    static var previews: some View {
-        ReviewView()
+    
+    private func configureElement(movieArray: MovieArray) -> Int {
+        
+        let tempInt = 0
+        for element in dataModel.tapArray {
+            if element.title == movieArray.title {
+                return element.star
+            }
+        }
+        return tempInt
+    }
+    
+    private func configureTitle(movieArray: MovieArray, star: Int) -> Void {
+        
+        let movie = movieArray
+        
+        var tempInt: Int = 0
+        for element in dataModel.tapArray {
+            if element.title == movie.title {
+                dataModel.tapArray[tempInt].star = star
+                return
+            }
+            
+            tempInt += 1
+        }
+        
+        dataModel.tapArray.append(TapArray(id: movie.number, title: movie.title, star: star))
+        return
+        
     }
 }
+//    struct ReviewView_Previews: PreviewProvider {
+//        static var previews: some View {
+//            ReviewView()
+//        }
+//    }
