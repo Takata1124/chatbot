@@ -13,6 +13,7 @@ struct ReviewView: View {
     @State var text: String = ""
     @Environment(\.dismiss) var dismiss
     @ObservedObject var movieViewModel = MovieViewModel()
+    @State private var currentValue: Double = 5
     
     var filterdMovieArray: [MovieArray] {
         if text.isEmpty {
@@ -39,6 +40,13 @@ struct ReviewView: View {
                     .padding(.trailing)
                 }
                 .background(Color.init(uiColor: .gray))
+                
+                HStack {
+                    Text("値：\(currentValue)")
+                    Slider(value: $currentValue, in: 0...10)      // 0から10の範囲を指定
+                }
+                .padding()
+//                .background(Color.init(uiColor: .gray))
                 
                 ScrollView(.vertical, showsIndicators: false, content: {
                     LazyVStack {
@@ -116,8 +124,8 @@ struct ReviewView: View {
     }
 }
 
-//struct ReviewView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ReviewView()
-//    }
-//}
+struct ReviewView_Previews: PreviewProvider {
+    static var previews: some View {
+        ReviewView()
+    }
+}
