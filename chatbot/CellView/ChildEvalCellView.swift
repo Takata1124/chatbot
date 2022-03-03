@@ -14,20 +14,34 @@ struct ChildEvalCellView: View {
     var body: some View {
         
         VStack {
-            HStack(alignment: .center, spacing: 10) {
+            HStack(alignment: .center, spacing: 20) {
                 
-                ForEach(0..<6) { i in
-                    
-                    VStack(alignment: .center){
-                        Text("\(i)")
-                        Image(systemName: "star")
-                            .font(.system(size: 30))
-                            .onTapGesture {
-                                enable = true
-                            }
-                    }
+                Button {
+                    print("次へ")
+                } label: {
+                    Text("レビュー保存")
                 }
-//
+                .frame(width: 150)
+                .font(.system(size: 18))
+                .foregroundColor(.white)
+                .padding(12)
+                .background(Color.blue)
+                .cornerRadius(8)
+                .disabled(!enable)
+
+                Button {
+                    print("次へ")
+                } label: {
+                    Text("詳細")
+                }
+                .frame(width: 50)
+                .font(.system(size: 18))
+                .foregroundColor(.white)
+                .padding(12)
+                .background(Color.blue)
+                .cornerRadius(8)
+                .disabled(!enable)
+                
                 Button {
                     print("次へ")
                 } label: {
@@ -37,7 +51,7 @@ struct ChildEvalCellView: View {
                 .font(.system(size: 18))
                 .foregroundColor(.white)
                 .padding(12)
-                .background(Color.accentColor)
+                .background(Color.blue)
                 .cornerRadius(8)
                 .disabled(!enable)
             }
@@ -45,8 +59,8 @@ struct ChildEvalCellView: View {
     }
 }
 
-//struct ChildEvalCellView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ChildEvalCellView()
-//    }
-//}
+struct ChildEvalCellView_Previews: PreviewProvider {
+    static var previews: some View {
+        ChildEvalCellView()
+    }
+}

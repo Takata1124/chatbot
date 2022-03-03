@@ -28,9 +28,18 @@ struct CellName: Identifiable {
     let name: String
 }
 
-struct TapArray: Identifiable {
+struct TapArray: Identifiable, Equatable {
     
     var id: String
     let title: String
+    var star: Int
+}
+
+struct MovieArray: Hashable {
+    
+    var number: String
+    var title: String
+    var category: String
+    var year: String
     var star: Int
 }

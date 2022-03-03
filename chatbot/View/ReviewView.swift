@@ -14,24 +14,48 @@ struct ReviewView: View {
     @State var yearText: String = ""
     @Environment(\.dismiss) var dismiss
     @ObservedObject var movieViewModel = MovieViewModel()
-    
     @EnvironmentObject var dataModel: DataModel
-    
+    @State var starflag: Bool = false
+
     var filterdMovieArray: [MovieArray] {
         
-        if text.isEmpty {
-            return movieViewModel.movieCateArray
+        var movieArray: [MovieArray] = []
+        
+        if (text.isEmpty && categoryText.isEmpty && yearText.isEmpty) {
+            
+            movieArray = movieViewModel.movieCateArray
+            
         } else {
-            return movieViewModel.movieCateArray.filter {$0.title.uppercased().contains(text.uppercased())}
+            
+            if !text.isEmpty {
+                movieArray = movieViewModel.movieCateArray.filter {$0.title.uppercased().contains(text.uppercased())}
+            }
+            else if !categoryText.isEmpty {
+                movieArray = movieViewModel.movieCateArray.filter {$0.category.uppercased().contains(categoryText.uppercased())}
+            }
+            else if !yearText.isEmpty {
+                movieArray = movieViewModel.movieCateArray.filter {$0.year.uppercased().contains(yearText.uppercased())}
+            }
         }
+        
+        if starflag == true {
+            
+            movieArray = []
+            for element in dataModel.tapArray {
+                movieArray.append(movieViewModel.movieCateArray.filter {$0.title.uppercased().contains(element.title.uppercased())}[0])
+            }
+        }
+
+        return movieArray
     }
-    
+
     var body: some View {
+
         NavigationView {
             VStack {
                 HStack {
                     VStack {
-                        TextField("Search Title", text: $text)
+                        TextField("Search Title in English", text: $text)
                             .padding(.top, 20)
                             .padding(.horizontal, 20)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -45,23 +69,30 @@ struct ReviewView: View {
                             .padding(.bottom, 20)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
-                    Button {
-                        self.text = ""
-                        self.categoryText = ""
-                        self.yearText = ""
-                    } label: {
-                        Text("CLEAR")
+                    VStack {
+                        Button {
+                            self.text = ""
+                            self.categoryText = ""
+                            self.yearText = ""
+                        } label: {
+                            Text("CLEAR")
+                                .font(.system(size: 16))
+                                .foregroundColor(.white)
+                        }
+                        .padding(.trailing, 30)
+                        
+                        Text("\(filterdMovieArray.count)")
                             .font(.system(size: 16))
-                            .foregroundColor(.white)
+                            .foregroundColor(Color.white)
+                            .padding(.top, 20)
+                            .padding(.trailing, 30)
                     }
-                    .padding(.trailing, 30)
                 }
                 .background(Color.init(uiColor: .gray))
-                
+ 
                 ScrollView(.vertical, showsIndicators: false, content: {
                     LazyVStack {
                         ForEach(filterdMovieArray, id: \.self) { movie in
-                            
                             VStack(alignment: .leading, spacing: 10){
                                 HStack {
                                     Text("\(movie.title)")
@@ -71,7 +102,7 @@ struct ReviewView: View {
                                         .padding(.trailing)
                                 }
                                 Text("\(movie.category)")
-                                
+        
                                 HStack {
                                     ForEach(1..<6) { i in
                                         VStack(alignment: .center){
@@ -81,19 +112,17 @@ struct ReviewView: View {
                                                 Image(systemName: "star.fill")
                                                     .font(.system(size: 30))
                                                     .onTapGesture {
-                                                        print(i)
-                                                        print(movie.star)
-                                                        print(movie.title)
+                                                        
+                                                        configureTitle(movieArray: movie, star: i)
+                                                        print(dataModel.tapArray)
                                                     }
                                             } else {
                                                 Image(systemName: "star")
                                                     .font(.system(size: 30))
                                                     .onTapGesture {
-                                                        print(i)
-                                                        print(movie.star)
-                                                        print(movie.title)
-                                                        //
+                                                        
                                                         configureTitle(movieArray: movie, star: i)
+                                                        print(dataModel.tapArray)
                                                     }
                                             }
                                         }
@@ -109,7 +138,7 @@ struct ReviewView: View {
                         }
                     }
                 })
-                    .navigationBarTitle("投稿一覧", displayMode: .inline)
+                    .navigationBarTitle("投稿", displayMode: .inline)
                     .navigationBarItems(leading: Button(action: {
                         print("左のボタンが押されました。")
                         dismiss()
@@ -119,8 +148,9 @@ struct ReviewView: View {
                     }), trailing: HStack {
                         Button(action: {
                             print("右のボタン１が押されました。")
-                            print(movieViewModel.movieCateArray.count)
-                            print(movieViewModel.movieCateArray[1])
+                            self.starflag.toggle()
+                            print(starflag)
+                            
                         }, label: {
                             Image(systemName: "star.fill")
                                 .foregroundColor(Color.white)
@@ -128,9 +158,6 @@ struct ReviewView: View {
                     })
             }
         }
-        //        .fullScreenCover(isPresented: $showingAddPostSheet) {
-        //            AddPostView()
-        //        }
     }
     
     init() {
@@ -160,20 +187,34 @@ struct ReviewView: View {
     private func configureTitle(movieArray: MovieArray, star: Int) -> Void {
         
         let movie = movieArray
-        
         var tempInt: Int = 0
         for element in dataModel.tapArray {
             if element.title == movie.title {
-                dataModel.tapArray[tempInt].star = star
+                
+                if dataModel.tapArray[tempInt].star != star {
+                    dataModel.tapArray[tempInt].star = star
+                } else {
+                    
+                    dataModel.tapArray.remove(at: tempInt)
+                }
+                print(dataModel.tapArray)
                 return
             }
-            
             tempInt += 1
         }
-        
         dataModel.tapArray.append(TapArray(id: movie.number, title: movie.title, star: star))
         return
+    }
+    
+    private func filterStar() -> [MovieArray]{
         
+        var tempArray: [MovieArray] = []
+        for element in dataModel.tapArray {
+            
+            tempArray.append(movieViewModel.movieCateArray.filter {$0.title.uppercased().contains(element.title.uppercased())}[0])
+        }
+        
+        return tempArray
     }
 }
 //    struct ReviewView_Previews: PreviewProvider {

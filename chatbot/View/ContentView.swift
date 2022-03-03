@@ -11,7 +11,7 @@ struct ContentView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @ObservedObject var dataModel = DataModel()
+    @EnvironmentObject var dataModel: DataModel
     @ObservedObject var movieViewModel = MovieViewModel()
     
     @State private var messageText = ""
@@ -41,7 +41,6 @@ struct ContentView: View {
                     .background(Color.gray.opacity(0.2))
                     
                     ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel)
-                    
                 }
                 .navigationBarTitle("タイトル", displayMode: .inline)
                 .navigationBarItems(leading: Button(action: {
@@ -51,13 +50,14 @@ struct ContentView: View {
                     Image(systemName: "arrowshape.turn.up.backward")
                         .foregroundColor(Color.white)
                 }), trailing: HStack {
-//                    Button(action: {
-//                        
+                    Button(action: {
+                        movieViewModel.recommendTitle(datamodel: dataModel, genre: "string")
 //                        self.showingSettingSheet.toggle()
-//                    }, label: {
-//                        Image(systemName: "gearshape")
-//                            .foregroundColor(Color.white)
-//                    })
+                    }, label: {
+                        Image(systemName: "gearshape")
+//                        Text("レビュー数\(dataModel.tapArray.count)")
+                            .foregroundColor(Color.white)
+                    })
                 })
                 
                 SideMenuView(width: 270, isOpen: $menuOpen, dataModel: dataModel, menuClose: self.openMenu, function: self.passedFunction)

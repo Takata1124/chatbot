@@ -9,15 +9,6 @@ import Foundation
 import SwiftGoogleTranslate
 import SwiftUI
 
-struct MovieArray: Hashable {
-    
-    var number: String
-    var title: String
-    var category: String
-    var year: String
-    var star: Int
-}
-
 class MovieViewModel: NSObject, ObservableObject {
     
     var apiKey: String = Apikey().apikey
@@ -86,7 +77,6 @@ class MovieViewModel: NSObject, ObservableObject {
                 tempcsv.append(csv)
             }
         }
-        print(tempcsv)
         return tempcsv
     }
     
@@ -122,12 +112,10 @@ class MovieViewModel: NSObject, ObservableObject {
                 return "他の言葉で言いかえてください"
             }
 
-            print(filterArray[0])
-//            print(filterArray.count)
             let splitedArray: [String] = filterArray[0].components(separatedBy: ",")
-            let translatedText: String = japaneseTranselate(translatingText: splitedArray[1])
+//            let translatedText: String = japaneseTranselate(translatingText: splitedArray[1])
 
-            return translatedText
+            return splitedArray[1]
 
         default:
             return "またよろしくお願いします"
@@ -163,7 +151,6 @@ class MovieViewModel: NSObject, ObservableObject {
             }
             if let t = text {
                 print(t)
-                //                print(t.initialUppercased())
                 tempText = t
             }
         }
@@ -185,8 +172,6 @@ class MovieViewModel: NSObject, ObservableObject {
             }
             if let t = text {
                 print(t)
-                //                print(t)
-                //                print(t.initialUppercased())
                 tempText = self.analyzeText(text: t)
             }
         }
@@ -204,7 +189,6 @@ class MovieViewModel: NSObject, ObservableObject {
         tagger.enumerateTags(in: NSRange(location: 0, length: text.count), scheme: NSLinguisticTagScheme.lexicalClass, options: [.omitWhitespace]) { tag, tokenRange, sentenceRange, stop in
             
             let subString = (text as NSString).substring(with: tokenRange)
-            
             guard let tag = tag else { return }
             
             if tag.rawValue == "Noun" {
@@ -212,7 +196,6 @@ class MovieViewModel: NSObject, ObservableObject {
             }
             
         }
-        print(separetedArray)
         
         if separetedArray != [] {
            print(separetedArray[0].initialUppercased())
@@ -220,6 +203,69 @@ class MovieViewModel: NSObject, ObservableObject {
         } else {
             let void: String = "void"
             return void
+        }
+    }
+    
+    func recommendTitle(datamodel: DataModel, genre: String) {
+        
+        let tempGenre = "Action"
+        
+        var movieArray: [String] = loadCSV(fileName: "movies")
+        movieArray.remove(at: 0)
+        
+        var tempArray: [String] = loadCSV(fileName: "ratings")
+        tempArray.remove(at: 0)
+
+        var countArray: [String] = []
+        tempArray.forEach { element in
+            let index = element.components(separatedBy: ",")[0]
+            if !countArray.contains(index) {
+                countArray.append(index)
+            }
+        }
+
+        if datamodel.tapArray != [] {
+            var arrayTemp: [String] = []
+            for element in datamodel.tapArray {
+                let temp: [String] = tempArray.filter { $0.components(separatedBy: ",")[1] == element.id }
+                arrayTemp += temp
+            }
+            
+            let temptemp: [String] = arrayTemp.sorted { Int($0.components(separatedBy: ",")[0])! < Int($1.components(separatedBy: ",")[0])! }
+            
+            var dic: [[Int]] = []
+            for i in 1..<countArray.count + 1 {
+                let t = temptemp.filter { Int($0.components(separatedBy: ",")[0]) == i }
+                let count = t.count
+                let tArray: [Int] = [i, count]
+                dic.append(tArray)
+            }
+            
+            let sortedDic = dic.sorted { $0[1] > $1[1] }
+            
+            let filteredArray: [String] = tempArray.filter { Int($0.components(separatedBy: ",")[0]) == Int(sortedDic[0][0])}
+            let filteredArray_1: [String] = tempArray.filter { Int($0.components(separatedBy: ",")[0]) == Int(sortedDic[1][0])}
+            let filteredArray_2: [String] = tempArray.filter { Int($0.components(separatedBy: ",")[0]) == Int(sortedDic[2][0])}
+            let totalFilterArray = filteredArray + filteredArray_1 + filteredArray_2
+            let tempfilteredArray = totalFilterArray.filter{ Double($0.components(separatedBy: ",")[2]) == 5.0}
+            let newTempFilteredArray = tempfilteredArray.sorted{ Int($0.components(separatedBy: ",")[1])! > Int($1.components(separatedBy: ",")[1])! }
+//            print(tempfilteredArray)
+//            print(newTempFilteredArray)
+            
+            var filteredMovieArray: [String] = []
+            
+            tempfilteredArray.forEach { elements in
+                let dataId = elements.components(separatedBy: ",")[1]
+                let genre: [String] = movieArray.filter{ $0.components(separatedBy: ",")[0] == dataId }
+                filteredMovieArray += genre
+            }
+            
+            print(filteredMovieArray)
+            print(filteredMovieArray.count)
+            
+            let recommendArray = filteredMovieArray.filter{ $0.components(separatedBy: ",").last == tempGenre }
+            print(recommendArray)
+            print(recommendArray.count)
         }
     }
 }

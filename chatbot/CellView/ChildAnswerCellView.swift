@@ -30,6 +30,7 @@ struct ChildAnswerCellView: View {
             .cornerRadius(8)
             
             Button {
+                dataModel.flowCount += 0
                 ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel).sendMessage(message: "いいえ")
             } label: {
                 Text("いいえ")

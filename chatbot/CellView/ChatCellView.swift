@@ -47,8 +47,6 @@ struct ChatCellView: View {
             dataModel.messages.append("[USER]" + message)
             self.messageText = ""
             
-            print(message)
-            
             let data: String = movieViewModel.getBotResponse(message: message, nowCount: dataModel.flowCount)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
