@@ -18,13 +18,16 @@ struct ContentView: View {
     @State private var showingSettingSheet = false
     @State var menuOpen: Bool = false
     
+    @State var reloadTimes: Int = 0
+    @State var isLoading: Bool = false
+    
     var body: some View {
         
         NavigationView {
             ZStack {
                 VStack {
+    
                     ScrollView {
-                        
                         ForEach(dataModel.messages, id: \.self) { message in
                             if message.contains("[USER]") {
                                 let newMessage = message.replacingOccurrences(of: "[USER]", with: "")
@@ -32,7 +35,7 @@ struct ContentView: View {
                                 SelfCellView(message: newMessage)
                                 
                             } else {
-                                
+     
                                 BotCellView(message: message)
                             }
                         }.rotationEffect(.degrees(180))
@@ -40,7 +43,7 @@ struct ContentView: View {
                     .rotationEffect(.degrees(180))
                     .background(Color.gray.opacity(0.2))
                     
-                    ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel)
+                    ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading)
                 }
                 .navigationBarTitle("タイトル", displayMode: .inline)
                 .navigationBarItems(leading: Button(action: {
@@ -51,8 +54,12 @@ struct ContentView: View {
                         .foregroundColor(Color.white)
                 }), trailing: HStack {
                     Button(action: {
-                        movieViewModel.recommendTitle(datamodel: dataModel, genre: "string")
-//                        self.showingSettingSheet.toggle()
+                        let array = movieViewModel.getArticle(title: "Jumanji")
+                        
+                        DispatchQueue.main.async {
+                            print(array)
+                        }
+                        
                     }, label: {
                         Image(systemName: "gearshape")
 //                        Text("レビュー数\(dataModel.tapArray.count)")
@@ -60,7 +67,14 @@ struct ContentView: View {
                     })
                 })
                 
-                SideMenuView(width: 270, isOpen: $menuOpen, dataModel: dataModel, menuClose: self.openMenu, function: self.passedFunction)
+                if isLoading {
+                    
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .red))
+                        .scaleEffect(3)
+                }
+               
+//                SideMenuView(width: 270, isOpen: $menuOpen, dataModel: dataModel, menuClose: self.openMenu, function: self.passedFunction)
             }
         }
         .fullScreenCover(isPresented: $showingSettingSheet) {

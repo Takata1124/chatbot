@@ -6,55 +6,61 @@
 //
 
 import SwiftUI
+import PKHUD
 
 struct ChatCellView: View {
     
     @State var messageText: String = ""
     @ObservedObject var dataModel: DataModel
     @ObservedObject var movieViewModel: MovieViewModel
+    @Binding var isLoading: Bool
     
     var body: some View {
         
         ZStack {
             
-            Group {
-                if dataModel.flowCount == 0 {
-                    
-                    ChildAnswerCellView(
-                        dataModel: dataModel, movieViewModel: movieViewModel)
-
-                } else if dataModel.flowCount == 1 {
-                    
-                    ChildChatCellView(
-                        messageText: $messageText, dataModel: dataModel, movieViewModel: movieViewModel)
-                    
-                } else if dataModel.flowCount == 2 {
-                    
-                    ChildEvalCellView()
-                }else {
-                    
-                    ChildAnswerCellView(
-                        dataModel: dataModel, movieViewModel: movieViewModel)
-                }
-            }
+            showView()
         }
         .frame(height: 75)
     }
     
     func sendMessage(message: String) {
+        
+        isLoading = true
+        
         withAnimation {
-            
+  
             dataModel.messages.append("[USER]" + message)
             self.messageText = ""
-            
-            let data: String = movieViewModel.getBotResponse(message: message, nowCount: dataModel.flowCount)
+
+            let data: String = movieViewModel.getBotResponse(message: message, nowCount: dataModel.flowCount, dataModel: dataModel)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 withAnimation {
                     dataModel.messages.append(data)
-                    
+                    isLoading = false
                 }
             }
+        }
+    }
+    
+    private func showView() -> AnyView {
+        if dataModel.flowCount == 0 {
+            
+            return AnyView(ChildAnswerCellView(
+                dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading))
+
+        } else if dataModel.flowCount == 1 {
+            
+            return AnyView(ChildChatCellView(
+                messageText: $messageText, dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading))
+            
+        } else if dataModel.flowCount == 2 {
+            
+            return AnyView(ChildEvalCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading))
+        }else {
+            
+            return AnyView(ChildEvalCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading))
         }
     }
 }

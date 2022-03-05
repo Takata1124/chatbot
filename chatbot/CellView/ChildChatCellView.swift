@@ -12,6 +12,7 @@ struct ChildChatCellView: View {
     @Binding var messageText: String
     var dataModel: DataModel
     var movieViewModel: MovieViewModel
+    @Binding var isLoading: Bool
 
     var body: some View {
 
@@ -21,13 +22,13 @@ struct ChildChatCellView: View {
                 .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
                 .onSubmit {
-                    dataModel.flowCount += 1
-                    ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel).sendMessage(message: messageText)
+                    
+                    sendMessage()   
                 }
 
             Button {
-                dataModel.flowCount += 1
-                ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel).sendMessage(message: messageText)
+                
+                sendMessage()
             } label: {
                 Image(systemName: "paperplane.fill")
             }
@@ -35,6 +36,13 @@ struct ChildChatCellView: View {
             .padding(.horizontal, 10)
         }
         .padding()
+    }
+    
+    private func sendMessage() {
+        
+        isLoading = true
+        dataModel.flowCount += 1
+        ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading).sendMessage(message: messageText)
     }
 }
 

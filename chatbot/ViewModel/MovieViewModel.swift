@@ -8,13 +8,15 @@
 import Foundation
 import SwiftGoogleTranslate
 import SwiftUI
+import Alamofire
+import SwiftyJSON
 
 class MovieViewModel: NSObject, ObservableObject {
     
     var apiKey: String = Apikey().apikey
     var movieArray: [String] = []
     var movieCateArray: [MovieArray] = []
-
+    
     override init() {
         super.init()
         
@@ -49,12 +51,12 @@ class MovieViewModel: NSObject, ObservableObject {
                     title = splitedArray[1]
                 }
             }
-
+            
             movieCateArray.append(
                 MovieArray(number: number, title: title, category: category, year: year, star: 0))
         }
     }
-
+    
     func loadCSV(fileName: String) -> [String] {
         
         var csvArray: [String] = []
@@ -80,22 +82,8 @@ class MovieViewModel: NSObject, ObservableObject {
         return tempcsv
     }
     
-    func filterCSV(array: [String], year: String?, genre: String?) -> [String] {
+    func getBotResponse(message: String, nowCount: Int, dataModel: DataModel) -> String {
         
-        var filterArray:[String] = []
-        
-        if year != nil {
-            filterArray = array.filter {$0.contains(year!)}
-        }
-        if genre != nil {
-            filterArray = array.filter {$0.contains(genre!)}
-        }
-        
-        return filterArray
-    }
-    
-    func getBotResponse(message: String, nowCount: Int) -> String {
-
         let tempMessage = message.lowercased()
         switch nowCount {
             
@@ -106,17 +94,11 @@ class MovieViewModel: NSObject, ObservableObject {
         case 2:
             
             let returnMessage = secondSession(tempMessage: tempMessage)
-            let filterArray = filterCSV(array: movieArray, year: returnMessage, genre: nil)
+            print(returnMessage)
+            let title = recommendTitle(datamodel: dataModel, genre: returnMessage, reloadPoint: 0)
+            print(title)
+            return title
             
-            if filterArray == [] {
-                return "他の言葉で言いかえてください"
-            }
-
-            let splitedArray: [String] = filterArray[0].components(separatedBy: ",")
-//            let translatedText: String = japaneseTranselate(translatingText: splitedArray[1])
-
-            return splitedArray[1]
-
         default:
             return "またよろしくお願いします"
         }
@@ -159,7 +141,7 @@ class MovieViewModel: NSObject, ObservableObject {
         return tempText
         
     }
-
+    
     func englishTranslate(translatingText: String) -> String {
         
         var tempText: String = "nil"
@@ -171,7 +153,6 @@ class MovieViewModel: NSObject, ObservableObject {
                 fatalError("error")
             }
             if let t = text {
-                print(t)
                 tempText = self.analyzeText(text: t)
             }
         }
@@ -194,11 +175,10 @@ class MovieViewModel: NSObject, ObservableObject {
             if tag.rawValue == "Noun" {
                 separetedArray.append(subString)
             }
-            
         }
         
         if separetedArray != [] {
-           print(separetedArray[0].initialUppercased())
+            print(separetedArray[0].initialUppercased())
             return separetedArray[0].initialUppercased()
         } else {
             let void: String = "void"
@@ -206,16 +186,14 @@ class MovieViewModel: NSObject, ObservableObject {
         }
     }
     
-    func recommendTitle(datamodel: DataModel, genre: String) {
-        
-        let tempGenre = "Action"
+    func recommendTitle(datamodel: DataModel, genre: String, reloadPoint: Int) -> String {
         
         var movieArray: [String] = loadCSV(fileName: "movies")
         movieArray.remove(at: 0)
         
         var tempArray: [String] = loadCSV(fileName: "ratings")
         tempArray.remove(at: 0)
-
+        
         var countArray: [String] = []
         tempArray.forEach { element in
             let index = element.components(separatedBy: ",")[0]
@@ -223,7 +201,7 @@ class MovieViewModel: NSObject, ObservableObject {
                 countArray.append(index)
             }
         }
-
+        
         if datamodel.tapArray != [] {
             var arrayTemp: [String] = []
             for element in datamodel.tapArray {
@@ -242,15 +220,11 @@ class MovieViewModel: NSObject, ObservableObject {
             }
             
             let sortedDic = dic.sorted { $0[1] > $1[1] }
-            
             let filteredArray: [String] = tempArray.filter { Int($0.components(separatedBy: ",")[0]) == Int(sortedDic[0][0])}
             let filteredArray_1: [String] = tempArray.filter { Int($0.components(separatedBy: ",")[0]) == Int(sortedDic[1][0])}
             let filteredArray_2: [String] = tempArray.filter { Int($0.components(separatedBy: ",")[0]) == Int(sortedDic[2][0])}
             let totalFilterArray = filteredArray + filteredArray_1 + filteredArray_2
             let tempfilteredArray = totalFilterArray.filter{ Double($0.components(separatedBy: ",")[2]) == 5.0}
-            let newTempFilteredArray = tempfilteredArray.sorted{ Int($0.components(separatedBy: ",")[1])! > Int($1.components(separatedBy: ",")[1])! }
-//            print(tempfilteredArray)
-//            print(newTempFilteredArray)
             
             var filteredMovieArray: [String] = []
             
@@ -260,13 +234,47 @@ class MovieViewModel: NSObject, ObservableObject {
                 filteredMovieArray += genre
             }
             
-            print(filteredMovieArray)
-            print(filteredMovieArray.count)
+            let recommendArray = filteredMovieArray.filter{ $0.components(separatedBy: ",").last?.contains(genre) as! Bool }
             
-            let recommendArray = filteredMovieArray.filter{ $0.components(separatedBy: ",").last == tempGenre }
-            print(recommendArray)
-            print(recommendArray.count)
+            let newRecommendArray = recommendArray.sorted { Int($0.components(separatedBy: ",")[0])! > Int($1.components(separatedBy: ",")[0])! }
+            
+            var array = newRecommendArray[reloadPoint].description.components(separatedBy: ",")
+            array.removeFirst()
+            array.removeLast()
+            
+            return array[0]
         }
+        
+        return "評価を入れてください"
+    }
+    
+    func getArticle(title: String) -> [String] {
+
+        let url = "https://en.wikipedia.org/api/rest_v1/page/summary/\(title)"
+        
+        var jsonArray: [String] = []
+        
+        AF.request(url).responseJSON { response in
+            do {
+                let json = JSON(response.data)
+                
+                guard let title = json["title"].string else { return }
+                print(type(of: title))
+                guard let extract = json["extract"].string else { return }
+                print(type(of: extract))
+                guard let imageUrl = json["thumbnail"]["source"].string else { return }
+                print(type(of: imageUrl))
+                
+                jsonArray.append(title)
+                jsonArray.append(extract)
+                jsonArray.append(imageUrl)
+                
+                print(jsonArray)
+            } catch {
+                print("デコードに失敗しました")
+            }
+        }
+
+        return jsonArray
     }
 }
-

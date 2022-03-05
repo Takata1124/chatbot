@@ -9,7 +9,9 @@ import SwiftUI
 
 struct ChildEvalCellView: View {
     
-    @State var enable: Bool = false
+    var dataModel: DataModel
+    var movieViewModel: MovieViewModel
+    @Binding var isLoading: Bool
     
     var body: some View {
         
@@ -19,7 +21,7 @@ struct ChildEvalCellView: View {
                 Button {
                     print("次へ")
                 } label: {
-                    Text("レビュー保存")
+                    Text("レビュー投稿")
                 }
                 .frame(width: 150)
                 .font(.system(size: 18))
@@ -27,10 +29,12 @@ struct ChildEvalCellView: View {
                 .padding(12)
                 .background(Color.blue)
                 .cornerRadius(8)
-                .disabled(!enable)
+//                .disabled(!enable)
 
                 Button {
                     print("次へ")
+                    dataModel.flowCount += 1
+                    ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading).sendMessage(message: "次へ")
                 } label: {
                     Text("詳細")
                 }
@@ -40,12 +44,13 @@ struct ChildEvalCellView: View {
                 .padding(12)
                 .background(Color.blue)
                 .cornerRadius(8)
-                .disabled(!enable)
                 
                 Button {
                     print("次へ")
+                    dataModel.flowCount += 1
+                    ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading).sendMessage(message: "次へ")
                 } label: {
-                    Text("次へ")
+                    Text("他へ")
                 }
                 .frame(width: 50)
                 .font(.system(size: 18))
@@ -53,14 +58,13 @@ struct ChildEvalCellView: View {
                 .padding(12)
                 .background(Color.blue)
                 .cornerRadius(8)
-                .disabled(!enable)
             }
         }
     }
 }
 
-struct ChildEvalCellView_Previews: PreviewProvider {
-    static var previews: some View {
-        ChildEvalCellView()
-    }
-}
+//struct ChildEvalCellView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ChildEvalCellView()
+//    }
+//}

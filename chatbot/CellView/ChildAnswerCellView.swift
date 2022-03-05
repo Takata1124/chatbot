@@ -11,6 +11,7 @@ struct ChildAnswerCellView: View {
 
     var dataModel: DataModel
     var movieViewModel: MovieViewModel
+    @Binding var isLoading: Bool
 
     var body: some View {
         
@@ -18,7 +19,7 @@ struct ChildAnswerCellView: View {
             
             Button {
                 dataModel.flowCount += 1
-                ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel).sendMessage(message: "はい")
+                ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading).sendMessage(message: "はい")
             } label: {
                 Text("はい")
             }
@@ -30,8 +31,8 @@ struct ChildAnswerCellView: View {
             .cornerRadius(8)
             
             Button {
-                dataModel.flowCount += 0
-                ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel).sendMessage(message: "いいえ")
+                dataModel.flowCount += 1
+                ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading).sendMessage(message: "いいえ")
             } label: {
                 Text("いいえ")
             }
