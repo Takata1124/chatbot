@@ -15,9 +15,8 @@ struct ContentView: View {
     @ObservedObject var movieViewModel = MovieViewModel()
     
     @State private var messageText = ""
-    @State private var showingSettingSheet = false
+    @State var showingDetailSheet: Bool = false
     @State var menuOpen: Bool = false
-    
     @State var reloadTimes: Int = 0
     @State var isLoading: Bool = false
     
@@ -43,7 +42,7 @@ struct ContentView: View {
                     .rotationEffect(.degrees(180))
                     .background(Color.gray.opacity(0.2))
                     
-                    ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading)
+                    ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading, showingDetailSheet: $showingDetailSheet)
                 }
                 .navigationBarTitle("タイトル", displayMode: .inline)
                 .navigationBarItems(leading: Button(action: {
@@ -54,15 +53,10 @@ struct ContentView: View {
                         .foregroundColor(Color.white)
                 }), trailing: HStack {
                     Button(action: {
-                        let array = movieViewModel.getArticle(title: "Jumanji")
-                        
-                        DispatchQueue.main.async {
-                            print(array)
-                        }
-                        
+                        dataModel.messages = ["映画のおすすめを聞きますか？"]
+                        dataModel.flowCount = 0
                     }, label: {
-                        Image(systemName: "gearshape")
-//                        Text("レビュー数\(dataModel.tapArray.count)")
+                        Text("CLEAR")
                             .foregroundColor(Color.white)
                     })
                 })
@@ -77,8 +71,8 @@ struct ContentView: View {
 //                SideMenuView(width: 270, isOpen: $menuOpen, dataModel: dataModel, menuClose: self.openMenu, function: self.passedFunction)
             }
         }
-        .fullScreenCover(isPresented: $showingSettingSheet) {
-            SettingView()
+        .fullScreenCover(isPresented: $showingDetailSheet) {
+            AddPostView()
         }
     }
     

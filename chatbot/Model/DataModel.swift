@@ -13,6 +13,7 @@ class DataModel: ObservableObject {
     @Published var messages :[String] =  ["映画のおすすめを聞きますか？"]
     @Published var flowCount: Int = 0
     @Published var segueCount: Int = 0
+    @Published var newYear: Bool = true
     
     @Published var cellnames: [CellName] = [
         CellName(name: "HOME"),

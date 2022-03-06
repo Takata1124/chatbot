@@ -24,9 +24,8 @@ struct SignUpVIew: View {
         NavigationView {
             
             ZStack {
-                
                 Color.gray.opacity(0.3).ignoresSafeArea()
-
+                
                 VStack(alignment: .center) {
                     
                     VStack(spacing: 40) {
@@ -65,8 +64,10 @@ struct SignUpVIew: View {
                             .cornerRadius(10)
                             .textInputAutocapitalization(.none)
                         
-                        Button(action: {
-                            authViewModel.register(username: username, mail: inputEmail, passward: inputPassword, uiImage: image!)
+                        Button(action:
+                                
+                                { guard let image = image else { return }
+                            authViewModel.register(username: username, mail: inputEmail, passward: inputPassword, uiImage: image)
                         },
                                label: {
                             Text("SignUp")
@@ -113,7 +114,7 @@ struct SignUpVIew: View {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .gray
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 30)]
-//        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        //        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }

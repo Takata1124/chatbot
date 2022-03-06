@@ -14,6 +14,7 @@ struct ChatCellView: View {
     @ObservedObject var dataModel: DataModel
     @ObservedObject var movieViewModel: MovieViewModel
     @Binding var isLoading: Bool
+    @Binding var showingDetailSheet: Bool
     
     var body: some View {
         
@@ -33,13 +34,9 @@ struct ChatCellView: View {
             dataModel.messages.append("[USER]" + message)
             self.messageText = ""
 
-            let data: String = movieViewModel.getBotResponse(message: message, nowCount: dataModel.flowCount, dataModel: dataModel)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                withAnimation {
-                    dataModel.messages.append(data)
-                    isLoading = false
-                }
+            movieViewModel.getBotResponse(message: message, nowCount: dataModel.flowCount, dataModel: dataModel) { message in
+                dataModel.messages.append(message)
+                isLoading = false
             }
         }
     }
@@ -48,19 +45,19 @@ struct ChatCellView: View {
         if dataModel.flowCount == 0 {
             
             return AnyView(ChildAnswerCellView(
-                dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading))
+                dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading, showingDetailSheet: $showingDetailSheet))
 
         } else if dataModel.flowCount == 1 {
             
-            return AnyView(ChildChatCellView(
-                messageText: $messageText, dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading))
+            return AnyView(ChildYearCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading, showingDetailSheet: $showingDetailSheet))
             
         } else if dataModel.flowCount == 2 {
             
-            return AnyView(ChildEvalCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading))
+            return AnyView(ChildChatCellView(
+                messageText: $messageText, dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading, showingDetailSheet: $showingDetailSheet))
         }else {
             
-            return AnyView(ChildEvalCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading))
+            return AnyView(ChildEvalCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading, showingDetailSheet: $showingDetailSheet))
         }
     }
 }

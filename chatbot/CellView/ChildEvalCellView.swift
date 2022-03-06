@@ -12,6 +12,7 @@ struct ChildEvalCellView: View {
     var dataModel: DataModel
     var movieViewModel: MovieViewModel
     @Binding var isLoading: Bool
+    @Binding var showingDetailSheet: Bool
     
     var body: some View {
         
@@ -19,7 +20,8 @@ struct ChildEvalCellView: View {
             HStack(alignment: .center, spacing: 20) {
                 
                 Button {
-                    print("次へ")
+                    self.showingDetailSheet.toggle()
+                    print("レビュー投稿")
                 } label: {
                     Text("レビュー投稿")
                 }
@@ -32,9 +34,12 @@ struct ChildEvalCellView: View {
 //                .disabled(!enable)
 
                 Button {
-                    print("次へ")
-                    dataModel.flowCount += 1
-                    ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading).sendMessage(message: "次へ")
+                    print("詳細")
+                    
+                    if dataModel.flowCount < 4 {
+                        dataModel.flowCount += 1
+                    }
+                    ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading, showingDetailSheet: $showingDetailSheet).sendMessage(message: "詳細")
                 } label: {
                     Text("詳細")
                 }
@@ -46,9 +51,9 @@ struct ChildEvalCellView: View {
                 .cornerRadius(8)
                 
                 Button {
-                    print("次へ")
-                    dataModel.flowCount += 1
-                    ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading).sendMessage(message: "次へ")
+                    print("他へ")
+                    
+                    ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading, showingDetailSheet: $showingDetailSheet).sendMessage(message: "他へ")
                 } label: {
                     Text("他へ")
                 }

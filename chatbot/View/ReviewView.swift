@@ -16,7 +16,7 @@ struct ReviewView: View {
     @ObservedObject var movieViewModel = MovieViewModel()
     @EnvironmentObject var dataModel: DataModel
     @State var starflag: Bool = false
-
+    
     var filterdMovieArray: [MovieArray] {
         
         var movieArray: [MovieArray] = []
@@ -45,12 +45,12 @@ struct ReviewView: View {
                 movieArray.append(movieViewModel.movieCateArray.filter {$0.title.uppercased().contains(element.title.uppercased())}[0])
             }
         }
-
+        
         return movieArray
     }
-
+    
     var body: some View {
-
+        
         NavigationView {
             VStack {
                 HStack {
@@ -89,7 +89,7 @@ struct ReviewView: View {
                     }
                 }
                 .background(Color.init(uiColor: .gray))
- 
+                
                 ScrollView(.vertical, showsIndicators: false, content: {
                     LazyVStack {
                         ForEach(filterdMovieArray, id: \.self) { movie in
@@ -102,7 +102,7 @@ struct ReviewView: View {
                                         .padding(.trailing)
                                 }
                                 Text("\(movie.category)")
-        
+                                
                                 HStack {
                                     ForEach(1..<6) { i in
                                         VStack(alignment: .center){

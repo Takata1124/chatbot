@@ -13,6 +13,7 @@ struct ChildChatCellView: View {
     var dataModel: DataModel
     var movieViewModel: MovieViewModel
     @Binding var isLoading: Bool
+    @Binding var showingDetailSheet: Bool
 
     var body: some View {
 
@@ -42,7 +43,7 @@ struct ChildChatCellView: View {
         
         isLoading = true
         dataModel.flowCount += 1
-        ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading).sendMessage(message: messageText)
+        ChatCellView(dataModel: dataModel, movieViewModel: movieViewModel, isLoading: $isLoading, showingDetailSheet: $showingDetailSheet).sendMessage(message: messageText)
     }
 }
 

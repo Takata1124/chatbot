@@ -16,6 +16,10 @@ class MovieViewModel: NSObject, ObservableObject {
     var apiKey: String = Apikey().apikey
     var movieArray: [String] = []
     var movieCateArray: [MovieArray] = []
+    var recommendYear: String = ""
+    var tempRecommendTitle: String = ""
+    var tempJenre: String = ""
+    var reloadInt: Int = 0
     
     override init() {
         super.init()
@@ -51,7 +55,6 @@ class MovieViewModel: NSObject, ObservableObject {
                     title = splitedArray[1]
                 }
             }
-            
             movieCateArray.append(
                 MovieArray(number: number, title: title, category: category, year: year, star: 0))
         }
@@ -73,73 +76,106 @@ class MovieViewModel: NSObject, ObservableObject {
         }
         
         for csv in csvArray {
-            if csv == "" {
-                
-            } else {
-                tempcsv.append(csv)
-            }
+            
+            if csv == "" { } else {  tempcsv.append(csv) }
         }
         return tempcsv
     }
     
-    func getBotResponse(message: String, nowCount: Int, dataModel: DataModel) -> String {
+    func getBotResponse(message: String, nowCount: Int, dataModel: DataModel, completion: @escaping (_ message: String) -> Void)  {
         
         let tempMessage = message.lowercased()
         switch nowCount {
             
         case 1:
             let returnMessage = firstSession(tempMessage: tempMessage)
-            return returnMessage
+            completion(returnMessage)
             
         case 2:
+            let returnMessage = secondSession(tempMessage: tempMessage, dataModel: dataModel)
+            completion(returnMessage)
             
-            let returnMessage = secondSession(tempMessage: tempMessage)
-            print(returnMessage)
-            let title = recommendTitle(datamodel: dataModel, genre: returnMessage, reloadPoint: 0)
-            print(title)
-            return title
+        case 3:
+            thirdSession(tempMessage: tempMessage, dataModel: dataModel) { returnMessage in
+                completion(returnMessage)
+            }
             
+        case 4:
+            forthSession(dataModel: dataModel, tempMessage: tempMessage) { message in
+                completion(message)
+            }
+
         default:
-            return "またよろしくお願いします"
+            completion("またよろしくお願いします")
         }
     }
     
     private func firstSession(tempMessage: String) -> String {
         
         if tempMessage.contains("はい") {
-            
-            return "見たい映画のジャンルを教えてください(アクション/冒険/アニメーション/子供たち/コメディ/ファンタジー/ロマンス/ドラマ/犯罪/スリラー/ホラー/ミステリー/SF)"
+            return "見たい映画は新しい映画ですか？昔の映画ですか？"
         } else {
-            
             return "またよろしくお願いします"
         }
     }
-    private func secondSession(tempMessage: String) -> String {
+    
+    private func secondSession(tempMessage: String, dataModel: DataModel) -> String {
         
-        let text = englishTranslate(translatingText: tempMessage)
+        if tempMessage.contains("新しい") {
+            dataModel.newYear = true
+        } else {
+            
+            dataModel.newYear = false
+        }
         
-        return text
+        return "見たい映画のジャンルを教えてください(アクション/冒険/アニメーション/子供たち/コメディ/ファンタジー/ロマンス/ドラマ/犯罪/スリラー/ホラー/ミステリー/SF)"
     }
     
-    func japaneseTranselate(translatingText: String) -> String {
-        
-        var tempText: String = "nil"
-        
-        SwiftGoogleTranslate.shared.start(with: apiKey)
-        SwiftGoogleTranslate.shared.translate(translatingText, "ja", "en") { (text, error) in
+    private func thirdSession(tempMessage: String, dataModel: DataModel, completion: @escaping (_ returnMessage: String) -> Void) {
+    
+        switch tempMessage {
             
-            if error != nil {
-                fatalError("error")
-            }
-            if let t = text {
-                print(t)
-                tempText = t
-            }
+        case "他へ":
+            print(tempJenre)
+            reloadInt += 1
+            var recommendTitle = recommendTitle(datamodel: dataModel, genre: tempJenre, reloadPoint: reloadInt)
+            self.tempRecommendTitle = recommendTitle
+            recommendTitle = recommendTitle + " " + "(" + self.recommendYear + ")"
+            completion(recommendTitle)
+   
+        default:
+            reloadInt = 0
+            let returnMessage = englishTranslate(translatingText: tempMessage)
+            tempJenre = returnMessage
+            var recommendTitle = recommendTitle(datamodel: dataModel, genre: tempJenre, reloadPoint: reloadInt)
+            self.tempRecommendTitle = recommendTitle
+            recommendTitle = recommendTitle + " " + self.recommendYear
+            completion(recommendTitle)
         }
-        //APIの処理時間
-        sleep(1)
-        return tempText
+    }
+    
+    private func forthSession(dataModel:DataModel, tempMessage: String, completion: @escaping (_ message: String) -> Void) {
         
+        var message = "すみませんが詳細データが見つかりませんでした"
+        
+        switch tempMessage {
+            
+        case "詳細":
+            getArticle(title: tempRecommendTitle) { titleArray in
+                message = titleArray[1]
+                completion(message)
+            }
+            
+        case "他へ":
+            reloadInt += 1
+            var recommendTitle = recommendTitle(datamodel: dataModel, genre: tempJenre, reloadPoint: reloadInt)
+            self.tempRecommendTitle = recommendTitle
+            recommendTitle = recommendTitle + " " + "(" + self.recommendYear + ")"
+            completion(recommendTitle)
+ 
+        default:
+            completion(message)
+        }
     }
     
     func englishTranslate(translatingText: String) -> String {
@@ -157,7 +193,7 @@ class MovieViewModel: NSObject, ObservableObject {
             }
         }
         //APIの処理時間
-        sleep(1)
+        sleep(2)
         return tempText
     }
     
@@ -178,7 +214,7 @@ class MovieViewModel: NSObject, ObservableObject {
         }
         
         if separetedArray != [] {
-            print(separetedArray[0].initialUppercased())
+//            print(separetedArray[0].initialUppercased())
             return separetedArray[0].initialUppercased()
         } else {
             let void: String = "void"
@@ -235,46 +271,66 @@ class MovieViewModel: NSObject, ObservableObject {
             }
             
             let recommendArray = filteredMovieArray.filter{ $0.components(separatedBy: ",").last?.contains(genre) as! Bool }
+            var newRecommendArray: [String] = []
             
-            let newRecommendArray = recommendArray.sorted { Int($0.components(separatedBy: ",")[0])! > Int($1.components(separatedBy: ",")[0])! }
+            newRecommendArray = recommendArray
             
+            if datamodel.newYear == true {
+                newRecommendArray = recommendArray.sorted { Int($0.components(separatedBy: ",")[0])! > Int($1.components(separatedBy: ",")[0])! }
+            }
+ 
             var array = newRecommendArray[reloadPoint].description.components(separatedBy: ",")
             array.removeFirst()
             array.removeLast()
             
-            return array[0]
+            let recommendTitle = array[0]
+            
+            if recommendTitle.contains("(") {
+                var recommend = recommendTitle.description.components(separatedBy: "(")
+                let recommendYear = recommend.removeLast()
+                let year = recommendYear.components(separatedBy: ")")[0]
+                self.recommendYear = year
+                let deleteRecomend = recommend[0].trimmingCharacters(in: .whitespaces)
+                return deleteRecomend
+            }
+            return recommendTitle
         }
-        
         return "評価を入れてください"
     }
     
-    func getArticle(title: String) -> [String] {
+    func getArticle(title: String, completion: @escaping (_ titleArray: [String]) -> Void){
 
-        let url = "https://en.wikipedia.org/api/rest_v1/page/summary/\(title)"
+        var replaceString: String = ""
+        if title.contains(" "){
+            replaceString = title.replacingOccurrences(of: " ", with: "_")
+        } else {
+            replaceString = title
+        }
+        
+        let url = "https://en.wikipedia.org/api/rest_v1/page/summary/\(replaceString)"
         
         var jsonArray: [String] = []
         
         AF.request(url).responseJSON { response in
+            
             do {
                 let json = JSON(response.data)
                 
                 guard let title = json["title"].string else { return }
-                print(type(of: title))
                 guard let extract = json["extract"].string else { return }
-                print(type(of: extract))
-                guard let imageUrl = json["thumbnail"]["source"].string else { return }
-                print(type(of: imageUrl))
                 
                 jsonArray.append(title)
                 jsonArray.append(extract)
-                jsonArray.append(imageUrl)
                 
-                print(jsonArray)
+//                let imageUrl = json["thumbnail"]["source"].string
+//                if imageUrl != nil {
+//                    jsonArray.append(imageUrl!)
+//                }
+
+                completion(jsonArray)
             } catch {
                 print("デコードに失敗しました")
             }
         }
-
-        return jsonArray
     }
 }

@@ -20,7 +20,6 @@ struct LoginView: View {
         NavigationView {
             
             ZStack {
-                
                 Color.gray.opacity(0.3).ignoresSafeArea()
 
                 VStack(alignment: .center) {
@@ -56,18 +55,6 @@ struct LoginView: View {
                         })
                         
                         Button(action: {
-                           
-                        },
-                               label: {
-                            Text("パスワードを忘れた方はこちら")
-                                .fontWeight(.medium)
-                                .frame(width: 300, height: 40)
-                                .foregroundColor(.blue)
-//                                .padding(12)
-                                .cornerRadius(8)
-                        })
-                        
-                        Button(action: {
                             dismiss()
                         },
                                label: {
@@ -75,7 +62,6 @@ struct LoginView: View {
                                 .fontWeight(.medium)
                                 .frame(width: 300, height: 40)
                                 .foregroundColor(.blue)
-//                                .padding(12)
                                 .cornerRadius(8)
                         })
 
@@ -84,6 +70,9 @@ struct LoginView: View {
                 }
             }
             .navigationBarTitle("Login",  displayMode: .inline)
+        }
+        .fullScreenCover(isPresented: $authViewModel.showingHomeSheet) {
+            HomeView()
         }
     }
     

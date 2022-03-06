@@ -18,14 +18,8 @@ struct chatbotApp: App {
     var body: some Scene {
         WindowGroup {
             
-            if Auth.auth().currentUser == nil {
-                
-                SignUpVIew()
-                    .environmentObject(AuthViewModel())
-            } else {
-                HomeView()
-                    .environmentObject(AuthViewModel())
-            }
+            InitialVIew()
+                .environmentObject(AuthViewModel())
         }
     }
 }

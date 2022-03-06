@@ -96,6 +96,7 @@ struct HomeView: View {
                     }
                     Spacer()
                     Button(action: {
+                        
                         self.showingReviewSheet.toggle()
                     }) {
                         VStack(alignment: .center) {
@@ -110,7 +111,6 @@ struct HomeView: View {
             .accentColor(.black)
             .navigationBarTitle("HOME", displayMode: .inline)
             .navigationBarItems(leading: Button(action: {
-                //                self.openMenu()
             }, label: {
                 Image(systemName: "arrow.clockwise")
                     .foregroundColor(Color.white)
@@ -140,7 +140,6 @@ struct HomeView: View {
     
     init() {
         self.setupNavigationBar()
-        
     }
     
     private func setupNavigationBar() {
@@ -151,6 +150,7 @@ struct HomeView: View {
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
+    
 }
 
 //struct HomeView_Previews: PreviewProvider {

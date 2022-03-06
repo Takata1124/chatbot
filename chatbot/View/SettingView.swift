@@ -88,7 +88,7 @@ struct SettingView: View {
             }), trailing: HStack {
                 Button(action: {
                     print("右のボタン１が押されました。")
-                    self.authViewModel.signout()
+//                    self.authViewModel.signout()
                 }, label: {
                     Image(systemName: "trash")
                         .foregroundColor(Color.white)

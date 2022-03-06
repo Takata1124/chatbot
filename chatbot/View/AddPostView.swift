@@ -23,7 +23,7 @@ struct AddPostView: View {
                         .overlay(
                             VStack (spacing: 50) {
                                 
-                                HStack {
+                                HStack (spacing: 20) {
                                     Image(systemName: "person")
                                         .resizable()
                                         .scaledToFill()
@@ -42,14 +42,6 @@ struct AddPostView: View {
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading, 35)
     
-                                    
-                                    TextField("", text: $text)
-                                        .frame(width: 300,height: 30)
-                                        .font(.system(size: 18))
-                                        .foregroundColor(.white)
-                                        .padding(12)
-                                        .background(Color.white)
-                                        .cornerRadius(20)
                                 }
                                
                                 VStack {
