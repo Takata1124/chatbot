@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct SettingView: View {
     
@@ -17,19 +18,22 @@ struct SettingView: View {
     
     var movieViewModel = MovieViewModel()
     
-    let languages: [String] = [
-        "English",
-        "Japanease",
-    ]
-    
     var body: some View {
         
         NavigationView {
             Form {
-                HStack {
-                    Image(systemName: "person.circle")
-                    Button("Sign in to your iPhone", action: {})
+                HStack (spacing: 20){
+                    KFImage(URL(string: authViewModel.userData!.ImageUrl))
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                        .overlay(Circle()
+                                    .stroke(Color.black, lineWidth: 1))
+                        
+                    Text("\(authViewModel.userData!.username)")
                         .foregroundColor(Color.black)
+                        .font(.system(size: 20))
                 }
                 
                 Section(header: Text("General")) {
@@ -38,13 +42,6 @@ struct SettingView: View {
                         Spacer()
                         Toggle(isOn: $isOn) {
                             EmptyView()
-                        }
-                    }
-                    HStack {
-                        Picker(selection: $pickerSelection, label: Text("Language")) {
-                            ForEach(0..<self.languages.count) { index in
-                                Text(self.languages[index])
-                            }
                         }
                     }
                 }

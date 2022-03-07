@@ -13,14 +13,42 @@ struct SignUpVIew: View {
     @State var inputEmail: String = ""
     @State var inputPassword: String = ""
     
+    @State var errorMessage: String = "入力を完了してください"
+    
     @State var showingPicker = false
     @State var showingLoginsheet = false
     @State var image: UIImage?
     
     @EnvironmentObject var authViewModel: AuthViewModel
     
-    var body: some View {
+    var enable: Bool {
         
+        if username.isEmpty || inputEmail.isEmpty || inputPassword.isEmpty {
+            return false
+        }
+        
+        if inputPassword.count < 6 {
+            DispatchQueue.main.async {
+                self.errorMessage = "パスワードは6文字以上でお願いします"
+            }
+            return false
+        }
+        
+        if image == nil {
+            
+            DispatchQueue.main.async {
+                self.errorMessage = "アイコンをタッチしImageを設定してください"
+            }
+            return false
+        }
+        
+        else {
+            return true
+        }
+    }
+
+    var body: some View {
+
         NavigationView {
             
             ZStack {
@@ -28,9 +56,9 @@ struct SignUpVIew: View {
                 
                 VStack(alignment: .center) {
                     
-                    VStack(spacing: 40) {
-                        
-                        Text("")
+                    VStack(spacing: 30) {
+
+                        Spacer()
                         
                         Image(uiImage: (image ?? UIImage(named: "default.png"))!)
                             .resizable()
@@ -64,9 +92,12 @@ struct SignUpVIew: View {
                             .cornerRadius(10)
                             .textInputAutocapitalization(.none)
                         
+                        Text("\(errorMessage)")
+                            .font(.system(size: 16))
+                        
                         Button(action:
                                 
-                                { guard let image = image else { return }
+                            { guard let image = image else { return }
                             authViewModel.register(username: username, mail: inputEmail, passward: inputPassword, uiImage: image)
                         },
                                label: {
@@ -75,9 +106,10 @@ struct SignUpVIew: View {
                                 .frame(minWidth: 160)
                                 .foregroundColor(.white)
                                 .padding(12)
-                                .background(Color.accentColor)
+                                .background(enable ? Color.blue : Color.gray)
                                 .cornerRadius(8)
                         })
+                            .disabled(!enable)
                         
                         Button(action: {
                             self.showingLoginsheet.toggle()
@@ -86,10 +118,11 @@ struct SignUpVIew: View {
                             Text("既にアカウントをお持ちの方はこちら")
                                 .fontWeight(.medium)
                                 .frame(width: 300, height: 40)
-                                .foregroundColor(.blue)
+                                .foregroundColor(Color.blue)
                                 .padding(12)
                                 .cornerRadius(8)
                         })
+                            
                         
                         Spacer()
                     }
@@ -114,7 +147,6 @@ struct SignUpVIew: View {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .gray
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 30)]
-        //        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }

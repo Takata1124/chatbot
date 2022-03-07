@@ -86,6 +86,15 @@ struct ReviewView: View {
                             .foregroundColor(Color.white)
                             .padding(.top, 20)
                             .padding(.trailing, 30)
+                        
+                        Button {
+                            self.starflag.toggle()
+                        } label: {
+                            Image(systemName: "star.fill")
+                                .foregroundColor(Color.white)
+                        }
+                        .padding(.top, 20)
+                        .padding(.trailing, 30)
                     }
                 }
                 .background(Color.init(uiColor: .gray))
@@ -148,11 +157,11 @@ struct ReviewView: View {
                     }), trailing: HStack {
                         Button(action: {
                             print("右のボタン１が押されました。")
-                            self.starflag.toggle()
+//                            self.starflag.toggle()
                             print(starflag)
                             
                         }, label: {
-                            Image(systemName: "star.fill")
+                            Text("SAVE")
                                 .foregroundColor(Color.white)
                         })
                     })

@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct SelfCellView: View {
     
     let message: String
+    
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
         
@@ -24,7 +27,7 @@ struct SelfCellView: View {
 //                .padding(.horizontal, 16)
                 .padding(.bottom, 10)
             
-            Image(systemName: "person")
+            KFImage(URL(string: authViewModel.userData!.ImageUrl))
                 .resizable()
                 .scaledToFill()
                 .frame(width: 40, height: 40)
@@ -35,8 +38,8 @@ struct SelfCellView: View {
     }
 }
 
-struct SelfCellView_Previews: PreviewProvider {
-    static var previews: some View {
-        SelfCellView(message: "message")
-    }
-}
+//struct SelfCellView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SelfCellView(message: "message")
+//    }
+//}

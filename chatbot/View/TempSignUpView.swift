@@ -72,8 +72,8 @@ struct TempSignUpView: View {
     }
 }
 
-struct TempSignUpView_Previews: PreviewProvider {
-    static var previews: some View {
-        TempSignUpView()
-    }
-}
+//struct TempSignUpView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TempSignUpView()
+//    }
+//}

@@ -51,6 +51,7 @@
 		68DE549A27D37DC4004D7EB9 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 68DE549927D37DC4004D7EB9 /* SwiftyJSON */; };
 		68DE549E27D45538004D7EB9 /* ChildYearCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE549D27D45538004D7EB9 /* ChildYearCellView.swift */; };
 		68DE54A027D512A1004D7EB9 /* InitialVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE549F27D512A1004D7EB9 /* InitialVIew.swift */; };
+		68DE54A327D6267C004D7EB9 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 68DE54A227D6267C004D7EB9 /* Kingfisher */; };
 		B8D1489AF84072EE87D6CDA3 /* Pods_chatbot_chatbotUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FBA3CEB2C1A28995D22A86 /* Pods_chatbot_chatbotUITests.framework */; };
 		D3662CD76CBFDFFDE11B259D /* Pods_chatbotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52E540C68ECD350C8787AC1E /* Pods_chatbotTests.framework */; };
 		E48CA53F7B433CE897B663A8 /* Pods_chatbot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E589C411785CA9F38E1D253 /* Pods_chatbot.framework */; };
@@ -127,6 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68DE54A327D6267C004D7EB9 /* Kingfisher in Frameworks */,
 				68DE549427D26B2D004D7EB9 /* PKHUD in Frameworks */,
 				68DCA02C27CB32F400B69D85 /* FirebaseAnalytics in Frameworks */,
 				68DCA02E27CB32F400B69D85 /* FirebaseAuth in Frameworks */,
@@ -353,6 +355,7 @@
 				68DE549327D26B2D004D7EB9 /* PKHUD */,
 				68DE549627D368DB004D7EB9 /* AlamofireImage */,
 				68DE549927D37DC4004D7EB9 /* SwiftyJSON */,
+				68DE54A227D6267C004D7EB9 /* Kingfisher */,
 			);
 			productName = chatbot;
 			productReference = 68AB85C227C6F8B40061E096 /* chatbot.app */;
@@ -434,6 +437,7 @@
 				68DE549227D26B2D004D7EB9 /* XCRemoteSwiftPackageReference "PKHUD" */,
 				68DE549527D368DB004D7EB9 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 				68DE549827D37DC4004D7EB9 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				68DE54A127D6267B004D7EB9 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 68AB85C327C6F8B40061E096 /* Products */;
 			projectDirPath = "";
@@ -975,6 +979,14 @@
 				version = 5.0.1;
 			};
 		};
+		68DE54A127D6267B004D7EB9 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = exactVersion;
+				version = 7.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1027,6 +1039,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 68DE549827D37DC4004D7EB9 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
+		};
+		68DE54A227D6267C004D7EB9 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 68DE54A127D6267B004D7EB9 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

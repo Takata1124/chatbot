@@ -17,7 +17,7 @@ class MovieViewModel: NSObject, ObservableObject {
     var movieArray: [String] = []
     var movieCateArray: [MovieArray] = []
     var recommendYear: String = ""
-    var tempRecommendTitle: String = ""
+    @Published var tempRecommendTitle: String = ""
     var tempJenre: String = ""
     var reloadInt: Int = 0
     
@@ -136,7 +136,6 @@ class MovieViewModel: NSObject, ObservableObject {
         switch tempMessage {
             
         case "他へ":
-            print(tempJenre)
             reloadInt += 1
             var recommendTitle = recommendTitle(datamodel: dataModel, genre: tempJenre, reloadPoint: reloadInt)
             self.tempRecommendTitle = recommendTitle
@@ -149,6 +148,7 @@ class MovieViewModel: NSObject, ObservableObject {
             tempJenre = returnMessage
             var recommendTitle = recommendTitle(datamodel: dataModel, genre: tempJenre, reloadPoint: reloadInt)
             self.tempRecommendTitle = recommendTitle
+            print(tempRecommendTitle)
             recommendTitle = recommendTitle + " " + self.recommendYear
             completion(recommendTitle)
         }
@@ -321,16 +321,15 @@ class MovieViewModel: NSObject, ObservableObject {
                 
                 jsonArray.append(title)
                 jsonArray.append(extract)
-                
-//                let imageUrl = json["thumbnail"]["source"].string
-//                if imageUrl != nil {
-//                    jsonArray.append(imageUrl!)
-//                }
 
                 completion(jsonArray)
             } catch {
                 print("デコードに失敗しました")
             }
         }
+    }
+    
+    func saveEvaluateData() {
+        
     }
 }

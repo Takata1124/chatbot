@@ -23,7 +23,6 @@ struct LoginView: View {
                 Color.gray.opacity(0.3).ignoresSafeArea()
 
                 VStack(alignment: .center) {
-                    
                     VStack(spacing: 40) {
                         
                         Spacer()
@@ -33,12 +32,14 @@ struct LoginView: View {
                             .frame(width: 300, height: 40)
                             .background(Color.white)
                             .cornerRadius(10)
+                            .textInputAutocapitalization(.none)
                         
                         SecureField("Password", text: $inputPassword)
                             .padding()
                             .frame(width: 300, height: 40)
                             .background(Color.white)
                             .cornerRadius(10)
+                            .textInputAutocapitalization(.none)
                         
                         Button(action: {
                             print("Login処理")

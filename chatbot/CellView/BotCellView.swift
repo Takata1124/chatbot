@@ -11,6 +11,8 @@ struct BotCellView: View {
     
     let message: String
     
+    
+    
     var body: some View {
         
         VStack {

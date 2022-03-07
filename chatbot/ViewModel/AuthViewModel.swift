@@ -13,11 +13,15 @@ class AuthViewModel: NSObject, ObservableObject {
     
     @Published var showingHomeSheet: Bool = false
     @Published var tempCurrentUser: Firebase.User?
+    @Published var userData: User?
     
     override init() {
+        super.init()
+        
         if Auth.auth().currentUser != nil {
             
             self.tempCurrentUser = Auth.auth().currentUser
+            self.fetchUserData()
         }
     }
     
@@ -37,10 +41,9 @@ class AuthViewModel: NSObject, ObservableObject {
     
     func register(username: String, mail: String, passward: String, uiImage: UIImage) {
         
-        Auth.auth().createUser(withEmail: mail, password: passward) { res, err in
+        Auth.auth().createUser(withEmail: mail, password: passward) { res, error in
             
-            if err != nil {
-                print("error")
+            if let error = error {
                 return
             }
             guard let user = res?.user else { return }
@@ -91,4 +94,23 @@ class AuthViewModel: NSObject, ObservableObject {
             print("SignOut Error: %@", signOutError)
         }
     }
+    
+    func fetchUserData() {
+        
+        guard let uid = tempCurrentUser?.uid else { return }
+        
+        Firestore.firestore().collection("users").document(uid).getDocument { snapshots, error in
+            
+            if error != nil {
+                return
+            }
+            
+            guard let dic = snapshots?.data() else { return }
+            let user = User.init(dic: dic)
+            
+            self.userData = user
+            print(self.userData as Any)
+        }
+    }
 }
+

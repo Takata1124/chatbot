@@ -6,16 +6,18 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct AddPostView: View {
     
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var movieViewModel: MovieViewModel
     @State var text: String = ""
 
     var body: some View {
         
         NavigationView {
-            
             VStack {
                 GeometryReader { geometry in
                     RoundedRectangle(cornerRadius: 20)
@@ -24,27 +26,28 @@ struct AddPostView: View {
                             VStack (spacing: 50) {
                                 
                                 HStack (spacing: 20) {
-                                    Image(systemName: "person")
+                                    KFImage(URL(string: authViewModel.userData!.ImageUrl))
                                         .resizable()
                                         .scaledToFill()
                                         .frame(width: 40, height: 40)
                                         .clipShape(Circle())
                                     
-                                    Text("takatatakata")
+                                    Text("\(authViewModel.userData!.username)")
                                         .font(.system(size: 24))
                                     
                                     Spacer()
                                 }
                                 .padding(.leading, 30)
                                 
-                                VStack {
-                                    Text("レビュータイトル")
+                                VStack (spacing: 20) {
+                                    Text("タイトル")
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading, 35)
-    
-                                }
-                               
-                                VStack {
+                                    
+                                    Text("カテゴリ")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding(.leading, 35)
+                                    
                                     Text("レビュー")
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading, 35)
@@ -109,8 +112,8 @@ struct AddPostView: View {
     }
 }
 
-struct AddPostView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddPostView()
-    }
-}
+//struct AddPostView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddPostView()
+//    }
+//}

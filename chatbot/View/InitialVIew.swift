@@ -20,7 +20,9 @@ struct InitialVIew: View {
                 
         } else {
             
-            HomeView()
+            if (authViewModel.userData != nil) {
+                HomeView()
+            }
         }
     }
 }

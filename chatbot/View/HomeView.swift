@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct HomeView: View {
     
@@ -15,17 +16,19 @@ struct HomeView: View {
     @State var showingReviewSheet = false
     
     @StateObject var dataModel = DataModel()
-
+    @EnvironmentObject var movieViewModel: MovieViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
+    
     var body: some View {
-   
+
         NavigationView {
             ZStack {
-                
                 Color.gray.opacity(0.3).ignoresSafeArea()
+                
                 VStack(alignment: .center, spacing: 40){
                     
                     VStack {
-                        Image(uiImage: UIImage(named: "default.png")!)
+                        KFImage(URL(string: authViewModel.userData!.ImageUrl))
                             .resizable()
                             .scaledToFill()
                             .frame(width: 200, height: 200, alignment: .center)
@@ -33,10 +36,11 @@ struct HomeView: View {
                             .overlay(Circle()
                                         .stroke(Color.black, lineWidth: 2))
                             .padding()
-                        Text("いいねした数")
+                        
+                        Text("\(authViewModel.userData!.username)")
                             .font(.system(size: 18))
                     }
-
+                    
                     VStack(alignment: .center, spacing: 20) {
                         
                         Image(systemName: "text.bubble")
@@ -44,13 +48,13 @@ struct HomeView: View {
                             .scaledToFit()
                             .frame(width: 50, height: 50, alignment: .center)
                             .padding(.bottom, 3)
-                        Text("投稿数 100").font(.caption2)
+                        Text("投稿数 100")
+                            .font(.caption2)
                     }
                     
                     HStack(alignment: .center, spacing: 100) {
-                        
                         VStack(alignment: .center, spacing: 20) {
-                           
+                            
                             Image(systemName: "heart.fill")
                                 .resizable()
                                 .scaledToFit()
@@ -60,7 +64,7 @@ struct HomeView: View {
                         }
                         
                         VStack(alignment: .center, spacing: 20) {
-                           
+                            
                             Image(systemName: "hand.thumbsup")
                                 .resizable()
                                 .scaledToFit()
@@ -75,6 +79,7 @@ struct HomeView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Spacer()
+                    
                     Button(action: {
                         self.showingSheet.toggle()
                     }) {
@@ -96,7 +101,6 @@ struct HomeView: View {
                     }
                     Spacer()
                     Button(action: {
-                        
                         self.showingReviewSheet.toggle()
                     }) {
                         VStack(alignment: .center) {
@@ -136,8 +140,9 @@ struct HomeView: View {
             ReviewView()
         }
         .environmentObject(dataModel)
+        .environmentObject(MovieViewModel())
     }
-    
+
     init() {
         self.setupNavigationBar()
     }
@@ -150,7 +155,6 @@ struct HomeView: View {
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
-    
 }
 
 //struct HomeView_Previews: PreviewProvider {

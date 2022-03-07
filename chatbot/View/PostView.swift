@@ -13,7 +13,7 @@ struct PostView: View {
     @State private var showingAddPostSheet = false
     @Environment(\.dismiss) var dismiss
     
-    let pokemons: [String] = ["Snorlax", "Slowpoke", "Pikachu", "Eevee"]
+    let pokemons: [String] = ["Snorlax"]
     
     var filterdPokemons: [String] {
         if text.isEmpty {
@@ -67,7 +67,8 @@ struct PostView: View {
                             print("右のボタン１が押されました。")
                             self.showingAddPostSheet.toggle()
                         }, label: {
-                            Image(systemName: "person")
+//                            Image(systemName: "person")
+                            Text("下書き")
                                 .foregroundColor(Color.white)
                         })
                     })

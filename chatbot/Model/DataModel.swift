@@ -44,3 +44,16 @@ struct MovieArray: Hashable {
     var year: String
     var star: Int
 }
+
+struct User {
+    
+    let username: String
+    let email: String
+    let ImageUrl: String
+    
+    init(dic: [String: Any]) {
+        self.username = dic["username"] as? String ?? ""
+        self.email = dic["email"] as? String ?? ""
+        self.ImageUrl = dic["ImageUrl"] as? String ?? ""
+    }
+}
