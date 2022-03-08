@@ -14,7 +14,6 @@ struct SignUpVIew: View {
     @State var inputPassword: String = ""
     
     @State var errorMessage: String = "入力を完了してください"
-    
     @State var showingPicker = false
     @State var showingLoginsheet = false
     @State var image: UIImage?

@@ -72,8 +72,8 @@ struct PostCellView: View {
     }
 }
 
-struct PostCellView_Previews: PreviewProvider {
-    static var previews: some View {
-        PostCellView(cellText: "hello")
-    }
-}
+//struct PostCellView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PostCellView(cellText: "hello")
+//    }
+//}

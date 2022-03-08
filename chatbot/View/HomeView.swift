@@ -81,6 +81,7 @@ struct HomeView: View {
                     Spacer()
                     
                     Button(action: {
+                        movieViewModel.fetchEvaluateData(dataModel: dataModel)
                         self.showingSheet.toggle()
                     }) {
                         VStack(alignment: .center) {
@@ -102,6 +103,8 @@ struct HomeView: View {
                     Spacer()
                     Button(action: {
                         self.showingReviewSheet.toggle()
+                        movieViewModel.fetchEvaluateData(dataModel: dataModel)
+                        movieViewModel.deleteEvaluateData(dataModel: dataModel)
                     }) {
                         VStack(alignment: .center) {
                             Label("送信", systemImage: "star")
@@ -140,7 +143,6 @@ struct HomeView: View {
             ReviewView()
         }
         .environmentObject(dataModel)
-        .environmentObject(MovieViewModel())
     }
 
     init() {

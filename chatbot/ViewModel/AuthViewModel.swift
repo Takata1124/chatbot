@@ -72,9 +72,15 @@ class AuthViewModel: NSObject, ObservableObject {
                     guard let imageUrl = url?.absoluteString else { return }
                     Firestore.firestore().collection("users").document(self.tempCurrentUser!.uid).updateData(["ImageUrl": imageUrl]) { _ in
                         print("update to url")
+                        
                     }
                 }
             }
+            
+            guard let user = res?.user else { return }
+            self.tempCurrentUser = user
+            self.showingHomeSheet.toggle()
+            
             print("success to register")
         }
     }

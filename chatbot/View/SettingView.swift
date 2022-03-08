@@ -36,16 +36,6 @@ struct SettingView: View {
                         .font(.system(size: 20))
                 }
                 
-                Section(header: Text("General")) {
-                    HStack {
-                        Text("Airplane Mode")
-                        Spacer()
-                        Toggle(isOn: $isOn) {
-                            EmptyView()
-                        }
-                    }
-                }
-                
                 Section(header: Text("About"), footer: Text("copyright ©︎ 20XX-20XX Apple All Rights Reserved.")) {
                     HStack {
                         Text("Device Name")
@@ -71,11 +61,12 @@ struct SettingView: View {
                                 print("Logout")
                                 authViewModel.signout()
                             }
+
                         Spacer()
                     }
                 }
             }
-            .navigationBarTitle("タイトル", displayMode: .inline)
+            .navigationBarTitle("設定", displayMode: .inline)
             .navigationBarItems(leading: Button(action: {
                 print("左のボタンが押されました。")
                 dismiss()

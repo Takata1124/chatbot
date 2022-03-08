@@ -14,6 +14,10 @@ class DataModel: ObservableObject {
     @Published var flowCount: Int = 0
     @Published var segueCount: Int = 0
     @Published var newYear: Bool = true
+    @Published var tempTitle: String = ""
+    @Published var tempCategory: String = ""
+    @Published var tempYear: String = ""
+    @Published var tempImageUrl: String = ""
     
     @Published var cellnames: [CellName] = [
         CellName(name: "HOME"),
@@ -21,6 +25,7 @@ class DataModel: ObservableObject {
     ]
     
     @Published var tapArray: [TapArray] = []
+    @Published var postViewArray: [PostViewArray] = []
 }
 
 struct CellName: Identifiable {
@@ -36,17 +41,50 @@ struct TapArray: Identifiable, Equatable {
     var star: Int
 }
 
+struct DecodeTapArray {
+    
+    let id: String
+    let title: String
+    let star: Int
+    
+    init(dic: [String: Any]) {
+        self.id = dic["id"] as? String ?? ""
+        self.title = dic["title"] as? String ?? ""
+        self.star = dic["star"] as? Int ?? 0
+    }
+}
+
 struct MovieArray: Hashable {
     
-    var number: String
-    var title: String
-    var category: String
-    var year: String
-    var star: Int
+    let number: String
+    let title: String
+    let category: String
+    let year: String
+    let star: Int
+}
+
+struct PostViewArray {
+    
+    let id: String
+    let title: String
+    let category: String
+    let year: String
+    let star: Int
+    let review: String
+    let heartCount: Int
+    
+    init(dic: [String: Any]) {
+        self.id = dic["id"] as? String ?? ""
+        self.title = dic["title"] as? String ?? ""
+        self.category = dic["category"] as? String ?? ""
+        self.year = dic["year"] as? String ?? ""
+        self.star = dic["star"] as? Int ?? 0
+        self.review = dic["review"] as? String ?? ""
+        self.heartCount = dic["heartCount"] as? Int ?? 0
+    }
 }
 
 struct User {
-    
     let username: String
     let email: String
     let ImageUrl: String

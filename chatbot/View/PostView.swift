@@ -23,6 +23,19 @@ struct PostView: View {
         }
     }
     
+    let docData = [
+        "id": "1",
+        "title": "tap.title",
+        "category": "tap.title",
+        "year": "tap.title",
+        "star": 3,
+        "review": "tap.title",
+        "heartCount": "tap.star",
+    ] as [String: Any]
+    
+//    let post = PostView(dic: docData)
+//    var postViewArray: [PostViewArray] = [PostViewArray(dic: docData)]
+
     var body: some View {
         
         NavigationView {
@@ -55,7 +68,7 @@ struct PostView: View {
                         }
                     }
                 })
-                    .navigationBarTitle("投稿一覧", displayMode: .inline)
+                    .navigationBarTitle("投稿", displayMode: .inline)
                     .navigationBarItems(leading: Button(action: {
                         print("左のボタンが押されました。")
                         dismiss()

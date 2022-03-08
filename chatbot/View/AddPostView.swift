@@ -7,14 +7,16 @@
 
 import SwiftUI
 import Kingfisher
+import Combine
 
 struct AddPostView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var movieViewModel: MovieViewModel
+    @EnvironmentObject var dataModel: DataModel
     @State var text: String = ""
-
+    
     var body: some View {
         
         NavigationView {
@@ -25,46 +27,35 @@ struct AddPostView: View {
                         .overlay(
                             VStack (spacing: 50) {
                                 
-                                HStack (spacing: 20) {
-                                    KFImage(URL(string: authViewModel.userData!.ImageUrl))
+                                VStack (spacing: 30) {
+                                    
+                                    Text("タイトル：\(dataModel.tempTitle)")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding(.leading, 35)
+                                    
+                                    Text("カテゴリ：\(dataModel.tempCategory)")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding(.leading, 35)
+                                    
+                                    KFImage(URL(string:dataModel.tempImageUrl))
                                         .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 40, height: 40)
-                                        .clipShape(Circle())
+//                                        .scaledToFill()
+                                        .frame(width: 165, height: 230)
                                     
-                                    Text("\(authViewModel.userData!.username)")
-                                        .font(.system(size: 24))
+                                    MultilineTextView(text: $text)
+//                                        .padding()
+                                        .frame(width: 200, height: 100)
+                                        .border(Color.gray)
                                     
-                                    Spacer()
-                                }
-                                .padding(.leading, 30)
-                                
-                                VStack (spacing: 20) {
-                                    Text("タイトル")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding(.leading, 35)
-                                    
-                                    Text("カテゴリ")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding(.leading, 35)
-                                    
-                                    Text("レビュー")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding(.leading, 35)
-                                    
-                                    TextField("", text: $text)
-                                        .frame(width: 300,height: 200)
-                                        .font(.system(size: 18))
-                                        .foregroundColor(.white)
-                                        .padding(12)
-                                        .background(Color.white)
-                                        .cornerRadius(20)
                                 }
                                 
                                 HStack {
-                                    ForEach(0..<5) { i in
-                                        Image(systemName: "star")
-                                            .font(.system(size: 26))
+                                    ForEach(1..<6) { i in
+                                        VStack(alignment: .center) {
+                                            Text("\(i)")
+                                            Image(systemName: "star")
+                                                .font(.system(size: 26))
+                                        }
                                     }
                                 }
                                 
@@ -73,20 +64,20 @@ struct AddPostView: View {
                                 } label: {
                                     Text("投稿")
                                 }
-                                .frame(width: 300)
-                                .font(.system(size: 18))
+                                .frame(width: 100)
+                                //                                .font(.system(size: 18))
                                 .foregroundColor(.black)
                                 .padding(12)
                                 .background(Color.gray.opacity(0.9))
                                 .cornerRadius(20)
+                                
                             }
                         )
                 }
-                
                 .padding()
                 
             }
-            .navigationBarTitle("レビュー投稿", displayMode: .inline)
+            .navigationBarTitle("投稿", displayMode: .inline)
             .navigationBarItems(leading: Button(action: {
                 print("左のボタンが押されました。")
                 dismiss()
@@ -94,8 +85,13 @@ struct AddPostView: View {
                 Image(systemName: "arrowshape.turn.up.backward")
                     .foregroundColor(Color.white)
             }), trailing: HStack {
+                Text("下書き保存")
+                    .foregroundColor(Color.white)
             })
         }
+        .environmentObject(movieViewModel)
+        .environmentObject(dataModel)
+        .environmentObject(authViewModel)
     }
     
     init() {
@@ -115,5 +111,46 @@ struct AddPostView: View {
 //struct AddPostView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        AddPostView()
+//            .environmentObject(MovieViewModel())
+//            .environmentObject(DataModel())
+//            .environmentObject(AuthViewModel())
 //    }
 //}
+
+struct MultilineTextView: UIViewRepresentable {
+    
+    @Binding var text: String
+    
+    final class Coordinator: NSObject, UITextViewDelegate {
+        private var textView: MultilineTextView
+        
+        init(_ textView: MultilineTextView) {
+            self.textView = textView
+        }
+        
+        func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+            return true
+        }
+        
+        func textViewDidChange(_ textView: UITextView) {
+            self.textView.text = textView.text
+        }
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    func makeUIView(context: Context) -> UITextView {
+        let textView = UITextView()
+        textView.delegate = context.coordinator
+        textView.isScrollEnabled = true
+        textView.isEditable = true
+        textView.isUserInteractionEnabled = true
+        return textView
+    }
+    
+    func updateUIView(_ uiView: UITextView, context: Context) {
+        uiView.text = text
+    }
+}

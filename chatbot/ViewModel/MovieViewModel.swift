@@ -10,14 +10,14 @@ import SwiftGoogleTranslate
 import SwiftUI
 import Alamofire
 import SwiftyJSON
+import Firebase
 
 class MovieViewModel: NSObject, ObservableObject {
     
     var apiKey: String = Apikey().apikey
     var movieArray: [String] = []
     var movieCateArray: [MovieArray] = []
-    var recommendYear: String = ""
-    @Published var tempRecommendTitle: String = ""
+//    var recommendYear: String = ""
     var tempJenre: String = ""
     var reloadInt: Int = 0
     
@@ -28,16 +28,30 @@ class MovieViewModel: NSObject, ObservableObject {
         self.movieArray = array
         
         var number: String = "0"
-        var title: String = "???"
+        var title: String = ""
         var category: String = "???"
         var year: String = "???"
         
         for i in  1..<self.movieArray.count {
-            let splitedArray: [String] = array[i].components(separatedBy: ",")
+            var splitedArray: [String] = array[i].components(separatedBy: ",")
             
             number = splitedArray.first ?? "???"
-            title = splitedArray[1]
             category = splitedArray.last ?? "???"
+            
+            splitedArray.removeLast()
+            splitedArray.remove(at: 0)
+            
+            splitedArray.forEach { str in
+                title += str
+            }
+            
+            var separatedTitle: [String] = title.components(separatedBy: "(")
+            separatedTitle.removeLast()
+            title  =  ""
+            
+            separatedTitle.forEach { str in
+                title += str
+            }
             
             if array[i].contains(")") {
                 var splitedYearArray: [String] = array[i].components(separatedBy: ",")
@@ -45,18 +59,11 @@ class MovieViewModel: NSObject, ObservableObject {
                 let tempYear = splitedYearArray.last?.components(separatedBy: "(")
                 let newYear = tempYear?.last?.components(separatedBy: ")")
                 year = (newYear?[0])!
-                
-                let tempTitle = title.components(separatedBy: "(")
-                title = tempTitle[0]
-                
-                if  array[i].components(separatedBy: "(").count > 2 {
-                    var splitedArray = array[i].components(separatedBy: ")")
-                    splitedArray = splitedArray[0].components(separatedBy: ",")
-                    title = splitedArray[1]
-                }
             }
             movieCateArray.append(
                 MovieArray(number: number, title: title, category: category, year: year, star: 0))
+            
+            title  =  ""
         }
     }
     
@@ -76,7 +83,6 @@ class MovieViewModel: NSObject, ObservableObject {
         }
         
         for csv in csvArray {
-            
             if csv == "" { } else {  tempcsv.append(csv) }
         }
         return tempcsv
@@ -104,7 +110,7 @@ class MovieViewModel: NSObject, ObservableObject {
             forthSession(dataModel: dataModel, tempMessage: tempMessage) { message in
                 completion(message)
             }
-
+            
         default:
             completion("またよろしくお願いします")
         }
@@ -127,29 +133,27 @@ class MovieViewModel: NSObject, ObservableObject {
             
             dataModel.newYear = false
         }
-        
         return "見たい映画のジャンルを教えてください(アクション/冒険/アニメーション/子供たち/コメディ/ファンタジー/ロマンス/ドラマ/犯罪/スリラー/ホラー/ミステリー/SF)"
     }
     
     private func thirdSession(tempMessage: String, dataModel: DataModel, completion: @escaping (_ returnMessage: String) -> Void) {
-    
+        
         switch tempMessage {
             
         case "他へ":
             reloadInt += 1
             var recommendTitle = recommendTitle(datamodel: dataModel, genre: tempJenre, reloadPoint: reloadInt)
-            self.tempRecommendTitle = recommendTitle
-            recommendTitle = recommendTitle + " " + "(" + self.recommendYear + ")"
+            dataModel.tempTitle = recommendTitle
+            recommendTitle = recommendTitle + " " + "(" + dataModel.tempYear + ")"
             completion(recommendTitle)
-   
+            
         default:
             reloadInt = 0
             let returnMessage = englishTranslate(translatingText: tempMessage)
             tempJenre = returnMessage
             var recommendTitle = recommendTitle(datamodel: dataModel, genre: tempJenre, reloadPoint: reloadInt)
-            self.tempRecommendTitle = recommendTitle
-            print(tempRecommendTitle)
-            recommendTitle = recommendTitle + " " + self.recommendYear
+            dataModel.tempTitle = recommendTitle
+            recommendTitle = recommendTitle + " " + dataModel.tempYear
             completion(recommendTitle)
         }
     }
@@ -161,7 +165,7 @@ class MovieViewModel: NSObject, ObservableObject {
         switch tempMessage {
             
         case "詳細":
-            getArticle(title: tempRecommendTitle) { titleArray in
+            getArticle(dataModel: dataModel, title: dataModel.tempTitle ) { titleArray in
                 message = titleArray[1]
                 completion(message)
             }
@@ -169,10 +173,10 @@ class MovieViewModel: NSObject, ObservableObject {
         case "他へ":
             reloadInt += 1
             var recommendTitle = recommendTitle(datamodel: dataModel, genre: tempJenre, reloadPoint: reloadInt)
-            self.tempRecommendTitle = recommendTitle
-            recommendTitle = recommendTitle + " " + "(" + self.recommendYear + ")"
+            dataModel.tempTitle = recommendTitle
+            recommendTitle = recommendTitle + " " + "(" + dataModel.tempYear + ")"
             completion(recommendTitle)
- 
+            
         default:
             completion(message)
         }
@@ -214,7 +218,6 @@ class MovieViewModel: NSObject, ObservableObject {
         }
         
         if separetedArray != [] {
-//            print(separetedArray[0].initialUppercased())
             return separetedArray[0].initialUppercased()
         } else {
             let void: String = "void"
@@ -278,8 +281,13 @@ class MovieViewModel: NSObject, ObservableObject {
             if datamodel.newYear == true {
                 newRecommendArray = recommendArray.sorted { Int($0.components(separatedBy: ",")[0])! > Int($1.components(separatedBy: ",")[0])! }
             }
- 
+            
+            print(newRecommendArray)
+            print(newRecommendArray.count)
+            print(reloadPoint)
             var array = newRecommendArray[reloadPoint].description.components(separatedBy: ",")
+            
+            datamodel.tempCategory = array.last ?? ""
             array.removeFirst()
             array.removeLast()
             
@@ -289,7 +297,7 @@ class MovieViewModel: NSObject, ObservableObject {
                 var recommend = recommendTitle.description.components(separatedBy: "(")
                 let recommendYear = recommend.removeLast()
                 let year = recommendYear.components(separatedBy: ")")[0]
-                self.recommendYear = year
+                datamodel.tempYear = year
                 let deleteRecomend = recommend[0].trimmingCharacters(in: .whitespaces)
                 return deleteRecomend
             }
@@ -298,8 +306,8 @@ class MovieViewModel: NSObject, ObservableObject {
         return "評価を入れてください"
     }
     
-    func getArticle(title: String, completion: @escaping (_ titleArray: [String]) -> Void){
-
+    func getArticle(dataModel:DataModel, title: String, completion: @escaping (_ titleArray: [String]) -> Void){
+        
         var replaceString: String = ""
         if title.contains(" "){
             replaceString = title.replacingOccurrences(of: " ", with: "_")
@@ -308,7 +316,6 @@ class MovieViewModel: NSObject, ObservableObject {
         }
         
         let url = "https://en.wikipedia.org/api/rest_v1/page/summary/\(replaceString)"
-        
         var jsonArray: [String] = []
         
         AF.request(url).responseJSON { response in
@@ -316,12 +323,15 @@ class MovieViewModel: NSObject, ObservableObject {
             do {
                 let json = JSON(response.data)
                 
+                print(json)
                 guard let title = json["title"].string else { return }
                 guard let extract = json["extract"].string else { return }
+                guard let imageUrl = json["thumbnail"]["source"].string else { return }
                 
                 jsonArray.append(title)
                 jsonArray.append(extract)
-
+                
+                dataModel.tempImageUrl = imageUrl
                 completion(jsonArray)
             } catch {
                 print("デコードに失敗しました")
@@ -329,7 +339,64 @@ class MovieViewModel: NSObject, ObservableObject {
         }
     }
     
-    func saveEvaluateData() {
+    func saveEvaluateData(dataModel: DataModel) {
         
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        if dataModel.tapArray == [] { return }
+        
+        dataModel.tapArray.forEach { tap in
+            
+            let docData = [
+                "id": tap.id,
+                "title": tap.title,
+                "star": tap.star,
+            ] as [String: Any]
+            
+            Firestore.firestore().collection("users").document(uid).collection("starArray").addDocument(data: docData) { (err) in
+                
+                if let err = err {
+                    print("保存に失敗しました")
+                    return
+                }
+                print("保存に成功しました")
+            }
+        }
+    }
+    
+    func deleteEvaluateData(dataModel: DataModel) {
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        Firestore.firestore().collection("users").document(uid).collection("starArray").getDocuments { (snapshot, error) in
+            if let error = error{
+                print("エラー",error)
+                return
+            }
+            
+            for document in snapshot!.documents{
+                document.reference.delete()
+                print("削除")
+            }
+        }
+    }
+    
+    func fetchEvaluateData(dataModel: DataModel) {
+        
+        dataModel.tapArray = []
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        Firestore.firestore().collection("users").document(uid).collection("starArray").getDocuments { documents, error in
+            
+            documents?.documents.forEach({ document in
+                
+                let dic = document.data()
+                let decodeArray = DecodeTapArray(dic: dic)
+                dataModel.tapArray.append(TapArray(id: decodeArray.id, title: decodeArray.title, star: decodeArray.star))
+            })
+        }
+        
+        print(dataModel.tapArray)
     }
 }

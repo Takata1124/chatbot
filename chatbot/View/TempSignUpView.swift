@@ -51,9 +51,6 @@ struct TempSignUpView: View {
                     }
                 }
             }
-//            .fullScreenCover(isPresented: $showingLoginsheet) {
-//                LoginView()
-//            }
             .navigationBarTitle("SignUp",  displayMode: .inline)
         }
     }

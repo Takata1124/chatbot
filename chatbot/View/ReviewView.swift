@@ -150,15 +150,14 @@ struct ReviewView: View {
                     .navigationBarTitle("投稿", displayMode: .inline)
                     .navigationBarItems(leading: Button(action: {
                         print("左のボタンが押されました。")
+                        movieViewModel.saveEvaluateData(dataModel: dataModel)
                         dismiss()
                     }, label: {
                         Image(systemName: "arrowshape.turn.up.backward")
                             .foregroundColor(Color.white)
                     }), trailing: HStack {
                         Button(action: {
-                            print("右のボタン１が押されました。")
-//                            self.starflag.toggle()
-                            print(starflag)
+//                            print("右のボタン１が押されました。")
                             
                         }, label: {
                             Text("SAVE")
