@@ -33,8 +33,6 @@ struct PostView: View {
         "heartCount": "tap.star",
     ] as [String: Any]
     
-//    let post = PostView(dic: docData)
-//    var postViewArray: [PostViewArray] = [PostViewArray(dic: docData)]
 
     var body: some View {
         
