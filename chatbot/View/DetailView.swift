@@ -1,34 +1,29 @@
 //
-//  AddPostView.swift
+//  DetailView.swift
 //  chatbot
 //
-//  Created by t032fj on 2022/02/26.
+//  Created by t032fj on 2022/03/09.
 //
 
 import SwiftUI
 import Kingfisher
-import Combine
 
-struct AddPostView: View {
+struct DetailView: View {
     
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var movieViewModel: MovieViewModel
-    @EnvironmentObject var dataModel: DataModel
-    @State var text: String = ""
-    @State var star: Int = 0
     
-    var enable: Bool {
-        
-        if text.isEmpty {
-            return false
-        }
-        
-        if star == 0 {
-            return false
-        }
-        
-        return true
+    var title: String = ""
+    var category: String = ""
+    var text: String = ""
+    var imageUrl: String = ""
+    var star: Int = 0
+    
+    init(title: String, category: String, text: String, imageUrl: String, star: Int) {
+        self.title = title
+        self.category = category
+        self.text = text
+        self.imageUrl = imageUrl
+        self.star = star
     }
     
     var body: some View {
@@ -40,66 +35,53 @@ struct AddPostView: View {
                         .fill(Color.pink.opacity(0.8))
                         .overlay(
                             VStack (spacing: 50) {
-                                VStack (spacing: 20) {
-                                    
-                                    Text("タイトル：\(dataModel.tempTitle)")
+                                VStack (spacing: 30) {
+                                    Text("タイトル：\(title)")
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading, 35)
                                     
-                                    Text("カテゴリ：\(dataModel.tempCategory)")
+                                    Text("カテゴリ：\(category)")
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading, 35)
                                     
-                                    KFImage(URL(string:dataModel.tempImageUrl))
+                                    KFImage(URL(string: imageUrl))
                                         .resizable()
-                                        .frame(width: 200, height: 278)
+                                        .frame(width: 165, height: 230)
                                     
-                                    MultilineTextView(text: $text)
+                                    Text(text)
                                         .frame(width: 200, height: 100)
                                         .border(Color.gray)
                                 }
                                 
                                 HStack {
-                                    ForEach(1..<6) { i in
+                                    ForEach(0..<star) { i in
                                         VStack(alignment: .center) {
                                             Text("\(i)")
-                                            if i == self.star {
-                                                Image(systemName: "star.fill")
-                                                    .font(.system(size: 26))
-                                                    .onTapGesture {
-                                                        self.star = i
-                                                    }
-                                            } else {
-                                                Image(systemName: "star")
-                                                    .font(.system(size: 26))
-                                                    .onTapGesture {
-                                                        self.star = i
-                                                    }
-                                            }
+                                            Image(systemName: "star")
+                                                .font(.system(size: 26))
                                         }
                                     }
                                 }
                                 
                                 Button {
-                                    movieViewModel.savePostData(dataModel: dataModel, authViewModel: authViewModel, star: star, review: text)
-                                        dismiss()
+                                    print("tap")
                                 } label: {
                                     Text("投稿")
                                 }
                                 .frame(width: 100)
                                 .foregroundColor(.black)
                                 .padding(12)
-                                .background(enable ? Color.blue : Color.gray)
+                                .background(Color.gray.opacity(0.9))
                                 .cornerRadius(20)
-                                .disabled(!enable)
                             }
                         )
                 }
                 .padding()
+                
             }
             .navigationBarTitle("投稿", displayMode: .inline)
             .navigationBarItems(leading: Button(action: {
-//                print("左のボタンが押されました。")
+                print("左のボタンが押されました。")
                 dismiss()
             }, label: {
                 Image(systemName: "arrowshape.turn.up.backward")
@@ -109,9 +91,9 @@ struct AddPostView: View {
                     .foregroundColor(Color.white)
             })
         }
-        .environmentObject(movieViewModel)
-        .environmentObject(dataModel)
-        .environmentObject(authViewModel)
+//        .environmentObject(movieViewModel)
+//        .environmentObject(dataModel)
+//        .environmentObject(authViewModel)
     }
     
     init() {
@@ -128,12 +110,8 @@ struct AddPostView: View {
     }
 }
 
-//struct AddPostView_Previews: PreviewProvider {
+//struct DetailView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        AddPostView()
-//            .environmentObject(MovieViewModel())
-//            .environmentObject(DataModel())
-//            .environmentObject(AuthViewModel())
+//        DetailView()
 //    }
 //}
-

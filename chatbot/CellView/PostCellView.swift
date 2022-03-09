@@ -6,10 +6,17 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct PostCellView: View {
     
-    var cellText: String
+    var data: PostDataArray?
+    
+    init(data: PostDataArray) {
+        
+        self.data = data
+    }
+    
     var body: some View {
         
         VStack {
@@ -20,49 +27,63 @@ struct PostCellView: View {
                         
                         HStack {
                             VStack {
-                                HStack {
-                                    Text(cellText)
-                                        .foregroundColor(.black)
-                                        .font(.system(size: 26))
-                                        .font(.largeTitle)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                HStack (alignment: .center){
                                     
-                                    Image(systemName: "heart")
-                                        .font(.system(size: 26))
-                                        .padding(.trailing)
-                                }
-                                
-                                Text("hellohellohellohellohellohellohello")
-                                    .foregroundColor(.black)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.top, 3)
-                                
-                                HStack {
-                                    
-                                    Image(systemName: "person")
+                                    KFImage(URL(string: data!.imageUrl))
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(width: 40, height: 40)
-                                        .clipShape(Circle())
+                                        .frame(width: 100)
                                     
-                                    Text("Takata")
-//                                        .padding(.top, 20)
-                                    
-                                    Spacer()
-                                    
-                                    HStack {
-                                        ForEach(0..<4) { i in
-                                            Image(systemName: "star.fill")
-                                                .font(.system(size: 26))
+                                    VStack (alignment: .leading, spacing: 20) {
+                                        HStack {
+                                            Text(data!.title)
+                                                .foregroundColor(.black)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                            
+                                            Spacer()
+                                            
+                                            Image(systemName: "multiply.circle")
+                                                .onTapGesture {
+                                                    print("tap")
+                                                }
+                                        }
+    
+                                        Text(data!.category)
+                                            .foregroundColor(.black)
+                                            .font(.system(size: 14))
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                                        HStack {
+                                            HStack {
+                                                ForEach(0..<data!.star) { i in
+                                                    Image(systemName: "star.fill")
+                                                        .font(.system(size: 14))
+                                                }
+                                                
+                                                Spacer()
+                                            }
+                                        }
+                                        HStack {
+                                            
+                                            Spacer()
+                                            
+                                            KFImage(URL(string: data!.userImageUrl))
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 40, height: 40)
+                                                .clipShape(Circle())
+                                            
+                                            
+                                            Text(data!.username)
+                                                .font(.system(size: 14))
+                                                .padding(.trailing)
+                                                .padding(.top, 20)
                                         }
                                     }
-                                    .padding(.trailing)
-                                    
+                                    .padding()
                                 }
-                                .padding(.top, 15)
-                                .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                            .padding(30)
+                            .padding(20)
                         }
                     )
             }

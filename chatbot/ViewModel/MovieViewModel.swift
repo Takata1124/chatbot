@@ -18,7 +18,7 @@ class MovieViewModel: NSObject, ObservableObject {
     var movieArray: [String] = []
     var movieCateArray: [MovieArray] = []
 //    var recommendYear: String = ""
-    var tempJenre: String = ""
+//    var tempJenre: String = ""
     var reloadInt: Int = 0
     
     override init() {
@@ -142,7 +142,7 @@ class MovieViewModel: NSObject, ObservableObject {
             
         case "他へ":
             reloadInt += 1
-            var recommendTitle = recommendTitle(datamodel: dataModel, genre: tempJenre, reloadPoint: reloadInt)
+            var recommendTitle = recommendTitle(datamodel: dataModel, genre: dataModel.tempJenre, reloadPoint: reloadInt)
             dataModel.tempTitle = recommendTitle
             recommendTitle = recommendTitle + " " + "(" + dataModel.tempYear + ")"
             completion(recommendTitle)
@@ -150,8 +150,8 @@ class MovieViewModel: NSObject, ObservableObject {
         default:
             reloadInt = 0
             let returnMessage = englishTranslate(translatingText: tempMessage)
-            tempJenre = returnMessage
-            var recommendTitle = recommendTitle(datamodel: dataModel, genre: tempJenre, reloadPoint: reloadInt)
+            dataModel.tempJenre = returnMessage
+            var recommendTitle = recommendTitle(datamodel: dataModel, genre: dataModel.tempJenre, reloadPoint: reloadInt)
             dataModel.tempTitle = recommendTitle
             recommendTitle = recommendTitle + " " + dataModel.tempYear
             completion(recommendTitle)
@@ -172,7 +172,7 @@ class MovieViewModel: NSObject, ObservableObject {
             
         case "他へ":
             reloadInt += 1
-            var recommendTitle = recommendTitle(datamodel: dataModel, genre: tempJenre, reloadPoint: reloadInt)
+            var recommendTitle = recommendTitle(datamodel: dataModel, genre: dataModel.tempJenre, reloadPoint: reloadInt)
             dataModel.tempTitle = recommendTitle
             recommendTitle = recommendTitle + " " + "(" + dataModel.tempYear + ")"
             completion(recommendTitle)
@@ -308,6 +308,8 @@ class MovieViewModel: NSObject, ObservableObject {
     
     func getArticle(dataModel:DataModel, title: String, completion: @escaping (_ titleArray: [String]) -> Void){
         
+        print(title)
+        
         var replaceString: String = ""
         if title.contains(" "){
             replaceString = title.replacingOccurrences(of: " ", with: "_")
@@ -323,15 +325,19 @@ class MovieViewModel: NSObject, ObservableObject {
             do {
                 let json = JSON(response.data)
                 
-                print(json)
+//                print(json)
                 guard let title = json["title"].string else { return }
                 guard let extract = json["extract"].string else { return }
-                guard let imageUrl = json["thumbnail"]["source"].string else { return }
+                let imageUrl = json["thumbnail"]["source"].string
                 
                 jsonArray.append(title)
                 jsonArray.append(extract)
                 
-                dataModel.tempImageUrl = imageUrl
+                if imageUrl != nil {
+                    dataModel.tempImageUrl = imageUrl!
+                }
+                
+//                dataModel.tempImageUrl = imageUrl
                 completion(jsonArray)
             } catch {
                 print("デコードに失敗しました")
@@ -373,7 +379,6 @@ class MovieViewModel: NSObject, ObservableObject {
                 print("エラー",error)
                 return
             }
-            
             for document in snapshot!.documents{
                 document.reference.delete()
                 print("削除")
@@ -398,5 +403,62 @@ class MovieViewModel: NSObject, ObservableObject {
         }
         
         print(dataModel.tapArray)
+    }
+    
+    func savePostData(dataModel: DataModel, authViewModel: AuthViewModel, star: Int, review: String) {
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        let date: Date = Date()
+        let unixtime: Int = Int(date.timeIntervalSince1970)
+        
+        let docData = [
+            "title": dataModel.tempTitle,
+            "category": dataModel.tempCategory,
+            "year": dataModel.tempYear,
+            "star": star,
+            "review": review,
+            "imageUrl": dataModel.tempImageUrl,
+            "uid": uid,
+            "username": authViewModel.userData!.username as String,
+            "userImageUrl": authViewModel.userData!.ImageUrl,
+            "createdAt": unixtime,
+        ] as [String: Any]
+        
+        Firestore.firestore().collection("users").document(uid).collection("postArray").addDocument(data: docData) { (err) in
+            
+            if let err = err {
+                print("保存に失敗しました")
+                return
+            }
+            print("保存に成功しました")
+        }
+    }
+    
+    func fetchPostData(dataModel: DataModel) {
+        
+        dataModel.postViewArray = []
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+
+        Firestore.firestore().collection("users").document(uid).collection("postArray")
+            .order(by: "createdAt", descending: true)
+            .getDocuments { documents, error in
+            
+            if let error = error {
+                print("データの取得に失敗しました")
+                return
+            }
+            
+            documents?.documents.forEach({ document in
+                
+                let dic = document.data()
+                let decodeArray = PostDataArray(dic: dic)
+                dataModel.postViewArray.append(decodeArray)
+                
+                print(dataModel.postViewArray)
+                print("データの取得に成功しました")
+            })
+        }
     }
 }

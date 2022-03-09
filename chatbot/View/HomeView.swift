@@ -25,7 +25,7 @@ struct HomeView: View {
             ZStack {
                 Color.gray.opacity(0.3).ignoresSafeArea()
                 
-                VStack(alignment: .center, spacing: 40){
+                VStack(alignment: .center, spacing: 70){
                     
                     VStack {
                         KFImage(URL(string: authViewModel.userData!.ImageUrl))
@@ -40,19 +40,9 @@ struct HomeView: View {
                         Text("\(authViewModel.userData!.username)")
                             .font(.system(size: 18))
                     }
-                    
-                    VStack(alignment: .center, spacing: 20) {
+
+                    HStack(alignment: .center, spacing: 50) {
                         
-                        Image(systemName: "text.bubble")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 50, height: 50, alignment: .center)
-                            .padding(.bottom, 3)
-                        Text("投稿数 100")
-                            .font(.caption2)
-                    }
-                    
-                    HStack(alignment: .center, spacing: 100) {
                         VStack(alignment: .center, spacing: 20) {
                             
                             Image(systemName: "heart.fill")
@@ -61,6 +51,17 @@ struct HomeView: View {
                                 .frame(width: 50, height: 50, alignment: .center)
                                 .padding(.bottom, 3)
                             Text("いいねされた数 100").font(.caption2)
+                        }
+                        
+                        VStack(alignment: .center, spacing: 20) {
+                            
+                            Image(systemName: "text.bubble")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 50, height: 50, alignment: .center)
+                                .padding(.bottom, 3)
+                            Text("投稿数 100")
+                                .font(.caption2)
                         }
                         
                         VStack(alignment: .center, spacing: 20) {
@@ -74,6 +75,19 @@ struct HomeView: View {
                         }
                     }
                     .padding()
+                    
+                    VStack(alignment: .center, spacing: 20) {
+                        
+                        Image(systemName: "paperclip")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30, alignment: .center)
+                            .padding(.bottom, 3)
+                            .onTapGesture {
+                                print("hello")
+                            }
+                        Text("下書き").font(.caption2)
+                    }
                 }
             }
             .toolbar {
@@ -92,6 +106,7 @@ struct HomeView: View {
                     }
                     Spacer()
                     Button(action: {
+                        movieViewModel.fetchPostData(dataModel: dataModel)
                         self.showingPostSheet.toggle()
                     }) {
                         VStack(alignment: .center) {
@@ -102,9 +117,9 @@ struct HomeView: View {
                     }
                     Spacer()
                     Button(action: {
-                        self.showingReviewSheet.toggle()
                         movieViewModel.fetchEvaluateData(dataModel: dataModel)
                         movieViewModel.deleteEvaluateData(dataModel: dataModel)
+                        self.showingReviewSheet.toggle()
                     }) {
                         VStack(alignment: .center) {
                             Label("送信", systemImage: "star")
