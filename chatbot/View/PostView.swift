@@ -15,7 +15,7 @@ struct PostView: View {
     @EnvironmentObject var dataModel: DataModel
 
 //    let pokemons: [String] = ["Snorlax"]
-    var postDataArray: [PostDataArray] = []
+//    var postDataArray: [PostDataArray] = []
     
 //    var filterdPokemons: [String] {
 //        if text.isEmpty {

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import RealmSwift
 
 class DataModel: ObservableObject {
     
@@ -20,6 +21,9 @@ class DataModel: ObservableObject {
     @Published var tempImageUrl: String = ""
     @Published var tempJenre: String = ""
     
+    @Published var reloadInt: Int = 0
+    @Published var totalInt: Int = 0
+    
     @Published var cellnames: [CellName] = [
         CellName(name: "HOME"),
         CellName(name: "閉じる"),
@@ -27,6 +31,7 @@ class DataModel: ObservableObject {
     
     @Published var tapArray: [TapArray] = []
     @Published var postViewArray: [PostDataArray] = []
+    @Published var reserveData: PostDataArray?
 }
 
 struct CellName: Identifiable {
@@ -101,4 +106,19 @@ struct User {
         self.email = dic["email"] as? String ?? ""
         self.ImageUrl = dic["ImageUrl"] as? String ?? ""
     }
+}
+
+class Reserve: Object {
+    
+    @objc dynamic var id = ""
+    @objc dynamic var title: String = ""
+    @objc dynamic var category: String = ""
+    @objc dynamic var year: String = ""
+    @objc dynamic var star: Int = 0
+    @objc dynamic var review: String = ""
+    @objc dynamic var imageUrl: String = ""
+    @objc dynamic var uid: String = ""
+    @objc dynamic var username: String = ""
+    @objc dynamic var userImageUrl: String = ""
+    @objc dynamic var createdAt: Int = 0
 }

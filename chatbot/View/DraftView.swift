@@ -1,15 +1,14 @@
 //
-//  AddPostView.swift
+//  DraftView.swift
 //  chatbot
 //
-//  Created by t032fj on 2022/02/26.
+//  Created by t032fj on 2022/03/10.
 //
 
 import SwiftUI
 import Kingfisher
-import Combine
 
-struct AddPostView: View {
+struct DraftView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var authViewModel: AuthViewModel
@@ -23,11 +22,9 @@ struct AddPostView: View {
         if text.isEmpty {
             return false
         }
-        
         if star == 0 {
             return false
         }
-        
         return true
     }
     
@@ -41,19 +38,19 @@ struct AddPostView: View {
                         .overlay(
                             VStack (spacing: 50) {
                                 VStack (spacing: 20) {
-                                    
-                                    Text("タイトル：\(dataModel.tempTitle)")
+
+                                    Text("タイトル：\(dataModel.reserveData!.title)")
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading, 35)
-                                    
-                                    Text("カテゴリ：\(dataModel.tempCategory)")
+
+                                    Text("カテゴリ：\(dataModel.reserveData!.category)")
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading, 35)
-                                    
-                                    KFImage(URL(string:dataModel.tempImageUrl))
+
+                                    KFImage(URL(string: dataModel.reserveData!.imageUrl))
                                         .resizable()
                                         .frame(width: 200, height: 278)
-                                    
+
                                     MultilineTextView(text: $text)
                                         .frame(width: 200, height: 100)
                                         .border(Color.gray)
@@ -81,7 +78,7 @@ struct AddPostView: View {
                                 }
                                 
                                 Button {
-                                    movieViewModel.savePostData(dataModel: dataModel, authViewModel: authViewModel, star: star, review: text, collectionName: "postArray")
+//                                    movieViewModel.savePostData(dataModel: dataModel, authViewModel: authViewModel, star: star, review: text, collectionName: "postArray")
                                         dismiss()
                                 } label: {
                                     Text("投稿")
@@ -97,9 +94,6 @@ struct AddPostView: View {
                 }
                 .padding()
             }
-            .onAppear(perform: {
-                print("onApper")
-            })
             .navigationBarTitle("投稿", displayMode: .inline)
             .navigationBarItems(leading: Button(action: {
                 dismiss()
@@ -107,19 +101,11 @@ struct AddPostView: View {
                 Image(systemName: "arrowshape.turn.up.backward")
                     .foregroundColor(Color.white)
             }), trailing: HStack {
-                Button(action: {
-                    print("右のボタン１が押されました。")
-                    movieViewModel.saveRealmReseveeData(dataModel: dataModel, authViewModel: authViewModel, star: self.star, review: self.text)
-                    dismiss()
-                }, label: {
-                    Text("下書き保存")
-                        .foregroundColor(Color.white)
-                })
             })
         }
         .environmentObject(movieViewModel)
         .environmentObject(dataModel)
-        .environmentObject(authViewModel)
+//        .environmentObject(authViewModel)
     }
     
     init() {
@@ -136,12 +122,8 @@ struct AddPostView: View {
     }
 }
 
-//struct AddPostView_Previews: PreviewProvider {
+//struct DraftView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        AddPostView()
-//            .environmentObject(MovieViewModel())
-//            .environmentObject(DataModel())
-//            .environmentObject(AuthViewModel())
+//        DraftView()
 //    }
 //}
-

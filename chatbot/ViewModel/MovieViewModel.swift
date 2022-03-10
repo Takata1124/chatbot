@@ -11,15 +11,13 @@ import SwiftUI
 import Alamofire
 import SwiftyJSON
 import Firebase
+import RealmSwift
 
 class MovieViewModel: NSObject, ObservableObject {
     
     var apiKey: String = Apikey().apikey
     var movieArray: [String] = []
     var movieCateArray: [MovieArray] = []
-//    var recommendYear: String = ""
-//    var tempJenre: String = ""
-    var reloadInt: Int = 0
     
     override init() {
         super.init()
@@ -141,17 +139,20 @@ class MovieViewModel: NSObject, ObservableObject {
         switch tempMessage {
             
         case "他へ":
-            reloadInt += 1
-            var recommendTitle = recommendTitle(datamodel: dataModel, genre: dataModel.tempJenre, reloadPoint: reloadInt)
+            dataModel.reloadInt += 1
+            if dataModel.reloadInt == dataModel.totalInt {
+                dataModel.reloadInt = 0
+            }
+            var recommendTitle = recommendTitle(datamodel: dataModel, genre: dataModel.tempJenre, reloadPoint: dataModel.reloadInt)
             dataModel.tempTitle = recommendTitle
             recommendTitle = recommendTitle + " " + "(" + dataModel.tempYear + ")"
             completion(recommendTitle)
             
         default:
-            reloadInt = 0
+            dataModel.reloadInt = 0
             let returnMessage = englishTranslate(translatingText: tempMessage)
             dataModel.tempJenre = returnMessage
-            var recommendTitle = recommendTitle(datamodel: dataModel, genre: dataModel.tempJenre, reloadPoint: reloadInt)
+            var recommendTitle = recommendTitle(datamodel: dataModel, genre: dataModel.tempJenre, reloadPoint: dataModel.reloadInt)
             dataModel.tempTitle = recommendTitle
             recommendTitle = recommendTitle + " " + dataModel.tempYear
             completion(recommendTitle)
@@ -171,8 +172,11 @@ class MovieViewModel: NSObject, ObservableObject {
             }
             
         case "他へ":
-            reloadInt += 1
-            var recommendTitle = recommendTitle(datamodel: dataModel, genre: dataModel.tempJenre, reloadPoint: reloadInt)
+            dataModel.reloadInt += 1
+            if dataModel.reloadInt == dataModel.totalInt {
+                dataModel.reloadInt = 0
+            }
+            var recommendTitle = recommendTitle(datamodel: dataModel, genre: dataModel.tempJenre, reloadPoint: dataModel.reloadInt)
             dataModel.tempTitle = recommendTitle
             recommendTitle = recommendTitle + " " + "(" + dataModel.tempYear + ")"
             completion(recommendTitle)
@@ -188,7 +192,6 @@ class MovieViewModel: NSObject, ObservableObject {
         
         SwiftGoogleTranslate.shared.start(with: apiKey)
         SwiftGoogleTranslate.shared.translate(translatingText, "en", "ja") { (text, error) in
-            
             if error != nil {
                 fatalError("error")
             }
@@ -281,10 +284,13 @@ class MovieViewModel: NSObject, ObservableObject {
             if datamodel.newYear == true {
                 newRecommendArray = recommendArray.sorted { Int($0.components(separatedBy: ",")[0])! > Int($1.components(separatedBy: ",")[0])! }
             }
-            
+
             print(newRecommendArray)
             print(newRecommendArray.count)
             print(reloadPoint)
+            
+            datamodel.totalInt = newRecommendArray.count
+            
             var array = newRecommendArray[reloadPoint].description.components(separatedBy: ",")
             
             datamodel.tempCategory = array.last ?? ""
@@ -336,8 +342,6 @@ class MovieViewModel: NSObject, ObservableObject {
                 if imageUrl != nil {
                     dataModel.tempImageUrl = imageUrl!
                 }
-                
-//                dataModel.tempImageUrl = imageUrl
                 completion(jsonArray)
             } catch {
                 print("デコードに失敗しました")
@@ -405,7 +409,7 @@ class MovieViewModel: NSObject, ObservableObject {
         print(dataModel.tapArray)
     }
     
-    func savePostData(dataModel: DataModel, authViewModel: AuthViewModel, star: Int, review: String) {
+    func savePostData(dataModel: DataModel, authViewModel: AuthViewModel, star: Int, review: String, collectionName: String) {
         
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
@@ -425,7 +429,7 @@ class MovieViewModel: NSObject, ObservableObject {
             "createdAt": unixtime,
         ] as [String: Any]
         
-        Firestore.firestore().collection("users").document(uid).collection("postArray").addDocument(data: docData) { (err) in
+        Firestore.firestore().collection("users").document(uid).collection(collectionName).addDocument(data: docData) { (err) in
             
             if let err = err {
                 print("保存に失敗しました")
@@ -435,13 +439,13 @@ class MovieViewModel: NSObject, ObservableObject {
         }
     }
     
-    func fetchPostData(dataModel: DataModel) {
+    func fetchPostData(dataModel: DataModel, collectionName: String) {
         
         dataModel.postViewArray = []
-        
+
         guard let uid = Auth.auth().currentUser?.uid else { return }
 
-        Firestore.firestore().collection("users").document(uid).collection("postArray")
+        Firestore.firestore().collection("users").document(uid).collection(collectionName)
             .order(by: "createdAt", descending: true)
             .getDocuments { documents, error in
             
@@ -454,11 +458,73 @@ class MovieViewModel: NSObject, ObservableObject {
                 
                 let dic = document.data()
                 let decodeArray = PostDataArray(dic: dic)
-                dataModel.postViewArray.append(decodeArray)
+   
+                    dataModel.postViewArray.append(decodeArray)
+                    print("データの取得に成功しました")
                 
-                print(dataModel.postViewArray)
-                print("データの取得に成功しました")
             })
+        }
+    }
+    
+    func saveRealmReseveeData(dataModel:DataModel, authViewModel: AuthViewModel, star: Int, review: String) {
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        let realm = try! Realm()
+        
+        let date: Date = Date()
+        let unixtime: Int = Int(date.timeIntervalSince1970)
+        
+        let reserve = Reserve()
+        
+        reserve.id = "1"
+        reserve.title = dataModel.tempTitle
+        reserve.category = dataModel.tempCategory
+        reserve.year = dataModel.tempYear
+        reserve.star = star
+        reserve.review = review
+        reserve.imageUrl = dataModel.tempImageUrl
+        reserve.uid = uid
+        reserve.username = authViewModel.userData!.username as String
+        reserve.userImageUrl = authViewModel.userData!.ImageUrl
+        reserve.createdAt = unixtime
+        
+        try! realm.write {
+          realm.deleteAll()
+        }
+        
+        try! realm.write({
+            realm.add(reserve)
+        })
+    }
+    
+    func fetchRealmReserveData(dataModel: DataModel) {
+        let id = "1"
+        let predicate = NSPredicate(format: "id == %@", id)
+        
+        let realm = try! Realm()
+        
+        let results = realm.objects(Reserve.self)
+        print(results)
+        
+        if let reserve = realm.objects(Reserve.self).filter(predicate).first {
+//            print(reserve)
+//            print(reserve.title)
+            
+            let docData = [
+                "title": reserve.title,
+                "category": reserve.category,
+                "year": reserve.year,
+                "star": reserve.star,
+                "review": reserve.review,
+                "imageUrl": reserve.imageUrl,
+                "uid": reserve.uid,
+                "username": reserve.username,
+                "userImageUrl": reserve.userImageUrl,
+                "createdAt": reserve.createdAt,
+            ] as [String: Any]
+            
+            dataModel.reserveData = PostDataArray(dic: docData)
         }
     }
 }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		683F340527D8B0F100DC5538 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683F340427D8B0F100DC5538 /* DetailView.swift */; };
 		683F340727D8B1B900DC5538 /* MultiTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683F340627D8B1B900DC5538 /* MultiTextView.swift */; };
+		684998E527D9C3BA00107274 /* DraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684998E427D9C3BA00107274 /* DraftView.swift */; };
 		684DB84C27C906F100F9250D /* String_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684DB84B27C906F100F9250D /* String_Extension.swift */; };
 		684DB84E27C91A1500F9250D /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684DB84D27C91A1500F9250D /* PostView.swift */; };
 		684DB85027C9ACB900F9250D /* PostCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684DB84F27C9ACB900F9250D /* PostCellView.swift */; };
@@ -83,6 +84,7 @@
 		52E540C68ECD350C8787AC1E /* Pods_chatbotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chatbotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		683F340427D8B0F100DC5538 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		683F340627D8B1B900DC5538 /* MultiTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiTextView.swift; sourceTree = "<group>"; };
+		684998E427D9C3BA00107274 /* DraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftView.swift; sourceTree = "<group>"; };
 		684DB84B27C906F100F9250D /* String_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String_Extension.swift; sourceTree = "<group>"; };
 		684DB84D27C91A1500F9250D /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		684DB84F27C9ACB900F9250D /* PostCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellView.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				68DCA03B27CB85D900B69D85 /* ReviewView.swift */,
 				68DE549F27D512A1004D7EB9 /* InitialVIew.swift */,
 				683F340427D8B0F100DC5538 /* DetailView.swift */,
+				684998E427D9C3BA00107274 /* DraftView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -605,6 +608,7 @@
 				683F340727D8B1B900DC5538 /* MultiTextView.swift in Sources */,
 				68AB85FC27C71EF00061E096 /* ImagePickerView.swift in Sources */,
 				68AB860027C74B210061E096 /* TempSignUpView.swift in Sources */,
+				684998E527D9C3BA00107274 /* DraftView.swift in Sources */,
 				68AB861127C84A3F0061E096 /* AuthViewModel.swift in Sources */,
 				68DE549E27D45538004D7EB9 /* ChildYearCellView.swift in Sources */,
 				684DB85427CAE3FF00F9250D /* ChildChatCellView.swift in Sources */,

@@ -14,6 +14,7 @@ struct HomeView: View {
     @State var showingSettingSheet = false
     @State var showingPostSheet = false
     @State var showingReviewSheet = false
+    @State var showingDraftSheet = false
     
     @StateObject var dataModel = DataModel()
     @EnvironmentObject var movieViewModel: MovieViewModel
@@ -84,7 +85,8 @@ struct HomeView: View {
                             .frame(width: 30, height: 30, alignment: .center)
                             .padding(.bottom, 3)
                             .onTapGesture {
-                                print("hello")
+                                movieViewModel.fetchRealmReserveData(dataModel: dataModel)
+                                self.showingDraftSheet.toggle()
                             }
                         Text("下書き").font(.caption2)
                     }
@@ -106,7 +108,7 @@ struct HomeView: View {
                     }
                     Spacer()
                     Button(action: {
-                        movieViewModel.fetchPostData(dataModel: dataModel)
+                        movieViewModel.fetchPostData(dataModel: dataModel, collectionName: "postArray")
                         self.showingPostSheet.toggle()
                     }) {
                         VStack(alignment: .center) {
@@ -145,6 +147,9 @@ struct HomeView: View {
                 })
             })
         }
+        .onDisappear(perform: {
+            setupArray()
+        })
         .fullScreenCover(isPresented: $showingSheet) {
             ContentView()
         }
@@ -157,11 +162,15 @@ struct HomeView: View {
         .fullScreenCover(isPresented: $showingReviewSheet) {
             ReviewView()
         }
+        .fullScreenCover(isPresented: $showingDraftSheet) {
+            DraftView()
+        }
         .environmentObject(dataModel)
     }
 
     init() {
         self.setupNavigationBar()
+        
     }
     
     private func setupNavigationBar() {
@@ -171,6 +180,12 @@ struct HomeView: View {
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    }
+    
+    func setupArray() {
+        DispatchQueue.main.async {
+            movieViewModel.fetchPostData(dataModel: dataModel, collectionName: "reserveArray")
+        }
     }
 }
 

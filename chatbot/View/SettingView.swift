@@ -28,12 +28,11 @@ struct SettingView: View {
                         .scaledToFill()
                         .frame(width: 40, height: 40)
                         .clipShape(Circle())
-                        .overlay(Circle()
-                                    .stroke(Color.black, lineWidth: 1))
+//                        .overlay(Circle()
+//                                    .stroke(Color.black, lineWidth: 1))
                         
                     Text("\(authViewModel.userData!.username)")
                         .foregroundColor(Color.black)
-                        .font(.system(size: 20))
                 }
                 
                 Section(header: Text("About"), footer: Text("copyright ©︎ 20XX-20XX Apple All Rights Reserved.")) {
