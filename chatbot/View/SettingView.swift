@@ -28,14 +28,12 @@ struct SettingView: View {
                         .scaledToFill()
                         .frame(width: 40, height: 40)
                         .clipShape(Circle())
-//                        .overlay(Circle()
-//                                    .stroke(Color.black, lineWidth: 1))
                         
                     Text("\(authViewModel.userData!.username)")
                         .foregroundColor(Color.black)
                 }
                 
-                Section(header: Text("About"), footer: Text("copyright ©︎ 20XX-20XX Apple All Rights Reserved.")) {
+                Section(header: Text("About")) {
                     HStack {
                         Text("Device Name")
                         Spacer()
@@ -53,6 +51,35 @@ struct SettingView: View {
                     }
                 }
                 
+                Section(header: Text("利用関係")) {
+                    HStack {
+                        Text("取扱説明")
+                            .onTapGesture {
+                                print("Logout")
+                               
+                            }
+                        Spacer()
+                    }
+                    
+                    HStack {
+                        Text("利用規約")
+                            .onTapGesture {
+                                print("Logout")
+                               
+                            }
+                        Spacer()
+                    }
+                    
+                    HStack {
+                        Text("プライバシーポリシー")
+                            .onTapGesture {
+                                print("Logout")
+                              
+                            }
+                        Spacer()
+                    }
+                }
+                
                 Section(header: Text("LogOut")) {
                     HStack {
                         Text("LOGOUT")
@@ -64,6 +91,8 @@ struct SettingView: View {
                         Spacer()
                     }
                 }
+                
+                
             }
             .navigationBarTitle("設定", displayMode: .inline)
             .navigationBarItems(leading: Button(action: {

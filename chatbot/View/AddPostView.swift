@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Kingfisher
-import Combine
 
 struct AddPostView: View {
     
@@ -23,11 +22,9 @@ struct AddPostView: View {
         if text.isEmpty {
             return false
         }
-        
         if star == 0 {
             return false
         }
-        
         return true
     }
     
@@ -39,8 +36,12 @@ struct AddPostView: View {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color.pink.opacity(0.8))
                         .overlay(
-                            VStack (spacing: 50) {
-                                VStack (spacing: 20) {
+                            VStack () {
+                                VStack (spacing: 30) {
+
+                                    KFImage(URL(string:dataModel.tempImageUrl))
+                                        .resizable()
+                                        .frame(width: 150, height: 210)
                                     
                                     Text("タイトル：\(dataModel.tempTitle)")
                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -50,12 +51,13 @@ struct AddPostView: View {
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading, 35)
                                     
-                                    KFImage(URL(string:dataModel.tempImageUrl))
-                                        .resizable()
-                                        .frame(width: 200, height: 278)
+                                    Text(text)
+                                        .frame(width: 300, height: 100, alignment: .topLeading)
+                                        .border(Color.black)
                                     
-                                    MultilineTextView(text: $text)
-                                        .frame(width: 200, height: 100)
+                                    TextField("こちらに入力してください", text: $text)
+                                        .frame(width: 200, height: 30)
+                                        .background(Color.white)
                                         .border(Color.gray)
                                 }
                                 
@@ -79,10 +81,11 @@ struct AddPostView: View {
                                         }
                                     }
                                 }
+                                .padding()
                                 
                                 Button {
                                     movieViewModel.savePostData(dataModel: dataModel, authViewModel: authViewModel, star: star, review: text, collectionName: "postArray")
-                                        dismiss()
+                                    dismiss()
                                 } label: {
                                     Text("投稿")
                                 }
@@ -91,6 +94,7 @@ struct AddPostView: View {
                                 .padding(12)
                                 .background(enable ? Color.blue : Color.gray)
                                 .cornerRadius(20)
+                                .padding()
                                 .disabled(!enable)
                             }
                         )

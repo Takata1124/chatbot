@@ -76,20 +76,6 @@ struct HomeView: View {
                         }
                     }
                     .padding()
-                    
-                    VStack(alignment: .center, spacing: 20) {
-                        
-                        Image(systemName: "paperclip")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30, alignment: .center)
-                            .padding(.bottom, 3)
-                            .onTapGesture {
-                                movieViewModel.fetchRealmReserveData(dataModel: dataModel)
-                                self.showingDraftSheet.toggle()
-                            }
-                        Text("下書き").font(.caption2)
-                    }
                 }
             }
             .toolbar {
@@ -115,6 +101,17 @@ struct HomeView: View {
                             Label("送信", systemImage: "text.bubble")
                                 .padding(.bottom, 3)
                             Text("投稿").font(.caption2)
+                        }
+                    }
+                    Spacer()
+                    Button(action: {
+                        movieViewModel.fetchRealmReserveData(dataModel: dataModel)
+                        self.showingDraftSheet.toggle()
+                    }) {
+                        VStack(alignment: .center) {
+                            Label("送信", systemImage: "paperclip")
+                                .padding(.bottom, 3)
+                            Text("下書き").font(.caption2)
                         }
                     }
                     Spacer()
@@ -148,7 +145,7 @@ struct HomeView: View {
             })
         }
         .onDisappear(perform: {
-            setupArray()
+            
         })
         .fullScreenCover(isPresented: $showingSheet) {
             ContentView()
@@ -180,12 +177,6 @@ struct HomeView: View {
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
-    }
-    
-    func setupArray() {
-        DispatchQueue.main.async {
-            movieViewModel.fetchPostData(dataModel: dataModel, collectionName: "reserveArray")
-        }
     }
 }
 

@@ -72,7 +72,6 @@ struct PostView: View {
 //                            self.showingAddPostSheet.toggle()
                         }, label: {
                             Image(systemName: "person")
-//                            Text("下書き")
                                 .foregroundColor(Color.white)
                         })
                     })

@@ -151,11 +151,16 @@ class MovieViewModel: NSObject, ObservableObject {
         default:
             dataModel.reloadInt = 0
             let returnMessage = englishTranslate(translatingText: tempMessage)
-            dataModel.tempJenre = returnMessage
-            var recommendTitle = recommendTitle(datamodel: dataModel, genre: dataModel.tempJenre, reloadPoint: dataModel.reloadInt)
-            dataModel.tempTitle = recommendTitle
-            recommendTitle = recommendTitle + " " + dataModel.tempYear
-            completion(recommendTitle)
+            print(returnMessage)
+            if returnMessage != "Action" {
+                completion("認識できませんでした。他の言葉で言い換えてください。")
+            } else {
+                dataModel.tempJenre = returnMessage
+                var recommendTitle = recommendTitle(datamodel: dataModel, genre: dataModel.tempJenre, reloadPoint: dataModel.reloadInt)
+                dataModel.tempTitle = recommendTitle
+                recommendTitle = recommendTitle + " " + dataModel.tempYear
+                completion(recommendTitle)
+            }
         }
     }
     
@@ -285,7 +290,7 @@ class MovieViewModel: NSObject, ObservableObject {
                 newRecommendArray = recommendArray.sorted { Int($0.components(separatedBy: ",")[0])! > Int($1.components(separatedBy: ",")[0])! }
             }
 
-            print(newRecommendArray)
+//            print(newRecommendArray)
             print(newRecommendArray.count)
             print(reloadPoint)
             
@@ -314,8 +319,6 @@ class MovieViewModel: NSObject, ObservableObject {
     
     func getArticle(dataModel:DataModel, title: String, completion: @escaping (_ titleArray: [String]) -> Void){
         
-        print(title)
-        
         var replaceString: String = ""
         if title.contains(" "){
             replaceString = title.replacingOccurrences(of: " ", with: "_")
@@ -330,8 +333,7 @@ class MovieViewModel: NSObject, ObservableObject {
             
             do {
                 let json = JSON(response.data)
-                
-//                print(json)
+
                 guard let title = json["title"].string else { return }
                 guard let extract = json["extract"].string else { return }
                 let imageUrl = json["thumbnail"]["source"].string

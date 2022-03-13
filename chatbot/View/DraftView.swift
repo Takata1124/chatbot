@@ -51,9 +51,9 @@ struct DraftView: View {
                                         .resizable()
                                         .frame(width: 200, height: 278)
 
-                                    MultilineTextView(text: $text)
-                                        .frame(width: 200, height: 100)
-                                        .border(Color.gray)
+//                                    MultilineTextView(text: $text)
+//                                        .frame(width: 200, height: 100)
+//                                        .border(Color.gray)
                                 }
                                 
                                 HStack {
@@ -78,7 +78,7 @@ struct DraftView: View {
                                 }
                                 
                                 Button {
-//                                    movieViewModel.savePostData(dataModel: dataModel, authViewModel: authViewModel, star: star, review: text, collectionName: "postArray")
+//   
                                         dismiss()
                                 } label: {
                                     Text("投稿")

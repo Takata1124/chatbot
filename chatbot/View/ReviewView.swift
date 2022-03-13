@@ -106,7 +106,9 @@ struct ReviewView: View {
                                 HStack {
                                     Text("\(movie.title)")
                                         .font(.system(size: 18))
+                                    
                                     Spacer()
+                                    
                                     Text("\(movie.year)")
                                         .padding(.trailing)
                                 }
@@ -121,7 +123,6 @@ struct ReviewView: View {
                                                 Image(systemName: "star.fill")
                                                     .font(.system(size: 30))
                                                     .onTapGesture {
-                                                        
                                                         configureTitle(movieArray: movie, star: i)
                                                         print(dataModel.tapArray)
                                                     }
@@ -129,7 +130,6 @@ struct ReviewView: View {
                                                 Image(systemName: "star")
                                                     .font(.system(size: 30))
                                                     .onTapGesture {
-                                                        
                                                         configureTitle(movieArray: movie, star: i)
                                                         print(dataModel.tapArray)
                                                     }
@@ -157,8 +157,7 @@ struct ReviewView: View {
                             .foregroundColor(Color.white)
                     }), trailing: HStack {
                         Button(action: {
-//                            print("右のボタン１が押されました。")
-                            
+
                         }, label: {
                             Text("SAVE")
                                 .foregroundColor(Color.white)

@@ -234,6 +234,7 @@
 				68AB860127C760560061E096 /* CsvData */,
 				68AB85C527C6F8B40061E096 /* chatbotApp.swift */,
 				68AB85FB27C71EF00061E096 /* ImagePickerView.swift */,
+				68DE549F27D512A1004D7EB9 /* InitialVIew.swift */,
 				68AB85C927C6F8B60061E096 /* Assets.xcassets */,
 				68AB85CB27C6F8B60061E096 /* Preview Content */,
 			);
@@ -285,9 +286,8 @@
 				68AB85F127C6FEC80061E096 /* SettingView.swift */,
 				68AB85FF27C74B210061E096 /* TempSignUpView.swift */,
 				684DB84D27C91A1500F9250D /* PostView.swift */,
-				684DB85127C9FD2500F9250D /* AddPostView.swift */,
 				68DCA03B27CB85D900B69D85 /* ReviewView.swift */,
-				68DE549F27D512A1004D7EB9 /* InitialVIew.swift */,
+				684DB85127C9FD2500F9250D /* AddPostView.swift */,
 				683F340427D8B0F100DC5538 /* DetailView.swift */,
 				684998E427D9C3BA00107274 /* DraftView.swift */,
 			);

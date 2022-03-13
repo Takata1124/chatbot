@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Kingfisher
+import Firebase
 
 struct PostCellView: View {
     
@@ -42,10 +43,13 @@ struct PostCellView: View {
                                             
                                             Spacer()
                                             
-                                            Image(systemName: "multiply.circle")
-                                                .onTapGesture {
-                                                    print("tap")
-                                                }
+                                            if Auth.auth().currentUser!.uid == data!.uid {
+                                                Image(systemName: "multiply.circle")
+                                                    .onTapGesture {
+                                                        print("tap")
+                                                    }
+                                            }
+                                           
                                         }
     
                                         Text(data!.category)
