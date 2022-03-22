@@ -91,8 +91,6 @@ struct PostCellView: View {
                         }
                     )
             }
-            .frame(height:200)
-            .frame(maxWidth: .infinity)
         }
     }
 }

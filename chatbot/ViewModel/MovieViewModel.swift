@@ -510,8 +510,6 @@ class MovieViewModel: NSObject, ObservableObject {
         print(results)
         
         if let reserve = realm.objects(Reserve.self).filter(predicate).first {
-//            print(reserve)
-//            print(reserve.title)
             
             let docData = [
                 "title": reserve.title,
